@@ -1,13 +1,17 @@
 #include <QApplication>
-#include "renderwindowuisingleinheritance.h"
+//#include "renderwindowuisingleinheritance.h"
+#include "GUI_Module/fenics_blood_sim.h"
 
 int main( int argc, char** argv )
 {
   // QT Stuff
   QApplication app( argc, argv );
 
-  RenderWindowUISingleInheritance renderWindowUISingleInheritance;
-  renderWindowUISingleInheritance.show();
+  FEniCS_Blood_Sim fenicsMainWindow;
+  fenicsMainWindow.show();
+
+  //RenderWindowUISingleInheritance renderWindowUISingleInheritance;
+  //renderWindowUISingleInheritance.show();
 
   return app.exec();
 }

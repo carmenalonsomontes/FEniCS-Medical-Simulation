@@ -6,7 +6,6 @@ project(FEniCSBloodSim)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
-
 file(GLOB UI_FILES *.ui)
 file(GLOB QT_WRAP *.h)
 file(GLOB CXX_FILES *.cpp)
@@ -57,31 +56,34 @@ else()
   include(${QT_USE_FILE})
 endif()
 
+#-----------------------------------------------------------------------------------
+# LIBRARIES & EXECUTABLE CONFIGURATION
 
 
 if(${VTK_VERSION} VERSION_GREATER "6" AND VTK_QT_VERSION VERSION_GREATER "4")
   qt5_wrap_ui(UISrcs ${UI_FILES} )
+    # EXECUTABLE-------------------
   # CMAKE_AUTOMOC in ON so the MOC headers will be automatically wrapped.
-  add_executable(RenderWindowUISingleInheritance MACOSX_BUNDLE
-    ${CXX_FILES} ${UISrcs} ${QT_WRAP})
-  qt5_use_modules(RenderWindowUISingleInheritance Core Gui)
-  target_link_libraries(RenderWindowUISingleInheritance ${VTK_LIBRARIES})
+  add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${CXX_FILES} ${UISrcs} ${QT_WRAP})
+  qt5_use_modules(${PROJECT_NAME} Core Gui)
+  target_link_libraries(${PROJECT_NAME} ${VTK_LIBRARIES})
 else()
   QT4_WRAP_UI(UISrcs ${UI_FILES})
   QT4_WRAP_CPP(MOCSrcs ${QT_WRAP})
-  add_executable(RenderWindowUISingleInheritance MACOSX_BUNDLE ${CXX_FILES} ${UISrcs} ${MOCSrcs})
-
+    # EXECUTABLE-------------------
+  add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${CXX_FILES} ${UISrcs} ${MOCSrcs})
+    # VTK + QT LIBRARIES
   if(VTK_LIBRARIES)
     if(${VTK_VERSION} VERSION_LESS "6")
-      target_link_libraries(RenderWindowUISingleInheritance ${VTK_LIBRARIES} QVTK)
+      target_link_libraries(${PROJECT_NAME} ${VTK_LIBRARIES} QVTK)
     else()
-      target_link_libraries(RenderWindowUISingleInheritance ${VTK_LIBRARIES})
+      target_link_libraries(${PROJECT_NAME} ${VTK_LIBRARIES})
     endif()
   else()
-    target_link_libraries(RenderWindowUISingleInheritance vtkHybrid QVTK vtkViews ${QT_LIBRARIES})
+    target_link_libraries(${PROJECT_NAME} vtkHybrid QVTK vtkViews ${QT_LIBRARIES})
   endif()
 endif()
 
-###################################################################3
-target_link_libraries(RenderWindowUISingleInheritance ${Glue} ${ITK_LIBRARIES})
-###################################################################
+# ITK + ITKVTKGLUE
+target_link_libraries(${PROJECT_NAME} ${Glue} ${ITK_LIBRARIES})
+

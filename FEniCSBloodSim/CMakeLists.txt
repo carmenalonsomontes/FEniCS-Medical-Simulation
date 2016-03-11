@@ -1,20 +1,5 @@
 #aux_source_directory(. SRC_LIST)
 #add_executable(${PROJECT_NAME} ${SRC_LIST})
-#-----------------------------------------------------------------------------------
-# PROJECT CONFIGURATION
-project(FEniCSBloodSim)
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-
-set(CMAKE_AUTORCC ON)
-# GUI Modules files
-file(GLOB_RECURSE UI_FILES *.ui)
-file(GLOB_RECURSE QT_WRAP *.h)
-file(GLOB_RECURSE CXX_FILES *.cpp)
-file(GLOB_RECURSE QRC_FILES *.qrc)
-
-# Adding files for QT
-SET(QRC_FILES "GUI_Module/fenics_blood_sim.qrc")
 
 #-----------------------------------------------------------------------------------
 # CMAKE CONFIGURATION
@@ -23,6 +8,15 @@ cmake_minimum_required(VERSION 2.8)
 if(POLICY CMP0020)
   cmake_policy(SET CMP0020 NEW)
 endif()
+
+#-----------------------------------------------------------------------------------
+# PROJECT CONFIGURATION
+project(FEniCSBloodSim)
+
+
+
+
+
 
 
 #-----------------------------------------------------------------------------------
@@ -49,7 +43,6 @@ endif()
 find_package(VTK REQUIRED)
 include(${VTK_USE_FILE})
 
-
 if(${VTK_VERSION} VERSION_GREATER "6" AND VTK_QT_VERSION VERSION_GREATER "4")
   # Instruct CMake to run moc automatically when needed.
   set(CMAKE_AUTOMOC ON)
@@ -58,6 +51,20 @@ else()
   find_package(Qt4 REQUIRED)
   include(${QT_USE_FILE})
 endif()
+
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+# GUI Modules files
+file(GLOB_RECURSE UI_FILES *.ui)
+file(GLOB_RECURSE QT_WRAP *.h)
+file(GLOB_RECURSE CXX_FILES *.cpp)
+file(GLOB_RECURSE QRC_FILES *.qrc)
+
+set(CMAKE_AUTORCC ON)
+
+
+# Adding files for QT
+SET(QRC_FILES fenics_blood_sim.qrc)
 
 #-----------------------------------------------------------------------------------
 # LIBRARIES & EXECUTABLE CONFIGURATION

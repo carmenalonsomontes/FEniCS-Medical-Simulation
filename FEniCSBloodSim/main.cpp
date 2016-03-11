@@ -1,6 +1,6 @@
 #include <QApplication>
 //#include "renderwindowuisingleinheritance.h"
-#include "GUI_Module/fenics_blood_sim.h"
+#include "fenics_blood_sim.h"
 
 int main( int argc, char** argv )
 {

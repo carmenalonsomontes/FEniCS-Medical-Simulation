@@ -6,12 +6,15 @@ project(FEniCSBloodSim)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
+set(CMAKE_AUTORCC ON)
 # GUI Modules files
 file(GLOB_RECURSE UI_FILES *.ui)
 file(GLOB_RECURSE QT_WRAP *.h)
 file(GLOB_RECURSE CXX_FILES *.cpp)
+file(GLOB_RECURSE QRC_FILES *.qrc)
 
-
+# Adding files for QT
+SET(QRC_FILES "GUI_Module/fenics_blood_sim.qrc")
 
 #-----------------------------------------------------------------------------------
 # CMAKE CONFIGURATION
@@ -20,7 +23,6 @@ cmake_minimum_required(VERSION 2.8)
 if(POLICY CMP0020)
   cmake_policy(SET CMP0020 NEW)
 endif()
-
 
 
 #-----------------------------------------------------------------------------------
@@ -71,8 +73,9 @@ if(${VTK_VERSION} VERSION_GREATER "6" AND VTK_QT_VERSION VERSION_GREATER "4")
 else()
   QT4_WRAP_UI(UISrcs ${UI_FILES})
   QT4_WRAP_CPP(MOCSrcs ${QT_WRAP})
+  QT4_ADD_RESOURCES(QRC_RESOURCES_RCC ${QRC_FILES})
     # EXECUTABLE-------------------
-  add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${CXX_FILES} ${UISrcs} ${MOCSrcs})
+  add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${CXX_FILES} ${UISrcs} ${MOCSrcs} ${QRC_RESOURCES_RCC})
     # VTK + QT LIBRARIES
   if(VTK_LIBRARIES)
     if(${VTK_VERSION} VERSION_LESS "6")

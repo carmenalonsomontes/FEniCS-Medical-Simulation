@@ -1,4 +1,4 @@
-#ifndef FENICS_BLOOD_SIM_H
+    #ifndef FENICS_BLOOD_SIM_H
 #define FENICS_BLOOD_SIM_H
 
 #include <QMainWindow>

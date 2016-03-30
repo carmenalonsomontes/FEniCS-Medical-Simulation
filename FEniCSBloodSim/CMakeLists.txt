@@ -14,11 +14,6 @@ endif()
 project(FEniCSBloodSim)
 
 
-
-
-
-
-
 #-----------------------------------------------------------------------------------
 # ITK CONFIGURATION.
 find_package(ITK REQUIRED)

@@ -1,1 +1,36 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/menu">
+        <file>GUI_Module/images/menu/add.png</file>
+        <file>GUI_Module/images/menu/cancel.png</file>
+        <file>GUI_Module/images/menu/chart_curve.png</file>
+        <file>GUI_Module/images/menu/clock_stop.png</file>
+        <file>GUI_Module/images/menu/contact_email.png</file>
+        <file>GUI_Module/images/menu/cross.png</file>
+        <file>GUI_Module/images/menu/cross2.png</file>
+        <file>GUI_Module/images/menu/delete.png</file>
+        <file>GUI_Module/images/menu/disk.png</file>
+        <file>GUI_Module/images/menu/disk_multiple.png</file>
+        <file>GUI_Module/images/menu/disk_sepia.png</file>
+        <file>GUI_Module/images/menu/document_import.png</file>
+        <file>GUI_Module/images/menu/document_inspector.png</file>
+        <file>GUI_Module/images/menu/door_out.png</file>
+        <file>GUI_Module/images/menu/exclamation.png</file>
+        <file>GUI_Module/images/menu/file_extension_pdf.png</file>
+        <file>GUI_Module/images/menu/firefox.png</file>
+        <file>GUI_Module/images/menu/folder.png</file>
+        <file>GUI_Module/images/menu/folder_page_white.png</file>
+        <file>GUI_Module/images/menu/help.png</file>
+        <file>GUI_Module/images/menu/information.png</file>
+        <file>GUI_Module/images/menu/interface_preferences.png</file>
+        <file>GUI_Module/images/menu/interface_preferences2.png</file>
+        <file>GUI_Module/images/menu/open_folder.png</file>
+        <file>GUI_Module/images/menu/package.png</file>
+        <file>GUI_Module/images/menu/page_save.png</file>
+        <file>GUI_Module/images/menu/page_white.png</file>
+        <file>GUI_Module/images/menu/page_white_stack.png</file>
+        <file>GUI_Module/images/menu/save_as.png</file>
+        <file>GUI_Module/images/menu/script_edit.png</file>
+        <file>GUI_Module/images/menu/script_go.png</file>
+        <file>GUI_Module/images/menu/script_save.png</file>
+    </qresource>
+</RCC>

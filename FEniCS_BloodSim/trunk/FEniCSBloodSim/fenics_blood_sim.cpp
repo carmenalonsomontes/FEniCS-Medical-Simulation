@@ -13,10 +13,16 @@ FEniCS_Blood_Sim::FEniCS_Blood_Sim(QWidget *parent) :
     // Data
     _projectData = new FBS_ProjectData();
     _userSessionData = new UserSessionData();
+    _imProcMenuBuilder = new ImageProcessingSimMenu();
+
     // FileMenu
     _fileMenuBuilder = new FileMenuBuilder();
     _fileMenuBuilder->registerWindow(this);
     _fileMenuBuilder->registerProjectData(_projectData);
+
+    // Image Processing Menu
+    _imProcMenuBuilder->registerWindow(this);
+    _imProcMenuBuilder->registerProjectData(_projectData);
 
     connectSignalsMenuBuilder();
     loadRecentProjectList();
@@ -162,7 +168,66 @@ void FEniCS_Blood_Sim::openRecentFile()
 
 }
 
+//**************************************************************
+// EDIT MENU
+void FEniCS_Blood_Sim::on_actionPreferences_triggered()
+{
+    // TODO
+}
 
+
+
+//********************************************************************
+// PROJECT SETUP
+
+// MENU
+void FEniCS_Blood_Sim::on_actionImage_Dataset_triggered()
+{
+    _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING);
+}
+
+
+
+//--
+// MEDICAL IMAGES
+void FEniCS_Blood_Sim::on_setDataPathButton_clicked()
+{
+    _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING);
+}
+
+void FEniCS_Blood_Sim::on_setImButton_clicked()
+{
+    _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING);
+}
+
+void FEniCS_Blood_Sim::on_setPrefixSeriesButton_clicked()
+{
+    _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING);
+}
+
+
+//--
+// MESH TOOL
+void FEniCS_Blood_Sim::on_setMeshToolPathButton_clicked()
+{
+    _imProcMenuBuilder->launchMenuAction(MESH_TOOL);
+}
+
+
+//--
+// FENICS
+void FEniCS_Blood_Sim::on_setFenicsToolPathButton_clicked()
+{
+    _imProcMenuBuilder->launchMenuAction(FENICS_TOOL);
+}
+
+//--
+// VISUALIZATION TOOL
+
+void FEniCS_Blood_Sim::on_setVisualizationToolPathButton_clicked()
+{
+    _imProcMenuBuilder->launchMenuAction(VISUALIZATION_TOOL);
+}
 
 
 //**************************************************************
@@ -204,3 +269,8 @@ void FEniCS_Blood_Sim::updateRecentProjectListUI(const QString projectPath)
         ui->menuRecent_Projects->addAction(_newRecentProjectAction);
     }
 }
+
+
+
+
+

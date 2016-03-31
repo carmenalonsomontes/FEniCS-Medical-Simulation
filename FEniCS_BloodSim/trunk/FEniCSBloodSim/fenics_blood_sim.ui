@@ -156,6 +156,93 @@
                  </property>
                 </widget>
                </item>
+               <item row="0" column="2">
+                <widget class="QPushButton" name="setDataPathButton">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="fenics_blood_sim.qrc">
+                   <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QPushButton" name="setImButton">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="fenics_blood_sim.qrc">
+                   <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="2">
+                <widget class="QPushButton" name="setPrefixSeriesButton">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="fenics_blood_sim.qrc">
+                   <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </item>
             </layout>
@@ -355,7 +442,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>Tool Path</string>
+                  <string>Path</string>
                  </property>
                 </widget>
                </item>
@@ -372,6 +459,35 @@
                  </property>
                  <property name="readOnly">
                   <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QPushButton" name="pushButton">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="fenics_blood_sim.qrc">
+                   <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -460,7 +576,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>Tool Path</string>
+                  <string> Path</string>
                  </property>
                 </widget>
                </item>
@@ -477,6 +593,35 @@
                  </property>
                  <property name="readOnly">
                   <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QPushButton" name="pushButton_2">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="fenics_blood_sim.qrc">
+                   <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -565,7 +710,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>Tool Path</string>
+                  <string> Path</string>
                  </property>
                 </widget>
                </item>
@@ -582,6 +727,35 @@
                  </property>
                  <property name="readOnly">
                   <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QPushButton" name="pushButton_3">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>30</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="fenics_blood_sim.qrc">
+                   <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -949,7 +1123,7 @@
   </action>
   <action name="actionProject_Preferences">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Project Preferences</string>

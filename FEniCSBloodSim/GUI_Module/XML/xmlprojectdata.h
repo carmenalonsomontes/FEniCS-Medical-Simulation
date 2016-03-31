@@ -20,7 +20,6 @@ public:
 private:
 
     bool createNewFile(QFile * _file,FBS_ProjectData * _projectData);
-    bool updateFile(QFile * _file, FBS_ProjectData * _projectData);
     void writeProjectData(QXmlStreamWriter * xmlWriter, QString _projectPath, QString _projectName);
     void writeImageData(QXmlStreamWriter *xmlWriter, QString _imgPath, QString _imName, QString _imgPrefix);
 

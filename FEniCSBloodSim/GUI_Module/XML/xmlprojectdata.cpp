@@ -14,10 +14,10 @@ bool XMLProjectData::saveProjectDataFile(FBS_ProjectData * _projectData)
 
     QFile _file(_filePath);
     bool _success = false;
-    if (!_file.exists())
-        _success= createNewFile(&_file,_projectData);
-    else
-        _success = updateFile(&_file,_projectData);
+
+    if (_file.exists())
+        _file.remove();
+    _success= createNewFile(&_file,_projectData);
 
     return _success;
 }
@@ -97,14 +97,6 @@ bool XMLProjectData::createNewFile(QFile * _file, FBS_ProjectData * _projectData
 }
 
 
-
-
-
-bool XMLProjectData::updateFile(QFile * _file,FBS_ProjectData * _projectData)
-{
-    bool _success = false;
-    return _success;
-}
 
 
 

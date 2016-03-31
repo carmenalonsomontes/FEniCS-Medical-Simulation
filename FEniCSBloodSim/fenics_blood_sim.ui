@@ -27,9 +27,17 @@
     <property name="title">
      <string>File</string>
     </property>
+    <widget class="QMenu" name="menuRecent_Projects">
+     <property name="title">
+      <string>Recent Projects</string>
+     </property>
+     <addaction name="action_recent_project_list"/>
+     <addaction name="separator"/>
+     <addaction name="actionClear_list"/>
+    </widget>
     <addaction name="actionNew_Project"/>
     <addaction name="actionOpen_Project"/>
-    <addaction name="actionRecent_Projects"/>
+    <addaction name="menuRecent_Projects"/>
     <addaction name="separator"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_As"/>
@@ -115,17 +123,6 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionRecent_Projects">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Recent Projects</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+O</string>
-   </property>
-  </action>
   <action name="actionSave">
    <property name="enabled">
     <bool>false</bool>
@@ -157,6 +154,9 @@
    </property>
   </action>
   <action name="actionClose_Project">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Close Project</string>
    </property>
@@ -243,6 +243,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="action_recent_project_list">
+   <property name="text">
+    <string>&lt;&lt;Empty&gt;&gt;</string>
+   </property>
+  </action>
+  <action name="actionClear_list">
+   <property name="text">
+    <string>Clear list</string>
    </property>
   </action>
  </widget>

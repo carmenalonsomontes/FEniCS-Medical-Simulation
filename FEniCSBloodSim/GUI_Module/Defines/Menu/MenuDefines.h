@@ -39,6 +39,13 @@ enum FileMenuVar{
       EXIT_MAINWINDOW  = 7
 };
 
+enum SimulationMenuVar{
+    IMAGE_PROCESSING = 0,
+    MESH_TOOL = 1,
+    FENICS_TOOL = 2,
+    VISUALIZATION_TOOL = 3
+
+};
 
 // XML Defines
 const QString FBS_GUI_TAG = "fbs_gui";

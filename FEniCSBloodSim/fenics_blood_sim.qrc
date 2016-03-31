@@ -33,5 +33,6 @@
         <file>GUI_Module/images/menu/script_go.png</file>
         <file>GUI_Module/images/menu/script_save.png</file>
         <file>GUI_Module/images/menu/setting_tools.png</file>
+        <file>GUI_Module/images/menu/error.png</file>
     </qresource>
 </RCC>

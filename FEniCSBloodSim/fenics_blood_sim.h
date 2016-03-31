@@ -7,6 +7,7 @@
 #include "GUI_Module/Defines/Menu/MenuDefines.h"
 #include "GUI_Module/Data/FBS_Project/fbs_projectdata.h"
 #include "GUI_Module/Session/usersessiondata.h"
+#include "GUI_Module/Menu/Simulation/imageprocessingsimmenu.h"
 
 namespace Ui {
 class FEniCS_Blood_Sim;
@@ -48,10 +49,26 @@ private slots:
 
     void updateRecentProjectListUI(const QString projectPath);
     void openRecentFile();
+    void on_actionPreferences_triggered();
+
+    void on_setDataPathButton_clicked();
+
+    void on_setImButton_clicked();
+
+    void on_setPrefixSeriesButton_clicked();
+
+    void on_setMeshToolPathButton_clicked();
+
+    void on_setFenicsToolPathButton_clicked();
+
+    void on_setVisualizationToolPathButton_clicked();
+
+    void on_actionImage_Dataset_triggered();
+
 private:
     Ui::FEniCS_Blood_Sim *ui;
     FileMenuBuilder *  _fileMenuBuilder;
-
+    ImageProcessingSimMenu * _imProcMenuBuilder;
 
     // Data
     FBS_ProjectData * _projectData;

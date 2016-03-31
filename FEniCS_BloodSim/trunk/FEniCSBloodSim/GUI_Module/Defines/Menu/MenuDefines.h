@@ -1,6 +1,19 @@
 #ifndef MENUDEFINES_H
 #define MENUDEFINES_H
 #include <QString>
+// FILES NAMEs
+
+const QString PREFERENCES_FILE_NAME="fbs_preferences.fbs";
+
+
+
+
+
+enum Success_Failure_func{
+    SUCCESS = 0,
+    FAILURE = 1
+};
+
 // File Extensions
 
 const QString FBS_FILE_PROJECT_EXT  = "fbs";
@@ -36,6 +49,13 @@ const QString FBS_IMAGE_TAG = "fbs_image";
 const QString FBS_IMAGE_PATH_ATT = "fbs_image_path";
 const QString FBS_IMAGE_NAME_ATT = "fbs_image_name";
 const QString FBS_IMAGE_PREFIX_NAME_ATT = "fbs_image_prefix_name";
+
+// PReferences XML Tags
+const QString FBS_PREFERENCES_TAG = "fbs_preferences";
+const QString FBS_RECENT_PROJECT_LIST_TAG = "fbs_recent_project_list";
+const QString FBS_ITEM_PROJECT_TAG = "fbs_item_project";
+const QString FBS_ITEM_PROJECT_PATH_ATT = "fbs_item_project_path";
+
 
 
 #endif // MENUDEFINES_H

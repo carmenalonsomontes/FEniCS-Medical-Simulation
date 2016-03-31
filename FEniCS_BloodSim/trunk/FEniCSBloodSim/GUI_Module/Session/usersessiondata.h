@@ -1,19 +1,30 @@
 #ifndef USERSESSIONDATA_H
 #define USERSESSIONDATA_H
 
-#include "GUI_Module/Data/FBS_Project/fbs_projectdata.h"
+#include <QStringList>
 class UserSessionData
 {
 public:
     UserSessionData();
 
+    void loadRecentProjectList();
+    void saveRecentProjectList();
+    bool updateRecentProjectList(QString _projectPath);
+
+
+    QStringList getRecentProjectList();
+    QStringList getRecentProjectNameList();
+
+    bool isEmpty();
+    void setFileNamePath(QString _path);
+    void resetProjects();
 
 
 private:
+    QStringList _recentProjectList;
+    QStringList _recentProjectNameList;
+    QString _filePath;
 
-    FBS_ProjectData _currentProjectData;
-
-    void loadCurrentProjectData();
 
 };
 

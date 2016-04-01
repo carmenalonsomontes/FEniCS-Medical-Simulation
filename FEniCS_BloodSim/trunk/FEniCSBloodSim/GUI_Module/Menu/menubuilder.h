@@ -32,6 +32,7 @@ signals:
      void enableSaveProjectUI(bool val);
      void updateRecentProjectList(const QString text);
      void restoreUI();
+     void enableMedicalImagingFrameUI(bool val);
 
      // Image Processing Builder
      void updateImagingDialogUI(const QString text);

@@ -148,6 +148,9 @@ void FileMenuBuilder::updateUI(int _menu)
             || (_menu == SAVEAS_PROJECT))
         emit updateStatusBarUI(_registered_project_data->getProjectName());
 
+    if ((_menu == NEW_PROJECT) || (_menu == OPEN_PROJECT) )
+        emit enableMedicalImagingFrameUI(true);
+
     if (_menu == CLOSE_PROJECT)
         emit restoreUI();
 

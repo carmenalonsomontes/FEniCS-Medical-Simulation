@@ -19,7 +19,7 @@ private:
     // UI connection functions
     void updateUI(int _menu);
     void enableUIElements(int _menu);
-    //void restoreUI();
+
 };
 
 #endif // FILEMENUBUILDER_H

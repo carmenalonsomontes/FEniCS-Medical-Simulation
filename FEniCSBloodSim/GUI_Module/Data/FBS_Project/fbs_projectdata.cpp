@@ -100,3 +100,9 @@ bool FBS_ProjectData::isEmpty()
         return false;
     return true;
 }
+bool FBS_ProjectData::isEmptyImagingData()
+{
+    if (!_imName.isEmpty() || (!_imPath.isEmpty()) || (!_imPrefixSeries.isEmpty()))
+            return false;
+    return true;
+}

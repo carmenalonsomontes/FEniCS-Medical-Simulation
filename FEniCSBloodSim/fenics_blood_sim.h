@@ -42,14 +42,22 @@ private slots:
 
 
     void UpdateStatusBar(const QString text);
+
     void EnableCloseProjectUI(bool val);
     void EnableSaveProjectUI(bool val);
+    void RestoreUI();
 
+
+    // RECENT PROJECTS
     void on_actionClear_list_triggered();
 
     void updateRecentProjectListUI(const QString projectPath);
     void openRecentFile();
+
+    // PREFERENCES
     void on_actionPreferences_triggered();
+
+    // MEDICAL IMAGING INTERFACE - MAIN WINDOW
 
     void on_setDataPathButton_clicked();
 
@@ -64,6 +72,8 @@ private slots:
     void on_setVisualizationToolPathButton_clicked();
 
     void on_actionImage_Dataset_triggered();
+
+    void UpdateImagingDialog(const QString text);
 
 private:
     Ui::FEniCS_Blood_Sim *ui;
@@ -81,6 +91,8 @@ private:
 
     void fillRecentProjectsSection();
     QAction *  createRecentProjectAction(QString _name);
+    void   openImageProcessingWindow();
+
 };
 
 #endif // FENICS_BLOOD_SIM_H

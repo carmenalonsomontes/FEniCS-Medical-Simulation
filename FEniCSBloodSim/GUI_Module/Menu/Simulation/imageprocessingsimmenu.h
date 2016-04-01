@@ -7,14 +7,14 @@ class ImageProcessingSimMenu: public MenuBuilder
 public:
     ImageProcessingSimMenu();
     void launchMenuAction(int _action);
+    void launchMenuAction(int _action,QString _pathfile);
 
-protected:
-  /*  void updateImagingUI(int _menu);
-    void enableImagingUIElements(int _menu);*/
 
 private:
-    void openImagingDialog();
+    QString _imgPath;
 
+    void updateImagingDialog();
+    void openImagingDialog();
 };
 
 #endif // IMAGEPROCESSINGSIMMENU_H

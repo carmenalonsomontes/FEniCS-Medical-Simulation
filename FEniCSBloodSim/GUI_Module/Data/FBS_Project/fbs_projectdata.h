@@ -31,6 +31,7 @@ public:
     void clearData();
 
     bool isEmpty();
+    bool isEmptyImagingData();
 
 private:
     QString _projectPath;

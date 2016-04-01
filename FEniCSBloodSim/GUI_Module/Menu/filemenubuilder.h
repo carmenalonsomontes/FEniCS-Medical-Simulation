@@ -14,12 +14,12 @@ private:
     int createNewProject();
     int openProject();
     bool saveas_project();
+    int openProject(QString projectPath);
 
-
-protected:
+    // UI connection functions
     void updateUI(int _menu);
     void enableUIElements(int _menu);
-    int openProject(QString projectPath);
+    //void restoreUI();
 };
 
 #endif // FILEMENUBUILDER_H

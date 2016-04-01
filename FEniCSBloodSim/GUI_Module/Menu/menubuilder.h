@@ -25,10 +25,16 @@ public:
 
 
 signals:
+    // File Menu Builder
      void updateStatusBarUI(const QString text);
+     void updateStatusBarUI2(const QString text);
      void enableCloseProjectUI(bool val);
      void enableSaveProjectUI(bool val);
      void updateRecentProjectList(const QString text);
+     void restoreUI();
+
+     // Image Processing Builder
+     void updateImagingDialogUI(const QString text);
 
 
 protected:
@@ -36,8 +42,6 @@ protected:
     FBS_ProjectData * _registered_project_data;
     UserSessionData * _registered_user_session_data;
 
-    void updateUI(int _menu);
-    void enableUIElements(int _menu);
 
 };
 

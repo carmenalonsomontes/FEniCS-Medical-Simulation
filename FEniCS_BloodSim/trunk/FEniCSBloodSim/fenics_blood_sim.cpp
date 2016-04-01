@@ -40,12 +40,21 @@ FEniCS_Blood_Sim::~FEniCS_Blood_Sim()
 void FEniCS_Blood_Sim::connectSignalsMenuBuilder()
 {
      connect(_fileMenuBuilder, SIGNAL(updateStatusBarUI(const QString)), this, SLOT(UpdateStatusBar(const QString)));
+
+
      connect(_fileMenuBuilder, SIGNAL(enableCloseProjectUI(bool)), this, SLOT(EnableCloseProjectUI(bool)));
      connect(_fileMenuBuilder, SIGNAL(enableSaveProjectUI(bool)), this, SLOT(EnableSaveProjectUI(bool)));
      connect(_fileMenuBuilder, SIGNAL(exittUI()), this, SLOT(exitApplicationUI()));
      connect(_fileMenuBuilder, SIGNAL(updateRecentProjectList(const QString)), this, SLOT(updateRecentProjectListUI(const QString)));
+     connect(_fileMenuBuilder, SIGNAL(restoreUI()), this, SLOT(RestoreUI()));
+     connect(_fileMenuBuilder, SIGNAL(updateImagingDialogUI(const QString)), this, SLOT(UpdateImagingDialog(const QString)));
+
+
+     // Medical Imaging Signals
+     connect(_imProcMenuBuilder, SIGNAL(updateImagingDialogUI(const QString)), this, SLOT(UpdateImagingDialog(const QString)));
 
 }
+
 
 void FEniCS_Blood_Sim::loadRecentProjectList()
 {
@@ -192,19 +201,30 @@ void FEniCS_Blood_Sim::on_actionImage_Dataset_triggered()
 // MEDICAL IMAGES
 void FEniCS_Blood_Sim::on_setDataPathButton_clicked()
 {
-    _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING);
+    openImageProcessingWindow();
 }
 
 void FEniCS_Blood_Sim::on_setImButton_clicked()
 {
-    _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING);
+    openImageProcessingWindow();
+
 }
 
 void FEniCS_Blood_Sim::on_setPrefixSeriesButton_clicked()
 {
-    _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING);
+    openImageProcessingWindow();
+
 }
 
+void FEniCS_Blood_Sim::openImageProcessingWindow()
+{
+    if (_projectData->isEmptyImagingData())
+    _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING);
+
+    // At the moment, we only allow for a single image. Otherwise, we need to fulfill
+    // the other fields: ImPrefix
+    _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING,_projectData->getImPath());
+}
 
 //--
 // MESH TOOL
@@ -229,6 +249,21 @@ void FEniCS_Blood_Sim::on_setVisualizationToolPathButton_clicked()
     _imProcMenuBuilder->launchMenuAction(VISUALIZATION_TOOL);
 }
 
+void FEniCS_Blood_Sim::UpdateImagingDialog(const QString text)
+{
+    if ((text.isEmpty()) || (text.isNull()))
+        return;
+    QString _fileName = QFileInfo(text).fileName();
+    QString _filePath = QFileInfo(text).absolutePath();
+
+    //Save to the PROJECT DATA
+    _projectData->setImPath(text);
+
+    // Update UI
+    ui->imNamelineEdit->setText(_fileName);
+    ui->datasetPathlineEdit->setText(_filePath);
+
+}
 
 //**************************************************************
 void FEniCS_Blood_Sim::closeApplication()
@@ -250,6 +285,10 @@ void FEniCS_Blood_Sim::UpdateStatusBar(const QString text)
 {
     statusBar()->showMessage(text);
 }
+
+
+
+
 void FEniCS_Blood_Sim::EnableCloseProjectUI(bool val)
 {
     ui->actionClose_Project->setEnabled(val);
@@ -270,6 +309,14 @@ void FEniCS_Blood_Sim::updateRecentProjectListUI(const QString projectPath)
     }
 }
 
+void FEniCS_Blood_Sim::RestoreUI()
+{
+    //Clear main UI line edits
+    ui->imNamelineEdit->clear();
+    ui->datasetPathlineEdit->clear();
+
+
+}
 
 
 

@@ -36,6 +36,7 @@ void FileMenuBuilder::launchMenuAction(int _action)
         _registered_project_data->saveProjectInfoToFile();
         // Clear data structure
         _registered_project_data->clearData();
+
         break;
     }
 
@@ -57,7 +58,7 @@ void FileMenuBuilder::launchMenuAction(int _action,QString _pathfile)
     case OPEN_PROJECT:
         // If previous project is open --> Close it
         if (!_registered_project_data->isEmpty())
-            launchMenuAction(CLOSE_PROJECT);
+            launchMenuAction(CLOSE_PROJECT);        
         _successfunc = openProject(_pathfile);
 
         break;
@@ -146,6 +147,12 @@ void FileMenuBuilder::updateUI(int _menu)
     if ((_menu == NEW_PROJECT) || (_menu == OPEN_PROJECT) || (_menu == CLOSE_PROJECT)
             || (_menu == SAVEAS_PROJECT))
         emit updateStatusBarUI(_registered_project_data->getProjectName());
+
+    if (_menu == CLOSE_PROJECT)
+        emit restoreUI();
+
+    if ((_menu == OPEN_PROJECT) && (!_registered_project_data->isEmptyImagingData()))
+        emit updateImagingDialogUI(_registered_project_data->getImPath());
 
 }
 

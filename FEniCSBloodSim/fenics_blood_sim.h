@@ -46,7 +46,7 @@ private slots:
     void EnableCloseProjectUI(bool val);
     void EnableSaveProjectUI(bool val);
     void RestoreUI();
-
+    void EnableMedicalImagingFrame(bool val);
 
     // RECENT PROJECTS
     void on_actionClear_list_triggered();

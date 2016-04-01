@@ -40,14 +40,14 @@ FEniCS_Blood_Sim::~FEniCS_Blood_Sim()
 void FEniCS_Blood_Sim::connectSignalsMenuBuilder()
 {
      connect(_fileMenuBuilder, SIGNAL(updateStatusBarUI(const QString)), this, SLOT(UpdateStatusBar(const QString)));
-
-
      connect(_fileMenuBuilder, SIGNAL(enableCloseProjectUI(bool)), this, SLOT(EnableCloseProjectUI(bool)));
      connect(_fileMenuBuilder, SIGNAL(enableSaveProjectUI(bool)), this, SLOT(EnableSaveProjectUI(bool)));
      connect(_fileMenuBuilder, SIGNAL(exittUI()), this, SLOT(exitApplicationUI()));
      connect(_fileMenuBuilder, SIGNAL(updateRecentProjectList(const QString)), this, SLOT(updateRecentProjectListUI(const QString)));
      connect(_fileMenuBuilder, SIGNAL(restoreUI()), this, SLOT(RestoreUI()));
      connect(_fileMenuBuilder, SIGNAL(updateImagingDialogUI(const QString)), this, SLOT(UpdateImagingDialog(const QString)));
+     connect(_fileMenuBuilder, SIGNAL(enableMedicalImagingFrameUI(bool)), this, SLOT(EnableMedicalImagingFrame(bool)));
+
 
 
      // Medical Imaging Signals
@@ -297,7 +297,15 @@ void FEniCS_Blood_Sim::EnableSaveProjectUI(bool val)
 {
     ui->actionSave->setEnabled(val);
     ui->actionSave_As->setEnabled(val);
- }
+}
+void FEniCS_Blood_Sim::EnableMedicalImagingFrame(bool val)
+{
+    ui->MediImSegFrame->setEnabled(val);
+    ui->imNamelineEdit->setEnabled(val);
+    ui->datasetPathlineEdit->setEnabled(val);
+
+}
+
 
 void FEniCS_Blood_Sim::updateRecentProjectListUI(const QString projectPath)
 {
@@ -314,6 +322,7 @@ void FEniCS_Blood_Sim::RestoreUI()
     //Clear main UI line edits
     ui->imNamelineEdit->clear();
     ui->datasetPathlineEdit->clear();
+    EnableMedicalImagingFrame(false);
 
 
 }

@@ -36,7 +36,6 @@ void FileMenuBuilder::launchMenuAction(int _action)
         _registered_project_data->saveProjectInfoToFile();
         // Clear data structure
         _registered_project_data->clearData();
-
         break;
     }
 
@@ -149,13 +148,20 @@ void FileMenuBuilder::updateUI(int _menu)
         emit updateStatusBarUI(_registered_project_data->getProjectName());
 
     if ((_menu == NEW_PROJECT) || (_menu == OPEN_PROJECT) )
+    {
         emit enableMedicalImagingFrameUI(true);
+        emit enableImageProcessingDialogUI(true);
+        emit enableTabUI(true);
+    }
 
     if (_menu == CLOSE_PROJECT)
         emit restoreUI();
 
     if ((_menu == OPEN_PROJECT) && (!_registered_project_data->isEmptyImagingData()))
+    {
         emit updateImagingDialogUI(_registered_project_data->getImPath());
+        emit loadImageInterface(_registered_project_data->getImPath());
+    }
 
 }
 

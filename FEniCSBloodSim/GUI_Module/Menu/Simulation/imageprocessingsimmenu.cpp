@@ -36,6 +36,7 @@ void ImageProcessingSimMenu::launchMenuAction(int _action,QString _pathfile)
         _imgPath = _pathfile;
         openImagingDialog();
         updateImagingDialog();
+
         break;
     case MESH_TOOL:
         // TODO

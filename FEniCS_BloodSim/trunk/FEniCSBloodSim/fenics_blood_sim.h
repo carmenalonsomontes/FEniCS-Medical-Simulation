@@ -9,6 +9,10 @@
 #include "GUI_Module/Session/usersessiondata.h"
 #include "GUI_Module/Menu/Simulation/imageprocessingsimmenu.h"
 
+// VTK libs
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+
 namespace Ui {
 class FEniCS_Blood_Sim;
 }
@@ -23,6 +27,8 @@ public:
 
      void updateStatusBar();
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
 
 private slots:
     // EDIT
@@ -47,6 +53,8 @@ private slots:
     void EnableSaveProjectUI(bool val);
     void RestoreUI();
     void EnableMedicalImagingFrame(bool val);
+
+    void EnableTab(bool val);
 
     // RECENT PROJECTS
     void on_actionClear_list_triggered();
@@ -75,6 +83,9 @@ private slots:
 
     void UpdateImagingDialog(const QString text);
 
+    void EnableImageProcessingDialog(bool val);
+
+    void LoadImageInterfaceUI(const QString imPath);
 private:
     Ui::FEniCS_Blood_Sim *ui;
     FileMenuBuilder *  _fileMenuBuilder;
@@ -84,7 +95,15 @@ private:
     FBS_ProjectData * _projectData;
     UserSessionData * _userSessionData;
 
+    vtkSmartPointer<vtkRenderer> mainImRendererTab;
+    vtkSmartPointer<vtkRenderer> coronalImRendererTab;
+    vtkSmartPointer<vtkRenderer> axialImRendererTab;
+    vtkSmartPointer<vtkRenderer> saggitalImRendererTab;
 
+    // Render images
+
+
+    void installEventFilters();
     void connectSignalsMenuBuilder();
     void loadRecentProjectList();
     void closeApplication();
@@ -92,6 +111,13 @@ private:
     void fillRecentProjectsSection();
     QAction *  createRecentProjectAction(QString _name);
     void   openImageProcessingWindow();
+    void ClearImageInterfaceUI();
+
+
+
+    void LoadAxialImage();
+    void LoadSaggitalImage();
+    void LoadCoronalImage();
 
 };
 

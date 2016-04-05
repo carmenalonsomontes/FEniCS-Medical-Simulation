@@ -33,16 +33,18 @@ signals:
      void updateRecentProjectList(const QString text);
      void restoreUI();
      void enableMedicalImagingFrameUI(bool val);
+     void enableTabUI(bool val);
 
      // Image Processing Builder
      void updateImagingDialogUI(const QString text);
+     void enableImageProcessingDialogUI(bool val);
+     void loadImageInterface(const QString text);
 
 
 protected:
     QMainWindow * _registered_window_parent;
     FBS_ProjectData * _registered_project_data;
     UserSessionData * _registered_user_session_data;
-
 
 };
 

@@ -10,8 +10,8 @@ int main( int argc, char** argv )
   FEniCS_Blood_Sim fenicsMainWindow;
   fenicsMainWindow.show();
 
-  //RenderWindowUISingleInheritance renderWindowUISingleInheritance;
-  //renderWindowUISingleInheritance.show();
+ // RenderWindowUISingleInheritance renderWindowUISingleInheritance;
+ // renderWindowUISingleInheritance.show();
 
   return app.exec();
 }

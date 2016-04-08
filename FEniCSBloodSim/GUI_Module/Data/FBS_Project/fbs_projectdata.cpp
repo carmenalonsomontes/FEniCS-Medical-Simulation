@@ -8,6 +8,11 @@ FBS_ProjectData::FBS_ProjectData()
     initializeVariables();
 }
 
+FBS_ProjectData::~FBS_ProjectData()
+{
+    delete _imageData;
+}
+
 void FBS_ProjectData::initializeVariables()
 {
     _projectName = "";
@@ -15,6 +20,8 @@ void FBS_ProjectData::initializeVariables()
     _imPath = "";
     _imName = "";
     _imPrefixSeries = "";
+
+    _imageData = new ImageData();
 }
 
 QString FBS_ProjectData::getProjectPath()
@@ -42,7 +49,14 @@ QString FBS_ProjectData::getImName()
     return _imName;
 }
 
-
+void FBS_ProjectData::setImageData(ImageData * data)
+{
+    _imageData = data;
+}
+ImageData * FBS_ProjectData::getImageData()
+{
+    return _imageData;
+}
 
 void FBS_ProjectData::setProjectPath(QString _path)
 {
@@ -106,3 +120,13 @@ bool FBS_ProjectData::isEmptyImagingData()
             return false;
     return true;
 }
+
+
+void FBS_ProjectData::loadImData()
+{
+    if (_imPath.isEmpty())
+        return;
+    _imageData->loadImageData(_imPath);
+}
+
+

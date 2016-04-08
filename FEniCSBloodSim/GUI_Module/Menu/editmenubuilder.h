@@ -6,6 +6,7 @@ class EditMenuBuilder: public MenuBuilder
 {
 public:
     EditMenuBuilder();
+    void launchMenuAction(int _action);
 };
 
 #endif // EDITMENUBUILDER_H

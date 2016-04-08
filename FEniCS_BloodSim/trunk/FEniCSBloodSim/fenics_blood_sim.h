@@ -9,6 +9,9 @@
 #include "GUI_Module/Session/usersessiondata.h"
 #include "GUI_Module/Menu/Simulation/imageprocessingsimmenu.h"
 
+// Image Processing Libs
+#include "ImageProcessing_Module/imagedata.h"
+
 // VTK libs
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
@@ -86,6 +89,8 @@ private slots:
     void EnableImageProcessingDialog(bool val);
 
     void LoadImageInterfaceUI(const QString imPath);
+
+
 private:
     Ui::FEniCS_Blood_Sim *ui;
     FileMenuBuilder *  _fileMenuBuilder;
@@ -95,10 +100,14 @@ private:
     FBS_ProjectData * _projectData;
     UserSessionData * _userSessionData;
 
+    ImageData * _imageData;
+
     vtkSmartPointer<vtkRenderer> mainImRendererTab;
     vtkSmartPointer<vtkRenderer> coronalImRendererTab;
     vtkSmartPointer<vtkRenderer> axialImRendererTab;
     vtkSmartPointer<vtkRenderer> saggitalImRendererTab;
+
+
 
     // Render images
 
@@ -118,6 +127,7 @@ private:
     void LoadAxialImage();
     void LoadSaggitalImage();
     void LoadCoronalImage();
+    void LoadMainImageTab();
 
 };
 

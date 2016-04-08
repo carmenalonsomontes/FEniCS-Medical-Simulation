@@ -6,6 +6,7 @@ class AboutMenuBuilder: public MenuBuilder
 {
 public:
     AboutMenuBuilder();
+    void launchMenuAction(int _action);
 };
 
 #endif // ABOUTMENUBUILDER_H

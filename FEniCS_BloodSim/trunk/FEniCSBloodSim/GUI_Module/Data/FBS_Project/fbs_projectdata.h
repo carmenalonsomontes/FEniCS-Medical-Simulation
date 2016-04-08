@@ -3,12 +3,14 @@
 
 #include <QString>
 
+#include "ImageProcessing_Module/imagedata.h"
 
 
 class FBS_ProjectData
 {
 public:
     FBS_ProjectData();
+    ~FBS_ProjectData();
 
     QString getProjectPath();
     QString getProjectName();
@@ -16,6 +18,10 @@ public:
     QString getImPath();
     QString getImPrefixSeries();
     QString getImName();
+
+    void setImageData(ImageData * data);
+    ImageData * getImageData();
+    void loadImData();
 
 
     void setProjectPath(QString _path);
@@ -41,6 +47,7 @@ private:
     QString _imPrefixSeries;
     QString _imName;
 
+    ImageData * _imageData;
 
     void initializeVariables();
 

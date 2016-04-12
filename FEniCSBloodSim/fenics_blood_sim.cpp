@@ -15,6 +15,24 @@
 #include <itkImageFileReader.h>
 #include <itkNiftiImageIO.h>
 
+// VTK
+#include "vtkImageActor.h"
+#include "vtkInteractorStyleImage.h"
+#include "vtkImageMapper3D.h"
+
+#include "vtkImageSliceMapper.h"
+#include "vtkFixedPointVolumeRayCastMapper.h"
+#include "vtkColorTransferFunction.h"
+#include "vtkPiecewiseFunction.h"
+#include "vtkVolumeProperty.h"
+#include "vtkVolumeRayCastMapper.h"
+#include "vtkVolumeRayCastCompositeFunction.h"
+
+#include "vtkSmartVolumeMapper.h"
+
+#include "vtkImageReader2Factory.h"
+#include "vtkImageReader2.h"
+
 using namespace std;
 using namespace itk;
 
@@ -434,50 +452,84 @@ void FEniCS_Blood_Sim::RestoreUI()
       ui->sagittalViewWidget->setEnabled(false);
   }
 
-#include "vtkImageActor.h"
-#include "vtkInteractorStyleImage.h"
- #include "vtkImageMapper3D.h"
 
-#include "vtkMetaImageReader.h"
-#include "vtkImageSliceMapper.h"
-
+#include "vtkNIFTIImageReader.h"
  void FEniCS_Blood_Sim::LoadMainImageTab()
  {
+     // Create our volume and mapper
+     vtkVolume *volume = vtkVolume::New();
+     vtkSmartVolumeMapper *mapper = vtkSmartVolumeMapper::New();
+     // Create the property and attach the transfer functions
+     vtkVolumeProperty *property = vtkVolumeProperty::New();
+
      if (!ui->mainImageWidget->isEnabled())
          ui->mainImageWidget->setEnabled(true);
 
-    mainImRendererTab->SetBackground(0,0,0);
+    mainImRendererTab->SetBackground(128,128,128);
+    mainImRendererTab->Clear();
+    mainImRendererTab->RemoveAllViewProps();
+
+    bool _isNIIFile = false;
+    QString _fileSuffix = QFileInfo(_projectData->getImPath()).completeSuffix();
+    if (_fileSuffix.contains("nii"))
+        _isNIIFile = true;
+
+    // Read file
+    if (!_isNIIFile)
+    {
+        vtkSmartPointer<vtkImageReader2Factory> readerFactory = vtkSmartPointer<vtkImageReader2Factory>::New();
+        vtkImageReader2 * reader = readerFactory->CreateImageReader2(_projectData->getImPath().toStdString().c_str());
+        reader->SetFileName(_projectData->getImPath().toStdString().c_str());
+        reader->Update();
+        mapper->SetInputConnection( reader->GetOutputPort() );
+    }else
+    {
+        vtkSmartPointer<vtkNIFTIImageReader> _niftiReader = vtkSmartPointer<vtkNIFTIImageReader>::New();
+        _niftiReader->SetFileName(_projectData->getImPath().toStdString().c_str());
+        _niftiReader->Update();
+
+        mapper->SetInputConnection( _niftiReader->GetOutputPort() );
+    }
 
 
+    property->SetInterpolationTypeToLinear();
+    // connect up the volume to the property and the mapper
+    volume->SetProperty( property );
+    volume->SetMapper( mapper );
 
+    mapper->SetBlendModeToMaximumIntensity();
+    // Add the volume to the scene
 
-    // read input image
-    vtkSmartPointer<vtkMetaImageReader> reader = vtkSmartPointer<vtkMetaImageReader>::New();
-    reader->SetFileName(_projectData->getImPath().toStdString().c_str());
-    reader->Update();
-
-    // Visualize
-    vtkSmartPointer<vtkImageSliceMapper> imageSliceMapper = vtkSmartPointer<vtkImageSliceMapper>::New();
-    imageSliceMapper->SetInputData(reader->GetOutput());
-
-    vtkSmartPointer<vtkImageSlice> imageSlice = vtkSmartPointer<vtkImageSlice>::New();
-    imageSlice->SetMapper(imageSliceMapper);
-
-    // Setup renderers
-    mainImRendererTab->AddViewProp(imageSlice);
+    mainImRendererTab->AddVolume( volume );
     mainImRendererTab->ResetCamera();
     ui->mainImageWidget->GetRenderWindow()->AddRenderer(mainImRendererTab);
-
-
  }
 
 
  void FEniCS_Blood_Sim::LoadAxialImage()
  {
     // TODO
+/*    if (!ui->axialViewWidget->isEnabled())
+        ui->axialViewWidget->setEnabled(true); */
+      axialImRendererTab->SetBackground(0,0,0);
 
-     axialImRendererTab->SetBackground(0,0,0);
+     // read input image
+   /*  vtkSmartPointer<vtkMetaImageReader> reader = vtkSmartPointer<vtkMetaImageReader>::New();
+     reader->SetFileName(_projectData->getImPath().toStdString().c_str());
+     reader->Update();
+
+     // Visualize
+     vtkSmartPointer<vtkImageSliceMapper> imageSliceMapper = vtkSmartPointer<vtkImageSliceMapper>::New();
+     imageSliceMapper->SetInputData(reader->GetOutput());
+
+     vtkSmartPointer<vtkImageSlice> imageSlice = vtkSmartPointer<vtkImageSlice>::New();
+     imageSlice->SetMapper(imageSliceMapper);
+
+     // Setup renderers
+     axialImRendererTab->AddViewProp(imageSlice);
+     axialImRendererTab->ResetCamera(); */
      ui->axialViewWidget->GetRenderWindow()->AddRenderer(axialImRendererTab);
+
  }
  void FEniCS_Blood_Sim::LoadSaggitalImage()
  {

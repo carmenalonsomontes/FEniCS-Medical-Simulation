@@ -69,6 +69,7 @@ void FileMenuBuilder::launchMenuAction(int _action,QString _pathfile)
     // Updating UI
     updateUI(_action);
     enableUIElements(_action);
+    updateConsole(_action);
 
 }
 
@@ -176,8 +177,8 @@ void FileMenuBuilder::updateConsole(int _menu)
         emit updateConsoleUI("\n Project SAVED AS" + _registered_project_data->getProjectPath());
     if (_menu == SAVE_PROJECT)
         emit updateConsoleUI("\n Project SAVED");
-    if (_menu == CLOSE_PROJECT)
-        emit updateConsoleUI("\n Project CLOSED");
+  /*  if (_menu == CLOSE_PROJECT)
+        emit updateConsoleUI("\n Project CLOSED"); */
 }
 
 void FileMenuBuilder::enableUIElements(int _menu)

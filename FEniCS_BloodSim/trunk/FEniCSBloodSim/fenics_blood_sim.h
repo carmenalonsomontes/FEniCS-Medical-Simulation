@@ -152,6 +152,7 @@ private:
     void clearFenicsTab();
     void clearSimulationTab();
     void clearVisualizationTab();
+    void ClearConsoles();
 
 
     void initializeImageTab();

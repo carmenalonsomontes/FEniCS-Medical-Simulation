@@ -399,14 +399,16 @@ void FEniCS_Blood_Sim::UpdateConsole(const QString text)
    switch (_tabIndex)
    {
        case IMAGE_TAB_INDEX:
+        ui->imageConsoleTextEdit->append(text);
            break;
        case MESH_TAB_INDEX:
+       ui->meshConsole->append(text);
            break;
        case FENICS_TAB_INDEX:
+       ui->fenicsConsole->append(text);
            break;
        case SIMULATION_TAB_INDEX:
-           break;
-       case VISUALIZATION_TAB_INDEX:
+       ui->simulationConsole->append(text);
            break;
    };
 }
@@ -452,12 +454,24 @@ void FEniCS_Blood_Sim::RestoreUI()
     ui->imNamelineEdit->clear();
     ui->datasetPathlineEdit->clear();
 
+    // Set active tab in imaging
+    ui->mainTabWidget->setCurrentIndex(IMAGE_TAB_INDEX);
+
     EnableMedicalImagingFrame(false);
     EnableImageProcessingDialog(false);
     EnableTab(false);
+
     ClearImageInterfaceUI();
+    ClearConsoles();
 }
 
+void FEniCS_Blood_Sim::ClearConsoles()
+{
+    ui->imageConsoleTextEdit->clear();
+    ui->meshConsole->clear();
+    ui->fenicsConsole->clear();
+    ui->simulationConsole->clear();
+}
 
 
 

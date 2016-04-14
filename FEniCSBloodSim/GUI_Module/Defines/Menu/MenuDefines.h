@@ -6,7 +6,13 @@
 const QString PREFERENCES_FILE_NAME="fbs_preferences.fbs";
 
 
-
+enum TabIndex{
+    IMAGE_TAB_INDEX = 0,
+    MESH_TAB_INDEX = 1,
+    FENICS_TAB_INDEX = 2,
+    SIMULATION_TAB_INDEX = 3,
+    VISUALIZATION_TAB_INDEX = 4
+};
 
 
 enum Success_Failure_func{

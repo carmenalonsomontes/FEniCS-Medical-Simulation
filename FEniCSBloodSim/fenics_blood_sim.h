@@ -59,6 +59,8 @@ private slots:
 
     void EnableTab(bool val);
 
+    void UpdateConsole(const QString text);
+
     // RECENT PROJECTS
     void on_actionClear_list_triggered();
 
@@ -91,6 +93,13 @@ private slots:
     void LoadImageInterfaceUI(const QString imPath);
 
 
+
+    // ---------------------------------------------------------
+    // MESH TAB
+    void on_meshButton_clicked();
+
+    void on_meshDoneButton_clicked();
+
 private:
     Ui::FEniCS_Blood_Sim *ui;
     FileMenuBuilder *  _fileMenuBuilder;
@@ -106,6 +115,14 @@ private:
     vtkSmartPointer<vtkRenderer> coronalImRendererTab;
     vtkSmartPointer<vtkRenderer> axialImRendererTab;
     vtkSmartPointer<vtkRenderer> saggitalImRendererTab;
+
+
+    vtkSmartPointer<vtkRenderer> cloudImRenderer;
+    vtkSmartPointer<vtkRenderer> meshImRenderer;
+
+    vtkSmartPointer<vtkRenderer> visualizationRenderer;
+
+
 
 
 
@@ -128,6 +145,22 @@ private:
     void LoadSaggitalImage();
     void LoadCoronalImage();
     void LoadMainImageTab();
+
+
+    void clearImageTab();
+    void clearMeshTab();
+    void clearFenicsTab();
+    void clearSimulationTab();
+    void clearVisualizationTab();
+
+
+    void initializeImageTab();
+    void initializeMeshTab();
+    void initializeFenicsTab();
+    void initializeSimulationTab();
+    void initializeVisualizationTab();
+
+
 
 };
 

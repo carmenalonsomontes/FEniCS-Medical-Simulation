@@ -34,6 +34,7 @@ signals:
      void restoreUI();
      void enableMedicalImagingFrameUI(bool val);
      void enableTabUI(bool val);
+     void updateConsoleUI(const QString text);
 
      // Image Processing Builder
      void updateImagingDialogUI(const QString text);

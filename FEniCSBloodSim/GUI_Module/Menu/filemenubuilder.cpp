@@ -44,6 +44,7 @@ void FileMenuBuilder::launchMenuAction(int _action)
     // Updating UI
     updateUI(_action);
     enableUIElements(_action);
+    updateConsole(_action);
 
 }
 
@@ -163,6 +164,20 @@ void FileMenuBuilder::updateUI(int _menu)
         emit loadImageInterface(_registered_project_data->getImPath());
     }
 
+}
+
+void FileMenuBuilder::updateConsole(int _menu)
+{
+    if (_menu == NEW_PROJECT)
+        emit updateConsoleUI("\n NEW project created:" + _registered_project_data->getProjectPath());
+    if (_menu == OPEN_PROJECT)
+        emit updateConsoleUI("\n  Project OPENED:" + _registered_project_data->getProjectPath());
+    if (_menu == SAVEAS_PROJECT)
+        emit updateConsoleUI("\n Project SAVED AS" + _registered_project_data->getProjectPath());
+    if (_menu == SAVE_PROJECT)
+        emit updateConsoleUI("\n Project SAVED");
+    if (_menu == CLOSE_PROJECT)
+        emit updateConsoleUI("\n Project CLOSED");
 }
 
 void FileMenuBuilder::enableUIElements(int _menu)

@@ -19,6 +19,7 @@ private:
     // UI connection functions
     void updateUI(int _menu);
     void enableUIElements(int _menu);
+    void updateConsole(int _menu);
 
 };
 

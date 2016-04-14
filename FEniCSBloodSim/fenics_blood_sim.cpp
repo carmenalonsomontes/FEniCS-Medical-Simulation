@@ -32,6 +32,7 @@
 
 #include "vtkImageReader2Factory.h"
 #include "vtkImageReader2.h"
+#include "vtkNIFTIImageReader.h"
 
 using namespace std;
 using namespace itk;
@@ -56,12 +57,15 @@ FEniCS_Blood_Sim::FEniCS_Blood_Sim(QWidget *parent) :
     _imProcMenuBuilder->registerWindow(this);
     _imProcMenuBuilder->registerProjectData(_projectData);
 
+    // ----------------------------------------------------
     // VTK initializations
-    mainImRendererTab =  vtkSmartPointer<vtkRenderer>::New();
-    coronalImRendererTab =  vtkSmartPointer<vtkRenderer>::New();
-    axialImRendererTab =  vtkSmartPointer<vtkRenderer>::New();
-    saggitalImRendererTab =  vtkSmartPointer<vtkRenderer>::New();
+    //
 
+    initializeImageTab();
+    initializeMeshTab();
+    initializeFenicsTab();
+    initializeSimulationTab();
+    initializeVisualizationTab();
     connectSignalsMenuBuilder();
     loadRecentProjectList();
     installEventFilters();
@@ -105,6 +109,7 @@ void FEniCS_Blood_Sim::connectSignalsMenuBuilder()
      connect(_fileMenuBuilder, SIGNAL(enableImageProcessingDialogUI(bool)), this, SLOT(EnableImageProcessingDialog(bool)));
      connect(_fileMenuBuilder, SIGNAL(loadImageInterface(const QString)), this, SLOT(LoadImageInterfaceUI(const QString)));
      connect(_fileMenuBuilder, SIGNAL(enableTabUI(bool)), this, SLOT(EnableTab(bool)));
+     connect(_fileMenuBuilder, SIGNAL(updateConsoleUI(const QString)), this, SLOT(UpdateConsole(const QString)));
 
 
      // Medical Imaging Signals
@@ -128,6 +133,37 @@ void FEniCS_Blood_Sim::loadRecentProjectList()
 
 }
 
+void FEniCS_Blood_Sim::initializeImageTab()
+{
+    mainImRendererTab =  vtkSmartPointer<vtkRenderer>::New();
+    coronalImRendererTab =  vtkSmartPointer<vtkRenderer>::New();
+    axialImRendererTab =  vtkSmartPointer<vtkRenderer>::New();
+    saggitalImRendererTab =  vtkSmartPointer<vtkRenderer>::New();
+}
+
+void FEniCS_Blood_Sim::initializeMeshTab()
+{
+    cloudImRenderer = vtkSmartPointer<vtkRenderer>::New();
+    meshImRenderer = vtkSmartPointer<vtkRenderer>::New();
+}
+
+
+void FEniCS_Blood_Sim::initializeFenicsTab()
+{
+    // TODO
+}
+
+void FEniCS_Blood_Sim::initializeSimulationTab()
+{
+    // TODO
+}
+
+void FEniCS_Blood_Sim::initializeVisualizationTab()
+{
+    visualizationRenderer = vtkSmartPointer<vtkRenderer>::New();
+    ui->visualizationWidget->setEnabled(false);
+}
+
 // -------------------------------------------------
 // FILE MENU
 
@@ -135,7 +171,6 @@ void FEniCS_Blood_Sim::loadRecentProjectList()
 void FEniCS_Blood_Sim::on_actionNew_Project_triggered()
 {
     _fileMenuBuilder->launchMenuAction(NEW_PROJECT);
-
 
 }
 
@@ -285,6 +320,7 @@ void FEniCS_Blood_Sim::openImageProcessingWindow()
     // the other fields: ImPrefix
     _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING,_projectData->getImPath());
 
+    // TO REVIEW
     ImageReader _imReader;
     _imReader.readImage(_imageData,_projectData->getImPath());
 }
@@ -356,7 +392,24 @@ void FEniCS_Blood_Sim::UpdateStatusBar(const QString text)
 {
     statusBar()->showMessage(text);
 }
+void FEniCS_Blood_Sim::UpdateConsole(const QString text)
+{
+   int _tabIndex =  ui->mainTabWidget->currentIndex();
 
+   switch (_tabIndex)
+   {
+       case IMAGE_TAB_INDEX:
+           break;
+       case MESH_TAB_INDEX:
+           break;
+       case FENICS_TAB_INDEX:
+           break;
+       case SIMULATION_TAB_INDEX:
+           break;
+       case VISUALIZATION_TAB_INDEX:
+           break;
+   };
+}
 
 void FEniCS_Blood_Sim::EnableCloseProjectUI(bool val)
 {
@@ -439,115 +492,172 @@ void FEniCS_Blood_Sim::RestoreUI()
 
  void FEniCS_Blood_Sim::ClearImageInterfaceUI()
  {
+    clearImageTab();
+    clearMeshTab();
+    clearFenicsTab();
+    clearFenicsTab();
+    clearSimulationTab();
+    clearVisualizationTab();
+ }
+
+
+
+ void FEniCS_Blood_Sim::clearImageTab()
+ {
+
+     // Set Black Images
      if (this->ui->mainImageWidget->GetRenderWindow()->HasRenderer(mainImRendererTab))
      {
-         mainImRendererTab->Clear();
-         this->ui->mainImageWidget->GetRenderWindow()->RemoveRenderer(mainImRendererTab);
-         this->ui->mainImageWidget->GetRenderWindow()->ClearInRenderStatus();
-     }else
-         ui->mainImageWidget->setEnabled(false);
-
-      ui->axialViewWidget->setEnabled(false);
-      ui->coronalViewWidget->setEnabled(false);
-      ui->sagittalViewWidget->setEnabled(false);
-  }
+         mainImRendererTab->SetBackground(0,0,0);
+         mainImRendererTab->RemoveAllViewProps();
+         mainImRendererTab->ResetCamera();
+     }
 
 
-#include "vtkNIFTIImageReader.h"
+     if (ui->axialViewWidget->GetRenderWindow()->HasRenderer(axialImRendererTab))
+     {
+        axialImRendererTab->SetBackground(0,0,0);
+        axialImRendererTab->RemoveAllViewProps();
+        axialImRendererTab->ResetCamera();
+     }
+
+     if (ui->coronalViewWidget->GetRenderWindow()->HasRenderer(coronalImRendererTab))
+     {
+        coronalImRendererTab->SetBackground(0,0,0);
+        coronalImRendererTab->RemoveAllViewProps();
+        coronalImRendererTab->ResetCamera();
+     }
+
+     if (ui->sagittalViewWidget->GetRenderWindow()->HasRenderer(saggitalImRendererTab))
+     {
+        saggitalImRendererTab->SetBackground(0,0,0);
+        saggitalImRendererTab->RemoveAllViewProps();
+        saggitalImRendererTab->ResetCamera();
+     }
+
+
+     // Disabling the areas
+     ui->mainImageWidget->setEnabled(false);
+     ui->axialViewWidget->setEnabled(false);
+     ui->coronalViewWidget->setEnabled(false);
+     ui->sagittalViewWidget->setEnabled(false);
+ }
+
+ void FEniCS_Blood_Sim::clearMeshTab()
+ {
+
+     ui->cloudPointWidget->setEnabled(false);
+     ui->meshWidget->setEnabled(false);
+     // Setting up the renderer
+     cloudImRenderer->SetBackground(0,0,0);
+     cloudImRenderer->RemoveAllViewProps();
+     cloudImRenderer->ResetCamera();
+     ui->cloudPointWidget->GetRenderWindow()->AddRenderer(cloudImRenderer);
+
+     meshImRenderer->SetBackground(0,0,0);
+     meshImRenderer->RemoveAllViewProps();
+     meshImRenderer->ResetCamera();
+     ui->meshWidget->GetRenderWindow()->AddRenderer(meshImRenderer);
+
+ }
+
+ void FEniCS_Blood_Sim::clearFenicsTab()
+ {
+
+ }
+
+ void FEniCS_Blood_Sim::clearSimulationTab()
+ {
+
+ }
+
+ void FEniCS_Blood_Sim::clearVisualizationTab()
+ {
+    ui->visualizationWidget->setEnabled(false);
+
+    visualizationRenderer->SetBackground(0,0,0);
+    visualizationRenderer->RemoveAllViewProps();
+    visualizationRenderer->ResetCamera();
+    ui->visualizationWidget->GetRenderWindow()->AddRenderer(visualizationRenderer);
+
+ }
+
+
+
  void FEniCS_Blood_Sim::LoadMainImageTab()
  {
-     // Create our volume and mapper
-     vtkVolume *volume = vtkVolume::New();
-     vtkSmartVolumeMapper *mapper = vtkSmartVolumeMapper::New();
-     // Create the property and attach the transfer functions
-     vtkVolumeProperty *property = vtkVolumeProperty::New();
-
      if (!ui->mainImageWidget->isEnabled())
          ui->mainImageWidget->setEnabled(true);
 
     mainImRendererTab->SetBackground(128,128,128);
-    mainImRendererTab->Clear();
     mainImRendererTab->RemoveAllViewProps();
-
-    bool _isNIIFile = false;
-    QString _fileSuffix = QFileInfo(_projectData->getImPath()).completeSuffix();
-    if (_fileSuffix.contains("nii"))
-        _isNIIFile = true;
-
-    // Read file
-    if (!_isNIIFile)
-    {
-        vtkSmartPointer<vtkImageReader2Factory> readerFactory = vtkSmartPointer<vtkImageReader2Factory>::New();
-        vtkImageReader2 * reader = readerFactory->CreateImageReader2(_projectData->getImPath().toStdString().c_str());
-        reader->SetFileName(_projectData->getImPath().toStdString().c_str());
-        reader->Update();
-        mapper->SetInputConnection( reader->GetOutputPort() );
-    }else
-    {
-        vtkSmartPointer<vtkNIFTIImageReader> _niftiReader = vtkSmartPointer<vtkNIFTIImageReader>::New();
-        _niftiReader->SetFileName(_projectData->getImPath().toStdString().c_str());
-        _niftiReader->Update();
-
-        mapper->SetInputConnection( _niftiReader->GetOutputPort() );
-    }
-
-
-    property->SetInterpolationTypeToLinear();
-    // connect up the volume to the property and the mapper
-    volume->SetProperty( property );
-    volume->SetMapper( mapper );
-
-    mapper->SetBlendModeToMaximumIntensity();
-    // Add the volume to the scene
-
-    mainImRendererTab->AddVolume( volume );
     mainImRendererTab->ResetCamera();
-    ui->mainImageWidget->GetRenderWindow()->AddRenderer(mainImRendererTab);
+    // Adding the volume
+    mainImRendererTab->AddVolume(  _projectData->getImageData()->getVolumeData() );
+    mainImRendererTab->ResetCamera();
+
+
+        ui->mainImageWidget->GetRenderWindow()->AddRenderer(mainImRendererTab);
  }
 
 
  void FEniCS_Blood_Sim::LoadAxialImage()
  {
-    // TODO
-/*    if (!ui->axialViewWidget->isEnabled())
-        ui->axialViewWidget->setEnabled(true); */
+     vtkSmartPointer<vtkImageSliceMapper> imageSliceMapper = vtkSmartPointer<vtkImageSliceMapper>::New();
+
+    if (!ui->axialViewWidget->isEnabled())
+        ui->axialViewWidget->setEnabled(true);
       axialImRendererTab->SetBackground(0,0,0);
 
-     // read input image
-   /*  vtkSmartPointer<vtkMetaImageReader> reader = vtkSmartPointer<vtkMetaImageReader>::New();
-     reader->SetFileName(_projectData->getImPath().toStdString().c_str());
-     reader->Update();
+      axialImRendererTab->Clear();
+      axialImRendererTab->RemoveAllViewProps();
+      axialImRendererTab->ResetCamera();
 
      // Visualize
-     vtkSmartPointer<vtkImageSliceMapper> imageSliceMapper = vtkSmartPointer<vtkImageSliceMapper>::New();
-     imageSliceMapper->SetInputData(reader->GetOutput());
+     imageSliceMapper->SetInputData(_projectData->getImageData()->getImageData());
 
      vtkSmartPointer<vtkImageSlice> imageSlice = vtkSmartPointer<vtkImageSlice>::New();
      imageSlice->SetMapper(imageSliceMapper);
 
      // Setup renderers
      axialImRendererTab->AddViewProp(imageSlice);
-     axialImRendererTab->ResetCamera(); */
-     ui->axialViewWidget->GetRenderWindow()->AddRenderer(axialImRendererTab);
+     axialImRendererTab->ResetCamera();
+
+        ui->axialViewWidget->GetRenderWindow()->AddRenderer(axialImRendererTab);
 
  }
+
+
  void FEniCS_Blood_Sim::LoadSaggitalImage()
  {
-     // TODO
+     if (!ui->sagittalViewWidget->isEnabled())
+         ui->sagittalViewWidget->setEnabled(true);
     saggitalImRendererTab->SetBackground(0,0,0);
-    ui->sagittalViewWidget->GetRenderWindow()->AddRenderer(saggitalImRendererTab);
+    saggitalImRendererTab->Clear();
+    saggitalImRendererTab->RemoveAllViewProps();
+    saggitalImRendererTab->ResetCamera();
+    // TODO
+        ui->sagittalViewWidget->GetRenderWindow()->AddRenderer(saggitalImRendererTab);
 
  }
  void FEniCS_Blood_Sim::LoadCoronalImage()
  {
-     // TODO
+     if (!ui->coronalViewWidget->isEnabled())
+         ui->coronalViewWidget->setEnabled(true);
+
      coronalImRendererTab->SetBackground(0,0,0);
+     coronalImRendererTab->Clear();
+     coronalImRendererTab->RemoveAllViewProps();
+     coronalImRendererTab->ResetCamera();
+    // TODO
+
      ui->coronalViewWidget->GetRenderWindow()->AddRenderer(coronalImRendererTab);
 
  }
  void FEniCS_Blood_Sim::LoadImageInterfaceUI(const QString imPath)
  {
-    if (imPath.isEmpty()) return;
+    if (imPath.isEmpty())
+        return;
      // Loading image
     _projectData->setImPath(imPath);
     _projectData->loadImData();
@@ -561,3 +671,16 @@ void FEniCS_Blood_Sim::RestoreUI()
  }
 
 
+
+// ------------------------------------------------------------------------------------------------------
+//          MESH TAB
+
+void FEniCS_Blood_Sim::on_meshButton_clicked()
+{
+
+}
+
+void FEniCS_Blood_Sim::on_meshDoneButton_clicked()
+{
+
+}

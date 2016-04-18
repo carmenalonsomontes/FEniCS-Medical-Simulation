@@ -10,18 +10,17 @@ void ImageProcessingSimMenu::launchMenuAction(int _action)
 {
     switch (_action) {
     case IMAGE_PROCESSING:
-        openImagingDialog();
-        updateImagingDialog();
+        openImagingDialog();        
         break;
     case MESH_TOOL:
         // TODO
         break;
-    case FENICS_TOOL:
+ /*   case FENICS_TOOL:
         // TODO
         break;
     case VISUALIZATION_TOOL:
         // TODO
-        break;
+        break;*/
 
     default:
         break;
@@ -35,19 +34,17 @@ void ImageProcessingSimMenu::launchMenuAction(int _action,QString _pathfile)
     case IMAGE_PROCESSING:
         _imgPath = _pathfile;
         openImagingDialog();
-        updateImagingDialog();
-
         break;
     case MESH_TOOL:
         // TODO
         break;
-    case FENICS_TOOL:
+ /*   case FENICS_TOOL:
         // TODO
         break;
     case VISUALIZATION_TOOL:
         // TODO
         break;
-
+*/
     default:
         break;
     }
@@ -64,11 +61,24 @@ void ImageProcessingSimMenu::openImagingDialog()
 
     // Updating the values in the main window
      _imgPath = _setImagingParameterDialog.getImagePath();
+     if ((!_imgPath.isEmpty()) || (!_imgPath.isNull()))
+     {
+          updateImagingDialog();
+          loadImage();
+     }
+
 
 }
 
 void ImageProcessingSimMenu::updateImagingDialog()
 {
-     emit updateImagingDialogUI(_imgPath);
+    emit updateImagingDialogUI(_imgPath);
+    emit updateImagingConsole("--// Opened the image file: " + _imgPath);  
+    emit enableSaveProjectUI(true);
+
 }
 
+void ImageProcessingSimMenu::loadImage()
+{
+    emit loadImageInterface(_imgPath);
+}

@@ -15,6 +15,7 @@ private:
 
     void updateImagingDialog();
     void openImagingDialog();
+    void loadImage();
 
 };
 

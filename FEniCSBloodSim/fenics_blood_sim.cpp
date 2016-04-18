@@ -46,7 +46,7 @@ FEniCS_Blood_Sim::FEniCS_Blood_Sim(QWidget *parent) :
     _projectData = new FBS_ProjectData();
     _userSessionData = new UserSessionData();
     _imProcMenuBuilder = new ImageProcessingSimMenu();
-    _imageData = new ImageData();
+
 
     // FileMenu
     _fileMenuBuilder = new FileMenuBuilder();
@@ -69,7 +69,6 @@ FEniCS_Blood_Sim::FEniCS_Blood_Sim(QWidget *parent) :
     connectSignalsMenuBuilder();
     loadRecentProjectList();
     installEventFilters();
-
   }
 
 
@@ -85,7 +84,7 @@ FEniCS_Blood_Sim::~FEniCS_Blood_Sim()
     // Data
     delete _projectData;
     delete _userSessionData;
-    delete _imageData;
+
 
 }
 
@@ -98,6 +97,8 @@ void FEniCS_Blood_Sim::installEventFilters()
 
 void FEniCS_Blood_Sim::connectSignalsMenuBuilder()
 {
+     connect(qApp,SIGNAL(aboutToQuit()),this,SLOT(exitApplicationUI()));
+    // File Menu Builder signals & Slots
      connect(_fileMenuBuilder, SIGNAL(updateStatusBarUI(const QString)), this, SLOT(UpdateStatusBar(const QString)));
      connect(_fileMenuBuilder, SIGNAL(enableCloseProjectUI(bool)), this, SLOT(EnableCloseProjectUI(bool)));
      connect(_fileMenuBuilder, SIGNAL(enableSaveProjectUI(bool)), this, SLOT(EnableSaveProjectUI(bool)));
@@ -114,7 +115,9 @@ void FEniCS_Blood_Sim::connectSignalsMenuBuilder()
 
      // Medical Imaging Signals
      connect(_imProcMenuBuilder, SIGNAL(updateImagingDialogUI(const QString)), this, SLOT(UpdateImagingDialog(const QString)));
-
+     connect(_imProcMenuBuilder, SIGNAL(updateImagingConsole(const QString)), this, SLOT(UpdateImageConsole(const QString)));
+     connect(_imProcMenuBuilder, SIGNAL(enableSaveProjectUI(bool)), this, SLOT(EnableSaveProjectUI(bool)));
+     connect(_imProcMenuBuilder, SIGNAL(loadImageInterface(const QString)), this, SLOT(LoadImageInterfaceUI(const QString)));
 
 }
 
@@ -209,6 +212,11 @@ void FEniCS_Blood_Sim::on_actionExit_MainWindow_triggered()
 {
   closeApplication();
 
+}
+
+void  FEniCS_Blood_Sim::exitApplicationUI()
+{
+    closeApplication();
 }
 
 void FEniCS_Blood_Sim::on_actionClear_list_triggered()
@@ -314,15 +322,15 @@ void FEniCS_Blood_Sim::on_setPrefixSeriesButton_clicked()
 void FEniCS_Blood_Sim::openImageProcessingWindow()
 {
     if (_projectData->isEmptyImagingData())
-    _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING);
+        _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING);
+    else
+        // At the moment, we only allow for a single image. Otherwise, we need to fulfill
+        // the other fields: ImPrefix
+        _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING,_projectData->getImPath());
 
-    // At the moment, we only allow for a single image. Otherwise, we need to fulfill
-    // the other fields: ImPrefix
-    _imProcMenuBuilder->launchMenuAction(IMAGE_PROCESSING,_projectData->getImPath());
+    _projectData->getImageData()->loadImageData(_projectData->getImPath());
 
-    // TO REVIEW
-    ImageReader _imReader;
-    _imReader.readImage(_imageData,_projectData->getImPath());
+
 }
 
 void FEniCS_Blood_Sim::UpdateImagingDialog(const QString text)
@@ -338,9 +346,18 @@ void FEniCS_Blood_Sim::UpdateImagingDialog(const QString text)
     // Update UI
 
     ui->imNamelineEdit->setText(_fileName);
-    ui->datasetPathlineEdit->setText(_filePath);
+    ui->datasetPathlineEdit->setText(_filePath);    
+
 
 }
+
+void FEniCS_Blood_Sim::UpdateImageConsole(const QString text)
+{
+    ui->mainTabWidget->setCurrentIndex(IMAGE_TAB_INDEX);
+    ui->imageConsoleTextEdit->append(text);
+
+}
+
 
 // -------------------------------------------------------------
 // IMAGING LOGIC

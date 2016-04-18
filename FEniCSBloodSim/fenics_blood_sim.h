@@ -49,7 +49,7 @@ private slots:
 
     void on_actionExit_MainWindow_triggered();
 
-
+    void exitApplicationUI();
     void UpdateStatusBar(const QString text);
 
     void EnableCloseProjectUI(bool val);
@@ -88,6 +88,9 @@ private slots:
 
     void UpdateImagingDialog(const QString text);
 
+    void UpdateImageConsole(const QString text);
+
+
     void EnableImageProcessingDialog(bool val);
 
     void LoadImageInterfaceUI(const QString imPath);
@@ -109,7 +112,7 @@ private:
     FBS_ProjectData * _projectData;
     UserSessionData * _userSessionData;
 
-    ImageData * _imageData;
+
 
     vtkSmartPointer<vtkRenderer> mainImRendererTab;
     vtkSmartPointer<vtkRenderer> coronalImRendererTab;

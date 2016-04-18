@@ -35,4 +35,7 @@
         <file>GUI_Module/images/menu/setting_tools.png</file>
         <file>GUI_Module/images/menu/error.png</file>
     </qresource>
+    <qresource prefix="/logo">
+        <file>GUI_Module/images/logo/Fenics_logo.png</file>
+    </qresource>
 </RCC>

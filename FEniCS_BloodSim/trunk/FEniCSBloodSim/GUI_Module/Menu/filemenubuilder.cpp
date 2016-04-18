@@ -1,6 +1,7 @@
 #include "filemenubuilder.h"
 #include <QFileDialog>
 #include <QCoreApplication>
+
 FileMenuBuilder::FileMenuBuilder()
 {
 }
@@ -85,10 +86,15 @@ int FileMenuBuilder::createNewProject()
     if ((projectPath.isEmpty()) || (projectPath.isNull()))   return FAILURE;
 
     // Save Project data in memory
+    if (QString::compare(FBS_FILE_PROJECT_EXT,QFileInfo(projectPath).completeSuffix()) != StrEqual)
+        projectPath = projectPath + "." + FBS_FILE_PROJECT_EXT;
+
     _registered_project_data->saveProjectPathName(projectPath);
+
 
     // SAVE BASIC XML PROJECT INFO
     _registered_project_data->saveProjectInfoToFile();
+
     emit updateRecentProjectList(projectPath);
 
     return SUCCESS;
@@ -149,6 +155,8 @@ void FileMenuBuilder::updateUI(int _menu)
             || (_menu == SAVEAS_PROJECT))
         emit updateStatusBarUI(_registered_project_data->getProjectName());
 
+
+
     if ((_menu == NEW_PROJECT) || (_menu == OPEN_PROJECT) )
     {
         emit enableMedicalImagingFrameUI(true);
@@ -170,27 +178,27 @@ void FileMenuBuilder::updateUI(int _menu)
 void FileMenuBuilder::updateConsole(int _menu)
 {
     if (_menu == NEW_PROJECT)
-        emit updateConsoleUI("\n NEW project created:" + _registered_project_data->getProjectPath());
+        emit updateConsoleUI("-- NEW project created: " + _registered_project_data->getProjectName());
     if (_menu == OPEN_PROJECT)
-        emit updateConsoleUI("\n  Project OPENED:" + _registered_project_data->getProjectPath());
+        emit updateConsoleUI("-- Project OPENED: " + _registered_project_data->getProjectName());
     if (_menu == SAVEAS_PROJECT)
-        emit updateConsoleUI("\n Project SAVED AS" + _registered_project_data->getProjectPath());
+        emit updateConsoleUI("-- Project SAVED AS: " + _registered_project_data->getProjectName());
     if (_menu == SAVE_PROJECT)
-        emit updateConsoleUI("\n Project SAVED");
-  /*  if (_menu == CLOSE_PROJECT)
-        emit updateConsoleUI("\n Project CLOSED"); */
+        emit updateConsoleUI("-- Project SAVED ");
+
 }
 
 void FileMenuBuilder::enableUIElements(int _menu)
 {
     bool _valClose = false;
     bool _valSave = false;
-    if ((_menu == NEW_PROJECT) || (_menu == OPEN_PROJECT))
+    if (_menu == NEW_PROJECT)
     {
-        _valClose = true;
         _valSave = true;
+        _valClose = true;
+
     }
-    if ((_menu == SAVE_PROJECT) || (_menu == SAVEAS_PROJECT))
+    if ((_menu == SAVE_PROJECT) || (_menu == SAVEAS_PROJECT) || (_menu == OPEN_PROJECT))
         _valClose = true;
 
     emit enableCloseProjectUI(_valClose);

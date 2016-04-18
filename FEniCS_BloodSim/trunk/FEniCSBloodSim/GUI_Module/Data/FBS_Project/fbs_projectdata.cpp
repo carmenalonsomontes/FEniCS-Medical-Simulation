@@ -99,7 +99,7 @@ void FBS_ProjectData::saveProjectInfoToFile()
 void FBS_ProjectData::readProjectInfoFromFile(QString _projectFilePath)
 {
     XMLProjectData _xmlReader;
-    _xmlReader.readProjectDataFile(this,_projectFilePath);
+    _xmlReader.readProjectDataFile(this,_projectFilePath);    
 }
 
 

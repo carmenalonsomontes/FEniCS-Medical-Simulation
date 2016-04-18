@@ -40,6 +40,7 @@ signals:
      void updateImagingDialogUI(const QString text);
      void enableImageProcessingDialogUI(bool val);
      void loadImageInterface(const QString text);
+     void updateImagingConsole(const QString text);
 
 
 protected:

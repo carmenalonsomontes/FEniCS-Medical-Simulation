@@ -16,8 +16,10 @@ public:
 private:
 
     bool createNewFile(QFile * _file,UserSessionData * _userSessionData);
+    void writeToolPaths(QXmlStreamWriter * xmlWriter, UserSessionData * _userSessionData);
     void writeRecentProjectList(QXmlStreamWriter * xmlWriter, UserSessionData * _userSessionData);
     void readRecentProjectList( QXmlStreamReader * xmlReader,UserSessionData * _userSessionData);
+    void readToolPaths( QXmlStreamReader * xmlReader,UserSessionData * _userSessionData);
 };
 
 #endif // XMLUSERSESSIONDATA_H

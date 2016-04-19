@@ -2,6 +2,7 @@
 #include "ui_fenics_blood_sim.h"
 
 #include <QDir>
+
 #include <QAction>
 #include <vtkPolyDataMapper.h>
 
@@ -9,7 +10,7 @@
 #include <vtkSphereSource.h>
 
 #include "ImageProcessing_Module/imagereader.h"
-
+#include "GUI_Module/Forms/preferencesdialog.h"
 // ITK
 #include <itkImage.h>
 #include <itkImageFileReader.h>
@@ -33,6 +34,7 @@
 #include "vtkImageReader2Factory.h"
 #include "vtkImageReader2.h"
 #include "vtkNIFTIImageReader.h"
+
 
 using namespace std;
 using namespace itk;
@@ -67,7 +69,7 @@ FEniCS_Blood_Sim::FEniCS_Blood_Sim(QWidget *parent) :
     initializeSimulationTab();
     initializeVisualizationTab();
     connectSignalsMenuBuilder();
-    loadRecentProjectList();
+    loadUserSessionData();
     installEventFilters();
   }
 
@@ -124,15 +126,12 @@ void FEniCS_Blood_Sim::connectSignalsMenuBuilder()
 
 
 
-void FEniCS_Blood_Sim::loadRecentProjectList()
+void FEniCS_Blood_Sim::loadUserSessionData()
 {
     QString _path = QDir(QDir::currentPath()).filePath(PREFERENCES_FILE_NAME);
     _userSessionData->setFileNamePath(_path);
-    _userSessionData->loadRecentProjectList();
-    if (_userSessionData->isEmpty())
-        _userSessionData->saveRecentProjectList();
-    else
-        fillRecentProjectsSection();
+    _userSessionData->loadAllData();
+    fillRecentProjectsSection();
 
 }
 
@@ -222,7 +221,7 @@ void  FEniCS_Blood_Sim::exitApplicationUI()
 void FEniCS_Blood_Sim::on_actionClear_list_triggered()
 {
 
-    if (_userSessionData->isEmpty()) return;
+    if (_userSessionData->isEmptyRecentProjects()) return;
     if (ui->menuRecent_Projects->isEmpty()) return;
 
     QList<QAction *> _listActions = ui->menuRecent_Projects->actions();
@@ -284,7 +283,17 @@ void FEniCS_Blood_Sim::openRecentFile()
 // EDIT MENU
 void FEniCS_Blood_Sim::on_actionPreferences_triggered()
 {
-    // TODO
+    PreferencesDialog _preferencesDialog;
+    _preferencesDialog.setMeshPath(_userSessionData->getMeshToolPath());
+    _preferencesDialog.setFENICSPath(_userSessionData->getFenicsToolPath());
+    _preferencesDialog.exec();
+
+    // Update
+    if(_preferencesDialog.userAcceptChanges())
+    {
+        _userSessionData->setMeshToolPath(_preferencesDialog.getMeshPath());
+        _userSessionData->setFenicsToolPath(_preferencesDialog.getFENICSPath());
+    }
 }
 
 
@@ -393,7 +402,8 @@ void FEniCS_Blood_Sim::on_setVisualizationToolPathButton_clicked()
 void FEniCS_Blood_Sim::closeApplication()
 {
     _projectData->saveProjectInfoToFile();
-    _userSessionData->saveRecentProjectList();
+    _userSessionData->saveAllData();
+    //_userSessionData->saveRecentProjectList();
     close();
 
 }

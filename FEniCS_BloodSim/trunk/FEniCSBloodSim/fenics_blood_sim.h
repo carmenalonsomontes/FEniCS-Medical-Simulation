@@ -103,6 +103,8 @@ private slots:
 
     void on_meshDoneButton_clicked();
 
+    void on_actionAbout_FEniCs_Blood_Sim_triggered();
+
 private:
     Ui::FEniCS_Blood_Sim *ui;
     FileMenuBuilder *  _fileMenuBuilder;

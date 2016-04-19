@@ -134,7 +134,7 @@ private:
 
     void installEventFilters();
     void connectSignalsMenuBuilder();
-    void loadRecentProjectList();
+    void loadUserSessionData();
     void closeApplication();
 
     void fillRecentProjectsSection();

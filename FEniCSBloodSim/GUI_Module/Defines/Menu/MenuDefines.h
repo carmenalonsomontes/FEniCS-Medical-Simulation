@@ -68,6 +68,11 @@ const QString FBS_PREFERENCES_TAG = "fbs_preferences";
 const QString FBS_RECENT_PROJECT_LIST_TAG = "fbs_recent_project_list";
 const QString FBS_ITEM_PROJECT_TAG = "fbs_item_project";
 const QString FBS_ITEM_PROJECT_PATH_ATT = "fbs_item_project_path";
+const QString FBS_TOOL_PATH_TAG="tool_path";
+const QString FBS_MESH_TOOL_PATH_TAG="mesh_tool";
+const QString FBS_MESH_TOOL_PATH_ATT="mesh-path";
+const QString FBS_FENICS_TOOL_PATH_TAG="fenics-tool";
+const QString FBS_FENICS_TOOL_PATH_ATT="fenics-path";
 
 
 

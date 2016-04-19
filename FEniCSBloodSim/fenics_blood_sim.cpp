@@ -10,7 +10,11 @@
 #include <vtkSphereSource.h>
 
 #include "ImageProcessing_Module/imagereader.h"
+
+// FORMs
 #include "GUI_Module/Forms/preferencesdialog.h"
+#include "GUI_Module/Forms/aboutdialog.h"
+
 // ITK
 #include <itkImage.h>
 #include <itkImageFileReader.h>
@@ -724,4 +728,10 @@ void FEniCS_Blood_Sim::on_meshButton_clicked()
 void FEniCS_Blood_Sim::on_meshDoneButton_clicked()
 {
 
+}
+
+void FEniCS_Blood_Sim::on_actionAbout_FEniCs_Blood_Sim_triggered()
+{
+    AboutDialog _aboutDialog;
+    _aboutDialog.exec();
 }

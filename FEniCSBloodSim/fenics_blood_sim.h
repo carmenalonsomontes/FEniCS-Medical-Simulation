@@ -166,6 +166,8 @@ private:
     void initializeSimulationTab();
     void initializeVisualizationTab();
 
+    void LoadSliceNumber();
+
 
 
 };

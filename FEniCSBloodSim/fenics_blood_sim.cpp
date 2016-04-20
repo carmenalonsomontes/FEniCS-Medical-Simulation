@@ -713,9 +713,101 @@ void FEniCS_Blood_Sim::ClearConsoles()
     LoadSaggitalImage();
     LoadCoronalImage();
 
+    // Update Slice No
+    LoadSliceNumber();
+
  }
 
 
+
+#include <vtkTextProperty.h>
+#include <vtkTextMapper.h>
+#include <vtkActor2D.h>
+
+void FEniCS_Blood_Sim::LoadSliceNumber()
+{
+    int _minSlices = 0;
+    int _maxSlices = 0;
+
+    if (_projectData->isEmptyImagingData())
+        return;
+
+    _minSlices = _projectData->getImageData()->getImageViewer()->GetSliceMin();
+    _maxSlices = _projectData->getImageData()->getImageViewer()->GetSliceMax();
+
+    QString newLabel = "Slide:" + QString::number(_minSlices)+"/"+QString::number(_maxSlices);
+    ui->sliceNoLabel->setText(newLabel);
+
+    //--------------------------------------------------------------------------------------------------
+    vtkSmartPointer<vtkImageViewer2> imageViewer =
+         vtkSmartPointer<vtkImageViewer2>::New();
+      imageViewer->SetInputConnection(_projectData->getImageData()->getAlgorithmOutput());
+    vtkSmartPointer<vtkTextProperty> sliceTextProp = vtkSmartPointer<vtkTextProperty>::New();
+      sliceTextProp->SetFontFamilyToCourier();
+      sliceTextProp->SetFontSize(20);
+      sliceTextProp->SetVerticalJustificationToBottom();
+      sliceTextProp->SetJustificationToLeft();
+
+      vtkSmartPointer<vtkTextMapper> sliceTextMapper = vtkSmartPointer<vtkTextMapper>::New();
+      std::string msg = "kk" ;//QString::number(_projectData->getImageData()->getImageViewer()->GetSliceMin())
+              //+ QString::number( _projectData->getImageData()->getImageViewer()->GetSliceMax());
+      sliceTextMapper->SetInput(msg.c_str());
+      sliceTextMapper->SetTextProperty(sliceTextProp);
+
+      vtkSmartPointer<vtkActor2D> sliceTextActor = vtkSmartPointer<vtkActor2D>::New();
+      sliceTextActor->SetMapper(sliceTextMapper);
+      sliceTextActor->SetPosition(15, 10);
+
+      // usage hint message
+      vtkSmartPointer<vtkTextProperty> usageTextProp = vtkSmartPointer<vtkTextProperty>::New();
+      usageTextProp->SetFontFamilyToCourier();
+      usageTextProp->SetFontSize(14);
+      usageTextProp->SetVerticalJustificationToTop();
+      usageTextProp->SetJustificationToLeft();
+
+      vtkSmartPointer<vtkTextMapper> usageTextMapper = vtkSmartPointer<vtkTextMapper>::New();
+      usageTextMapper->SetInput("- Slice with mouse wheel\n  or Up/Down-Key\n- Zoom with pressed right\n  mouse button while dragging");
+      usageTextMapper->SetTextProperty(usageTextProp);
+
+      vtkSmartPointer<vtkActor2D> usageTextActor = vtkSmartPointer<vtkActor2D>::New();
+      usageTextActor->SetMapper(usageTextMapper);
+      usageTextActor->GetPositionCoordinate()->SetCoordinateSystemToNormalizedDisplay();
+      usageTextActor->GetPositionCoordinate()->SetValue( 0.05, 0.95);
+
+      // create an interactor with our own style (inherit from vtkInteractorStyleImage)
+      // in order to catch mousewheel and key events
+      vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
+         vtkSmartPointer<vtkRenderWindowInteractor>::New();
+
+    //  vtkSmartPointer<vtkInteractorStyleImage> myInteractorStyle =
+    //     vtkSmartPointer<vtkInteractorStyleImage>::New();
+
+      // make imageviewer2 and sliceTextMapper visible to our interactorstyle
+      // to enable slice status message updates when scrolling through the slices
+      //myInteractorStyle->SetImageViewer(imageViewer);
+      //myInteractorStyle->SetStatusMapper(sliceTextMapper);
+
+      imageViewer->SetupInteractor(renderWindowInteractor);
+      // make the interactor use our own interactorstyle
+      // cause SetupInteractor() is defining it's own default interatorstyle
+      // this must be called after SetupInteractor()
+      //renderWindowInteractor->SetInteractorStyle(myInteractorStyle);
+      // add slice status message and usage hint message to the renderer
+      imageViewer->GetRenderer()->AddActor2D(sliceTextActor);
+      imageViewer->GetRenderer()->AddActor2D(usageTextActor);
+
+      // initialize rendering and interaction
+      //imageViewer->GetRenderWindow()->SetSize(400, 300);
+      //imageViewer->GetRenderer()->SetBackground(0.2, 0.3, 0.4);
+      imageViewer->Render();
+      imageViewer->GetRenderer()->ResetCamera();
+      imageViewer->Render();
+     //
+imageViewer->SetSlice(100);
+imageViewer->Render();
+renderWindowInteractor->Start();
+
+}
 
 // ------------------------------------------------------------------------------------------------------
 //          MESH TAB

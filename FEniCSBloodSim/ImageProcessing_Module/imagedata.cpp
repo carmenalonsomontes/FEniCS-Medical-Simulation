@@ -6,6 +6,8 @@ ImageData::ImageData()
     //  _imData3D = ImageType3D::New();
       _imVolumeData = vtkVolume::New();
       _imageData = vtkImageData::New();
+      _imViewer = vtkImageViewer2::New();
+      _outputConnect = vtkAlgorithmOutput::New();
 }
 
 /*
@@ -48,4 +50,24 @@ void ImageData::loadImageData(QString imPath)
     ImageReader _imReader;
     _imReader.readImage(this,imPath);
 
+}
+
+
+vtkImageViewer2 *  ImageData::getImageViewer()
+{
+    return _imViewer;
+}
+
+void  ImageData::setImageViewer(vtkAlgorithmOutput * outputPort)
+{
+    _imViewer->SetInputConnection(outputPort);
+}
+void ImageData::setAlgorithmOutput(vtkAlgorithmOutput * output)
+{
+    _outputConnect = output;
+}
+
+vtkAlgorithmOutput * ImageData::getAlgorithmOutput()
+{
+    return _outputConnect;
 }

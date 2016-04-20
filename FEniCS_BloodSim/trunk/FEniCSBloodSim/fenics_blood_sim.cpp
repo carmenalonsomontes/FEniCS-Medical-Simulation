@@ -796,17 +796,23 @@ void FEniCS_Blood_Sim::LoadSliceNumber()
       imageViewer->GetRenderer()->AddActor2D(sliceTextActor);
       imageViewer->GetRenderer()->AddActor2D(usageTextActor);
 
+
+      imageViewer->SetupInteractor(ui->coronalViewWidget->GetRenderWindow()->GetInteractor());
+        imageViewer->SetRenderWindow(ui->coronalViewWidget->GetRenderWindow());
+
       // initialize rendering and interaction
       //imageViewer->GetRenderWindow()->SetSize(400, 300);
-      //imageViewer->GetRenderer()->SetBackground(0.2, 0.3, 0.4);
+      //imageViewer->GetRenderer()->SetBackground(0.2, 0.3, 0.4);s
       imageViewer->Render();
       imageViewer->GetRenderer()->ResetCamera();
       imageViewer->Render();
      //
 imageViewer->SetSlice(100);
 imageViewer->Render();
-renderWindowInteractor->Start();
 
+
+//renderWindowInteractor->Start();
+//ui->coronalViewWidget->GetRenderWindow()->AddRenderer(imageViewer->GetRenderer());
 }
 
 // ------------------------------------------------------------------------------------------------------

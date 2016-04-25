@@ -155,7 +155,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset>
+                  <iconset resource="fenics_blood_sim.qrc">
                    <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
@@ -201,7 +201,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset>
+                  <iconset resource="fenics_blood_sim.qrc">
                    <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
@@ -230,7 +230,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset>
+                  <iconset resource="fenics_blood_sim.qrc">
                    <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
@@ -512,7 +512,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset>
+                  <iconset resource="fenics_blood_sim.qrc">
                    <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
@@ -649,7 +649,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset>
+                  <iconset resource="fenics_blood_sim.qrc">
                    <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
@@ -786,7 +786,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset>
+                  <iconset resource="fenics_blood_sim.qrc">
                    <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
@@ -817,7 +817,7 @@
         <attribute name="title">
          <string>Image</string>
         </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_20">
+        <layout class="QVBoxLayout" name="verticalLayout_26">
          <item>
           <widget class="QSplitter" name="splitter_2">
            <property name="orientation">
@@ -883,22 +883,33 @@
                    <property name="lineWidth">
                     <number>5</number>
                    </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_11">
+                   <layout class="QVBoxLayout" name="verticalLayout_24">
                     <item>
-                     <widget class="QVTKWidget" name="sagittalViewWidget" native="true">
-                      <property name="minimumSize">
-                       <size>
-                        <width>130</width>
-                        <height>130</height>
-                       </size>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>16777215</height>
-                       </size>
-                      </property>
-                     </widget>
+                     <layout class="QVBoxLayout" name="verticalLayout_11">
+                      <item>
+                       <widget class="QVTKWidget" name="sagittalViewWidget" native="true">
+                        <property name="minimumSize">
+                         <size>
+                          <width>105</width>
+                          <height>105</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>16777215</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSlider" name="sagittalSlider">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
                     </item>
                    </layout>
                   </widget>
@@ -932,22 +943,33 @@
                    <property name="lineWidth">
                     <number>5</number>
                    </property>
-                   <layout class="QHBoxLayout" name="horizontalLayout">
+                   <layout class="QVBoxLayout" name="verticalLayout_23">
                     <item>
-                     <widget class="QVTKWidget" name="axialViewWidget" native="true">
-                      <property name="minimumSize">
-                       <size>
-                        <width>130</width>
-                        <height>130</height>
-                       </size>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>16777215</height>
-                       </size>
-                      </property>
-                     </widget>
+                     <layout class="QVBoxLayout" name="verticalLayout_20">
+                      <item>
+                       <widget class="QVTKWidget" name="axialViewWidget" native="true">
+                        <property name="minimumSize">
+                         <size>
+                          <width>105</width>
+                          <height>105</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>16777215</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSlider" name="axialSlider">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
                     </item>
                    </layout>
                   </widget>
@@ -975,22 +997,33 @@
                    <property name="lineWidth">
                     <number>5</number>
                    </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_12">
+                   <layout class="QVBoxLayout" name="verticalLayout_25">
                     <item>
-                     <widget class="QVTKWidget" name="coronalViewWidget" native="true">
-                      <property name="minimumSize">
-                       <size>
-                        <width>130</width>
-                        <height>130</height>
-                       </size>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>16777215</height>
-                       </size>
-                      </property>
-                     </widget>
+                     <layout class="QVBoxLayout" name="verticalLayout_12">
+                      <item>
+                       <widget class="QVTKWidget" name="coronalViewWidget" native="true">
+                        <property name="minimumSize">
+                         <size>
+                          <width>105</width>
+                          <height>105</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>16777215</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSlider" name="coronalSlider">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
                     </item>
                    </layout>
                   </widget>
@@ -1765,7 +1798,7 @@
   </widget>
   <action name="actionNew_Project">
    <property name="icon">
-    <iconset>
+    <iconset resource="fenics_blood_sim.qrc">
      <normaloff>:/menu/GUI_Module/images/menu/page_white.png</normaloff>:/menu/GUI_Module/images/menu/page_white.png</iconset>
    </property>
    <property name="text">
@@ -1780,7 +1813,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="fenics_blood_sim.qrc">
      <normaloff>:/menu/GUI_Module/images/menu/folder.png</normaloff>:/menu/GUI_Module/images/menu/folder.png</iconset>
    </property>
    <property name="text">
@@ -1795,7 +1828,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="fenics_blood_sim.qrc">
      <normaloff>:/menu/GUI_Module/images/menu/disk.png</normaloff>:/menu/GUI_Module/images/menu/disk.png</iconset>
    </property>
    <property name="text">
@@ -1810,7 +1843,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="fenics_blood_sim.qrc">
      <normaloff>:/menu/GUI_Module/images/menu/save_as.png</normaloff>:/menu/GUI_Module/images/menu/save_as.png</iconset>
    </property>
    <property name="text">
@@ -1825,7 +1858,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="fenics_blood_sim.qrc">
      <normaloff>:/menu/GUI_Module/images/menu/cross.png</normaloff>:/menu/GUI_Module/images/menu/cross.png</iconset>
    </property>
    <property name="text">
@@ -1842,7 +1875,7 @@
   </action>
   <action name="actionExit_MainWindow">
    <property name="icon">
-    <iconset>
+    <iconset resource="fenics_blood_sim.qrc">
      <normaloff>:/menu/GUI_Module/images/menu/door_out.png</normaloff>:/menu/GUI_Module/images/menu/door_out.png</iconset>
    </property>
    <property name="text">
@@ -1854,7 +1887,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="fenics_blood_sim.qrc">
      <normaloff>:/menu/GUI_Module/images/menu/interface_preferences2.png</normaloff>:/menu/GUI_Module/images/menu/interface_preferences2.png</iconset>
    </property>
    <property name="text">
@@ -1906,7 +1939,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="fenics_blood_sim.qrc">
      <normaloff>:/menu/GUI_Module/images/menu/help.png</normaloff>:/menu/GUI_Module/images/menu/help.png</iconset>
    </property>
    <property name="text">
@@ -1934,6 +1967,8 @@
    <header location="global">QVTKWidget.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="fenics_blood_sim.qrc"/>
+ </resources>
  <connections/>
 </ui>

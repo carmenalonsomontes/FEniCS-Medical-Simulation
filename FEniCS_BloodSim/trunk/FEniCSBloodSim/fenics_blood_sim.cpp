@@ -74,7 +74,7 @@ FEniCS_Blood_Sim::FEniCS_Blood_Sim(QWidget *parent) :
     initializeVisualizationTab();
     connectSignalsMenuBuilder();
     loadUserSessionData();
-    installEventFilters();
+    //installEventFilters();
   }
 
 
@@ -92,13 +92,7 @@ FEniCS_Blood_Sim::~FEniCS_Blood_Sim()
     delete _userSessionData;
 
 
-}
 
-void FEniCS_Blood_Sim::installEventFilters()
-{
-    ui->axialViewWidget->installEventFilter(this);
-    ui->sagittalViewWidget->installEventFilter(this);
-    ui->coronalViewWidget->installEventFilter(this);
 }
 
 void FEniCS_Blood_Sim::connectSignalsMenuBuilder()
@@ -142,9 +136,10 @@ void FEniCS_Blood_Sim::loadUserSessionData()
 void FEniCS_Blood_Sim::initializeImageTab()
 {
     mainImRendererTab =  vtkSmartPointer<vtkRenderer>::New();
-    coronalImRendererTab =  vtkSmartPointer<vtkRenderer>::New();
-    axialImRendererTab =  vtkSmartPointer<vtkRenderer>::New();
-    saggitalImRendererTab =  vtkSmartPointer<vtkRenderer>::New();
+    coronalImViewer =  vtkSmartPointer<vtkImageViewer2>::New();
+    axialImViewer =  vtkSmartPointer<vtkImageViewer2>::New();
+    sagittalImViewer =  vtkSmartPointer<vtkImageViewer2>::New();
+
 }
 
 void FEniCS_Blood_Sim::initializeMeshTab()
@@ -513,7 +508,7 @@ void FEniCS_Blood_Sim::ClearConsoles()
  * */
 
 
- bool FEniCS_Blood_Sim::eventFilter(QObject *obj, QEvent *event)
+/* bool FEniCS_Blood_Sim::eventFilter(QObject *obj, QEvent *event)
  {
 
      QVTKWidget * _qvtkWidget =  qobject_cast<QVTKWidget *>(obj);
@@ -533,7 +528,7 @@ void FEniCS_Blood_Sim::ClearConsoles()
          // standard event processing
          return QObject::eventFilter(obj, event);
      }
- }
+ }*/
 
  void FEniCS_Blood_Sim::ClearImageInterfaceUI()
  {
@@ -557,36 +552,21 @@ void FEniCS_Blood_Sim::ClearConsoles()
          mainImRendererTab->RemoveAllViewProps();
          mainImRendererTab->ResetCamera();
      }
+    ui->mainImageWidget->setEnabled(false);
 
-
-     if (ui->axialViewWidget->GetRenderWindow()->HasRenderer(axialImRendererTab))
-     {
-        axialImRendererTab->SetBackground(0,0,0);
-        axialImRendererTab->RemoveAllViewProps();
-        axialImRendererTab->ResetCamera();
-     }
-
-     if (ui->coronalViewWidget->GetRenderWindow()->HasRenderer(coronalImRendererTab))
-     {
-        coronalImRendererTab->SetBackground(0,0,0);
-        coronalImRendererTab->RemoveAllViewProps();
-        coronalImRendererTab->ResetCamera();
-     }
-
-     if (ui->sagittalViewWidget->GetRenderWindow()->HasRenderer(saggitalImRendererTab))
-     {
-        saggitalImRendererTab->SetBackground(0,0,0);
-        saggitalImRendererTab->RemoveAllViewProps();
-        saggitalImRendererTab->ResetCamera();
-     }
-
-
-     // Disabling the areas
-     ui->mainImageWidget->setEnabled(false);
-     ui->axialViewWidget->setEnabled(false);
-     ui->coronalViewWidget->setEnabled(false);
-     ui->sagittalViewWidget->setEnabled(false);
+    clearViewer(ui->axialViewWidget,axialImViewer);
+    clearViewer(ui->sagittalViewWidget,sagittalImViewer);
+    clearViewer(ui->coronalViewWidget,coronalImViewer);
  }
+
+ void FEniCS_Blood_Sim::clearViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer)
+ {
+     imageViewer->GetRenderer()->RemoveViewProp(imageViewer->GetImageActor());
+     imageViewer->GetRenderer()->ResetCamera();
+     widget->setEnabled(false);
+ }
+
+
 
  void FEniCS_Blood_Sim::clearMeshTab()
  {
@@ -640,65 +620,34 @@ void FEniCS_Blood_Sim::ClearConsoles()
     // Adding the volume
     mainImRendererTab->AddVolume(  _projectData->getImageData()->getVolumeData() );
     mainImRendererTab->ResetCamera();
-
-
-        ui->mainImageWidget->GetRenderWindow()->AddRenderer(mainImRendererTab);
+    ui->mainImageWidget->GetRenderWindow()->AddRenderer(mainImRendererTab);
  }
 
 
  void FEniCS_Blood_Sim::LoadAxialImage()
  {
-     vtkSmartPointer<vtkImageSliceMapper> imageSliceMapper = vtkSmartPointer<vtkImageSliceMapper>::New();
-
-    if (!ui->axialViewWidget->isEnabled())
-        ui->axialViewWidget->setEnabled(true);
-      axialImRendererTab->SetBackground(0,0,0);
-
-      axialImRendererTab->Clear();
-      axialImRendererTab->RemoveAllViewProps();
-      axialImRendererTab->ResetCamera();
-
-     // Visualize
-     imageSliceMapper->SetInputData(_projectData->getImageData()->getImageData());
-
-     vtkSmartPointer<vtkImageSlice> imageSlice = vtkSmartPointer<vtkImageSlice>::New();
-     imageSlice->SetMapper(imageSliceMapper);
-
-     // Setup renderers
-     axialImRendererTab->AddViewProp(imageSlice);
-     axialImRendererTab->ResetCamera();
-
-        ui->axialViewWidget->GetRenderWindow()->AddRenderer(axialImRendererTab);
+    loadViewer( ui->axialViewWidget, axialImViewer, 0, AXIAL_XY );
 
  }
 
 
  void FEniCS_Blood_Sim::LoadSaggitalImage()
  {
-     if (!ui->sagittalViewWidget->isEnabled())
-         ui->sagittalViewWidget->setEnabled(true);
-    saggitalImRendererTab->SetBackground(0,0,0);
-    saggitalImRendererTab->Clear();
-    saggitalImRendererTab->RemoveAllViewProps();
-    saggitalImRendererTab->ResetCamera();
-    // TODO
-        ui->sagittalViewWidget->GetRenderWindow()->AddRenderer(saggitalImRendererTab);
 
+    loadViewer( ui->sagittalViewWidget, sagittalImViewer, 0, SAGITTAL_YZ );
+    sagittalImViewer->SetSliceOrientationToYZ();
+    sagittalImViewer->GetRenderer()->ResetCamera();
+    sagittalImViewer->Render();
  }
+
  void FEniCS_Blood_Sim::LoadCoronalImage()
  {
-     if (!ui->coronalViewWidget->isEnabled())
-         ui->coronalViewWidget->setEnabled(true);
-
-     coronalImRendererTab->SetBackground(0,0,0);
-     coronalImRendererTab->Clear();
-     coronalImRendererTab->RemoveAllViewProps();
-     coronalImRendererTab->ResetCamera();
-    // TODO
-
-     ui->coronalViewWidget->GetRenderWindow()->AddRenderer(coronalImRendererTab);
-
+    loadViewer( ui->coronalViewWidget, coronalImViewer, 0, CORONAL_XZ );
+    coronalImViewer->SetSliceOrientationToXZ();
+    coronalImViewer->GetRenderer()->ResetCamera();
+    coronalImViewer->Render();
  }
+
  void FEniCS_Blood_Sim::LoadImageInterfaceUI(const QString imPath)
  {
     if (imPath.isEmpty())
@@ -720,9 +669,6 @@ void FEniCS_Blood_Sim::ClearConsoles()
 
 
 
-#include <vtkTextProperty.h>
-#include <vtkTextMapper.h>
-#include <vtkActor2D.h>
 
 void FEniCS_Blood_Sim::LoadSliceNumber()
 {
@@ -737,83 +683,33 @@ void FEniCS_Blood_Sim::LoadSliceNumber()
 
     QString newLabel = "Slide:" + QString::number(_minSlices)+"/"+QString::number(_maxSlices);
     ui->sliceNoLabel->setText(newLabel);
-
-    //--------------------------------------------------------------------------------------------------
-    vtkSmartPointer<vtkImageViewer2> imageViewer =
-         vtkSmartPointer<vtkImageViewer2>::New();
-      imageViewer->SetInputConnection(_projectData->getImageData()->getAlgorithmOutput());
-    vtkSmartPointer<vtkTextProperty> sliceTextProp = vtkSmartPointer<vtkTextProperty>::New();
-      sliceTextProp->SetFontFamilyToCourier();
-      sliceTextProp->SetFontSize(20);
-      sliceTextProp->SetVerticalJustificationToBottom();
-      sliceTextProp->SetJustificationToLeft();
-
-      vtkSmartPointer<vtkTextMapper> sliceTextMapper = vtkSmartPointer<vtkTextMapper>::New();
-      std::string msg = "kk" ;//QString::number(_projectData->getImageData()->getImageViewer()->GetSliceMin())
-              //+ QString::number( _projectData->getImageData()->getImageViewer()->GetSliceMax());
-      sliceTextMapper->SetInput(msg.c_str());
-      sliceTextMapper->SetTextProperty(sliceTextProp);
-
-      vtkSmartPointer<vtkActor2D> sliceTextActor = vtkSmartPointer<vtkActor2D>::New();
-      sliceTextActor->SetMapper(sliceTextMapper);
-      sliceTextActor->SetPosition(15, 10);
-
-      // usage hint message
-      vtkSmartPointer<vtkTextProperty> usageTextProp = vtkSmartPointer<vtkTextProperty>::New();
-      usageTextProp->SetFontFamilyToCourier();
-      usageTextProp->SetFontSize(14);
-      usageTextProp->SetVerticalJustificationToTop();
-      usageTextProp->SetJustificationToLeft();
-
-      vtkSmartPointer<vtkTextMapper> usageTextMapper = vtkSmartPointer<vtkTextMapper>::New();
-      usageTextMapper->SetInput("- Slice with mouse wheel\n  or Up/Down-Key\n- Zoom with pressed right\n  mouse button while dragging");
-      usageTextMapper->SetTextProperty(usageTextProp);
-
-      vtkSmartPointer<vtkActor2D> usageTextActor = vtkSmartPointer<vtkActor2D>::New();
-      usageTextActor->SetMapper(usageTextMapper);
-      usageTextActor->GetPositionCoordinate()->SetCoordinateSystemToNormalizedDisplay();
-      usageTextActor->GetPositionCoordinate()->SetValue( 0.05, 0.95);
-
-      // create an interactor with our own style (inherit from vtkInteractorStyleImage)
-      // in order to catch mousewheel and key events
-      vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-         vtkSmartPointer<vtkRenderWindowInteractor>::New();
-
-    //  vtkSmartPointer<vtkInteractorStyleImage> myInteractorStyle =
-    //     vtkSmartPointer<vtkInteractorStyleImage>::New();
-
-      // make imageviewer2 and sliceTextMapper visible to our interactorstyle
-      // to enable slice status message updates when scrolling through the slices
-      //myInteractorStyle->SetImageViewer(imageViewer);
-      //myInteractorStyle->SetStatusMapper(sliceTextMapper);
-
-      imageViewer->SetupInteractor(renderWindowInteractor);
-      // make the interactor use our own interactorstyle
-      // cause SetupInteractor() is defining it's own default interatorstyle
-      // this must be called after SetupInteractor()
-      //renderWindowInteractor->SetInteractorStyle(myInteractorStyle);
-      // add slice status message and usage hint message to the renderer
-      imageViewer->GetRenderer()->AddActor2D(sliceTextActor);
-      imageViewer->GetRenderer()->AddActor2D(usageTextActor);
-
-
-      imageViewer->SetupInteractor(ui->coronalViewWidget->GetRenderWindow()->GetInteractor());
-        imageViewer->SetRenderWindow(ui->coronalViewWidget->GetRenderWindow());
-
-      // initialize rendering and interaction
-      //imageViewer->GetRenderWindow()->SetSize(400, 300);
-      //imageViewer->GetRenderer()->SetBackground(0.2, 0.3, 0.4);s
-      imageViewer->Render();
-      imageViewer->GetRenderer()->ResetCamera();
-      imageViewer->Render();
-     //
-imageViewer->SetSlice(100);
-imageViewer->Render();
-
-
-//renderWindowInteractor->Start();
-//ui->coronalViewWidget->GetRenderWindow()->AddRenderer(imageViewer->GetRenderer());
 }
+
+
+void FEniCS_Blood_Sim::loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer ,
+                                  int noSlice, int orientation)
+{
+    if (!widget->isEnabled())
+        widget->setEnabled(true);
+
+     imageViewer->SetInputData(_projectData->getImageData()->getImageData());
+
+
+     if (!imageViewer->GetRenderer()->HasViewProp(imageViewer->GetImageActor()) )
+         imageViewer->GetRenderer()->AddViewProp(imageViewer->GetImageActor());
+
+     imageViewer->SetupInteractor(widget->GetRenderWindow()->GetInteractor());
+     imageViewer->SetRenderWindow(widget->GetRenderWindow());
+
+     //imageViewer->SetSlice(noSlice);
+
+     //imageViewer->SetSliceOrientation(orientation);
+     imageViewer->GetRenderer()->ResetCamera();
+     imageViewer->Render();
+     widget->update();
+}
+
+
 
 // ------------------------------------------------------------------------------------------------------
 //          MESH TAB
@@ -832,4 +728,22 @@ void FEniCS_Blood_Sim::on_actionAbout_FEniCs_Blood_Sim_triggered()
 {
     AboutDialog _aboutDialog;
     _aboutDialog.exec();
+}
+
+
+// ------------------------------------------------------------------------------------------------------
+// AXIAL
+void FEniCS_Blood_Sim::on_axialSlider_sliderMoved(int position)
+{
+
+}
+
+void FEniCS_Blood_Sim::on_coronalSlider_sliderMoved(int position)
+{
+
+}
+
+void FEniCS_Blood_Sim::on_sagittalSlider_sliderMoved(int position)
+{
+
 }

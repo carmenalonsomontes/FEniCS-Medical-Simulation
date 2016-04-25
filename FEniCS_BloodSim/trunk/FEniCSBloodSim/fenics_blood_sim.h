@@ -15,6 +15,7 @@
 // VTK libs
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
+#include <QVTKWidget.h>
 
 namespace Ui {
 class FEniCS_Blood_Sim;
@@ -31,7 +32,7 @@ public:
      void updateStatusBar();
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+   // bool eventFilter(QObject *obj, QEvent *event);
 
 private slots:
     // EDIT
@@ -105,6 +106,14 @@ private slots:
 
     void on_actionAbout_FEniCs_Blood_Sim_triggered();
 
+
+
+    void on_axialSlider_sliderMoved(int position);
+
+    void on_coronalSlider_sliderMoved(int position);
+
+    void on_sagittalSlider_sliderMoved(int position);
+
 private:
     Ui::FEniCS_Blood_Sim *ui;
     FileMenuBuilder *  _fileMenuBuilder;
@@ -117,9 +126,11 @@ private:
 
 
     vtkSmartPointer<vtkRenderer> mainImRendererTab;
-    vtkSmartPointer<vtkRenderer> coronalImRendererTab;
-    vtkSmartPointer<vtkRenderer> axialImRendererTab;
-    vtkSmartPointer<vtkRenderer> saggitalImRendererTab;
+
+    vtkSmartPointer<vtkImageViewer2> axialImViewer;
+    vtkSmartPointer<vtkImageViewer2> coronalImViewer;
+    vtkSmartPointer<vtkImageViewer2> sagittalImViewer;
+
 
 
     vtkSmartPointer<vtkRenderer> cloudImRenderer;
@@ -134,7 +145,7 @@ private:
     // Render images
 
 
-    void installEventFilters();
+   // void installEventFilters();
     void connectSignalsMenuBuilder();
     void loadUserSessionData();
     void closeApplication();
@@ -167,7 +178,8 @@ private:
     void initializeVisualizationTab();
 
     void LoadSliceNumber();
-
+    void loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer , int noSlice, int orientation);
+    void clearViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer);
 
 
 };

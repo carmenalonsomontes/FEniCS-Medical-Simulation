@@ -1,6 +1,17 @@
 #ifndef MENUDEFINES_H
 #define MENUDEFINES_H
 #include <QString>
+
+// VIEW ORIENTATION
+enum Orientation_Im{
+    SAGITTAL_YZ = 0,
+    CORONAL_XZ = 1,
+    AXIAL_XY = 2
+};
+
+
+
+
 // FILES NAMEs
 
 const QString PREFERENCES_FILE_NAME="fbs_preferences.fbs";

@@ -626,27 +626,71 @@ void FEniCS_Blood_Sim::ClearConsoles()
 
  void FEniCS_Blood_Sim::LoadAxialImage()
  {
-    loadViewer( ui->axialViewWidget, axialImViewer, 0, AXIAL_XY );
-
+    loadViewer( ui->axialViewWidget, axialImViewer);
+    updateSlicerMinMax(axialImViewer->GetSlice(),axialImViewer->GetSliceMax(),axialImViewer->GetSliceMin(),AXIAL_SLICER);
  }
 
 
  void FEniCS_Blood_Sim::LoadSaggitalImage()
  {
 
-    loadViewer( ui->sagittalViewWidget, sagittalImViewer, 0, SAGITTAL_YZ );
-    sagittalImViewer->SetSliceOrientationToYZ();
-    sagittalImViewer->GetRenderer()->ResetCamera();
-    sagittalImViewer->Render();
+    loadViewer( ui->sagittalViewWidget, sagittalImViewer);
+    setOrientation(sagittalImViewer,SAGITTAL_YZ);
+    updateSlicerMinMax(sagittalImViewer->GetSlice(),sagittalImViewer->GetSliceMax(),sagittalImViewer->GetSliceMin(),SAGITTAL_SLICER);
+
+
  }
 
  void FEniCS_Blood_Sim::LoadCoronalImage()
  {
-    loadViewer( ui->coronalViewWidget, coronalImViewer, 0, CORONAL_XZ );
-    coronalImViewer->SetSliceOrientationToXZ();
-    coronalImViewer->GetRenderer()->ResetCamera();
-    coronalImViewer->Render();
+    loadViewer( ui->coronalViewWidget, coronalImViewer);
+    setOrientation(coronalImViewer,CORONAL_XZ);
+
+    updateSlicerMinMax(coronalImViewer->GetSlice(),coronalImViewer->GetSliceMax(),coronalImViewer->GetSliceMin(),CORONAL_SLICER);
+
  }
+
+ void FEniCS_Blood_Sim::updateSlicerMinMax(int noSlice, int max, int min, int typeSlicer)
+ {
+     blockSignals(true);
+
+     switch (typeSlicer) {
+     case AXIAL_SLICER:
+         ui->axialSlider->setMaximum(max);
+         ui->axialSlider->setMinimum(min);
+         ui->axialSlider->setValue(noSlice);
+         break;
+     case SAGITTAL_SLICER:
+         ui->sagittalSlider->setMaximum(max);
+         ui->sagittalSlider->setMinimum(min);
+         ui->sagittalSlider->setValue(noSlice);
+         break;
+     case CORONAL_SLICER:
+         ui->coronalSlider->setMaximum(max);
+         ui->coronalSlider->setMinimum(min);
+         ui->coronalSlider->setValue(noSlice);
+         break;
+     }
+
+    blockSignals(false);
+ }
+
+
+ void FEniCS_Blood_Sim::setOrientation(vtkSmartPointer<vtkImageViewer2> imageViewer,int orientation)
+ {
+     switch (orientation) {
+     case SAGITTAL_YZ:
+         imageViewer->SetSliceOrientationToYZ();
+         break;
+     case CORONAL_XZ:
+         imageViewer->SetSliceOrientationToXZ();
+         break;
+     }
+
+     imageViewer->GetRenderer()->ResetCamera();
+     imageViewer->Render();
+ }
+
 
  void FEniCS_Blood_Sim::LoadImageInterfaceUI(const QString imPath)
  {
@@ -686,8 +730,7 @@ void FEniCS_Blood_Sim::LoadSliceNumber()
 }
 
 
-void FEniCS_Blood_Sim::loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer ,
-                                  int noSlice, int orientation)
+void FEniCS_Blood_Sim::loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer)
 {
     if (!widget->isEnabled())
         widget->setEnabled(true);
@@ -701,12 +744,12 @@ void FEniCS_Blood_Sim::loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageV
      imageViewer->SetupInteractor(widget->GetRenderWindow()->GetInteractor());
      imageViewer->SetRenderWindow(widget->GetRenderWindow());
 
-     //imageViewer->SetSlice(noSlice);
-
-     //imageViewer->SetSliceOrientation(orientation);
      imageViewer->GetRenderer()->ResetCamera();
      imageViewer->Render();
      widget->update();
+
+
+
 }
 
 
@@ -735,7 +778,7 @@ void FEniCS_Blood_Sim::on_actionAbout_FEniCs_Blood_Sim_triggered()
 // AXIAL
 void FEniCS_Blood_Sim::on_axialSlider_sliderMoved(int position)
 {
-
+    int kk = 0;
 }
 
 void FEniCS_Blood_Sim::on_coronalSlider_sliderMoved(int position)

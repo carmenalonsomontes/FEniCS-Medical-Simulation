@@ -178,9 +178,12 @@ private:
     void initializeVisualizationTab();
 
     void LoadSliceNumber();
-    void loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer , int noSlice, int orientation);
+    void loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer);
     void clearViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer);
-
+   // void setSlice();
+   // void setOrientation();
+    void setOrientation(vtkSmartPointer<vtkImageViewer2> imageViewer,int orientation);
+    void updateSlicerMinMax(int noSlice, int max, int min, int typeSlicer);
 
 };
 

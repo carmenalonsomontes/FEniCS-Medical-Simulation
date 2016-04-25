@@ -9,7 +9,11 @@ enum Orientation_Im{
     AXIAL_XY = 2
 };
 
-
+enum Slicer_no{
+    AXIAL_SLICER = 0,
+    SAGITTAL_SLICER = 1,
+    CORONAL_SLICER =2
+};
 
 
 // FILES NAMEs

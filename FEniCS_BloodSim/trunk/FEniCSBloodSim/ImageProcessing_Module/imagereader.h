@@ -3,7 +3,6 @@
 
 #include <QString>
 
-#include "ImageProcessing_Module/Defines/ImageDefines.h"
 #include "ImageProcessing_Module/imagedata.h"
 
 class ImageReader

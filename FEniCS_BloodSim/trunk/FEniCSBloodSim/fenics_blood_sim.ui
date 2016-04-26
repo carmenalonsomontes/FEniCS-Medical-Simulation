@@ -52,7 +52,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="MediImSegFrame">
+         <widget class="QFrame" name="mediImSegFrame">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -345,7 +345,13 @@
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton">
+                <widget class="QPushButton" name="workflowConfigButton">
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>30</height>
+                  </size>
+                 </property>
                  <property name="text">
                   <string>Configure</string>
                  </property>
@@ -361,6 +367,16 @@
                  <height>16777215</height>
                 </size>
                </property>
+               <column>
+                <property name="text">
+                 <string>Show</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Workflow Element description</string>
+                </property>
+               </column>
               </widget>
              </item>
              <item>
@@ -382,7 +398,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="frame_3">
+         <widget class="QFrame" name="meshFrame">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -525,7 +541,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="frame_4">
+         <widget class="QFrame" name="fenicsFrame">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -662,7 +678,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="frame_5">
+         <widget class="QFrame" name="visualizationFrame_2">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -883,8 +899,8 @@
                    <widget class="QVTKWidget" name="sagittalViewWidget" native="true">
                     <property name="minimumSize">
                      <size>
-                      <width>130</width>
-                      <height>130</height>
+                      <width>150</width>
+                      <height>150</height>
                      </size>
                     </property>
                     <property name="maximumSize">
@@ -1002,8 +1018,8 @@
                    <widget class="QVTKWidget" name="axialViewWidget" native="true">
                     <property name="minimumSize">
                      <size>
-                      <width>130</width>
-                      <height>130</height>
+                      <width>150</width>
+                      <height>150</height>
                      </size>
                     </property>
                     <property name="maximumSize">
@@ -1115,8 +1131,8 @@
                    <widget class="QVTKWidget" name="coronalViewWidget" native="true">
                     <property name="minimumSize">
                      <size>
-                      <width>130</width>
-                      <height>130</height>
+                      <width>150</width>
+                      <height>150</height>
                      </size>
                     </property>
                     <property name="maximumSize">
@@ -1216,48 +1232,6 @@
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <item>
-            <widget class="QLabel" name="sliceNoLabel">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Slide: .../...</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSlider" name="sliceNoSlider">
-             <property name="minimumSize">
-              <size>
-               <width>20</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>

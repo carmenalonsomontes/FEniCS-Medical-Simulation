@@ -3,24 +3,11 @@
 #include "ImageProcessing_Module/imagereader.h"
 ImageData::ImageData()
 {
-    //  _imData3D = ImageType3D::New();
       _imVolumeData = vtkVolume::New();
       _imageData = vtkImageData::New();
-      _imViewer = vtkImageViewer2::New();
-      _outputConnect = vtkAlgorithmOutput::New();
-}
+      _isEmpty = true;
 
-/*
-ImageType3D::ConstPointer ImageData::getImData3D()
-{
-    return _imData3D;
 }
-
-void ImageData::setImData3D(ImageType3D::ConstPointer imPointer)
-{
-    _imData3D = imPointer;
-}
-*/
 
 
 vtkVolume * ImageData::getVolumeData()
@@ -31,6 +18,7 @@ vtkVolume * ImageData::getVolumeData()
 void ImageData::setVolumeData(vtkVolume * volPointer)
 {
     _imVolumeData = volPointer;
+    _isEmpty = false;
 }
 
 
@@ -42,6 +30,7 @@ vtkImageData * ImageData::getImageData()
 void ImageData::setImageData(vtkImageData * imData)
 {
     _imageData = imData;
+    _isEmpty = false;
 }
 
 
@@ -49,25 +38,10 @@ void ImageData::loadImageData(QString imPath)
 {
     ImageReader _imReader;
     _imReader.readImage(this,imPath);
-
+    _isEmpty = false;
 }
 
-
-vtkImageViewer2 *  ImageData::getImageViewer()
+bool ImageData::isEmptyData()
 {
-    return _imViewer;
-}
-
-void  ImageData::setImageViewer(vtkAlgorithmOutput * outputPort)
-{
-    _imViewer->SetInputConnection(outputPort);
-}
-void ImageData::setAlgorithmOutput(vtkAlgorithmOutput * output)
-{
-    _outputConnect = output;
-}
-
-vtkAlgorithmOutput * ImageData::getAlgorithmOutput()
-{
-    return _outputConnect;
+    return _isEmpty;
 }

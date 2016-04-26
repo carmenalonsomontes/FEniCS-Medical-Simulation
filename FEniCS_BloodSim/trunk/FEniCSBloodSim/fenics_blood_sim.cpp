@@ -39,6 +39,9 @@
 #include "vtkImageReader2.h"
 #include "vtkNIFTIImageReader.h"
 
+// My libraries
+#include "GUI_Module/UIHelpers/workflowtablehelper.h"
+
 
 using namespace std;
 using namespace itk;
@@ -62,6 +65,9 @@ FEniCS_Blood_Sim::FEniCS_Blood_Sim(QWidget *parent) :
     // Image Processing Menu
     _imProcMenuBuilder->registerWindow(this);
     _imProcMenuBuilder->registerProjectData(_projectData);
+
+    // Helpers
+    _workflowTableHelper.registerTableUI(ui->workflowTableWidget);
 
     // ----------------------------------------------------
     // VTK initializations
@@ -102,7 +108,7 @@ void FEniCS_Blood_Sim::connectSignalsMenuBuilder()
      connect(_fileMenuBuilder, SIGNAL(updateStatusBarUI(const QString)), this, SLOT(UpdateStatusBar(const QString)));
      connect(_fileMenuBuilder, SIGNAL(enableCloseProjectUI(bool)), this, SLOT(EnableCloseProjectUI(bool)));
      connect(_fileMenuBuilder, SIGNAL(enableSaveProjectUI(bool)), this, SLOT(EnableSaveProjectUI(bool)));
-     connect(_fileMenuBuilder, SIGNAL(exittUI()), this, SLOT(exitApplicationUI()));
+     //connect(_fileMenuBuilder, SIGNAL(exittUI()), this, SLOT(exitApplicationUI()));
      connect(_fileMenuBuilder, SIGNAL(updateRecentProjectList(const QString)), this, SLOT(updateRecentProjectListUI(const QString)));
      connect(_fileMenuBuilder, SIGNAL(restoreUI()), this, SLOT(RestoreUI()));
      connect(_fileMenuBuilder, SIGNAL(updateImagingDialogUI(const QString)), this, SLOT(UpdateImagingDialog(const QString)));
@@ -217,6 +223,8 @@ void  FEniCS_Blood_Sim::exitApplicationUI()
     closeApplication();
 }
 
+//**************************************************************
+/* RECENT PROJECTS */
 void FEniCS_Blood_Sim::on_actionClear_list_triggered()
 {
 
@@ -352,10 +360,8 @@ void FEniCS_Blood_Sim::UpdateImagingDialog(const QString text)
     _projectData->setImPath(text);
 
     // Update UI
-
     ui->imNamelineEdit->setText(_fileName);
     ui->datasetPathlineEdit->setText(_filePath);    
-
 
 }
 
@@ -369,7 +375,6 @@ void FEniCS_Blood_Sim::UpdateImageConsole(const QString text)
 
 // -------------------------------------------------------------
 // IMAGING LOGIC
-
 // -------------------------------------------------------------
 //--
 // MESH TOOL
@@ -402,7 +407,6 @@ void FEniCS_Blood_Sim::closeApplication()
 {
     _projectData->saveProjectInfoToFile();
     _userSessionData->saveAllData();
-    //_userSessionData->saveRecentProjectList();
     close();
 
 }
@@ -450,7 +454,7 @@ void FEniCS_Blood_Sim::EnableSaveProjectUI(bool val)
 }
 void FEniCS_Blood_Sim::EnableMedicalImagingFrame(bool val)
 {
-    ui->MediImSegFrame->setEnabled(val);
+    ui->mediImSegFrame->setEnabled(val);
     ui->imNamelineEdit->setEnabled(val);
     ui->datasetPathlineEdit->setEnabled(val);
 
@@ -458,7 +462,14 @@ void FEniCS_Blood_Sim::EnableMedicalImagingFrame(bool val)
 void FEniCS_Blood_Sim::EnableImageProcessingDialog(bool val)
 {
     ui->imageProcessingFrame->setEnabled(val);
+    if (!_projectData->isEmptyImagingData())
+    {
+        QString msg = "Original File: " + QFileInfo(_projectData->getImPath()).baseName();
+        _workflowTableHelper.addElementToTable(msg,EYE_OPEN);
+    }else
+        _workflowTableHelper.clearTable();
 }
+
 void FEniCS_Blood_Sim::EnableTab(bool val)
 {
     ui->mainTabWidget->setEnabled(val);
@@ -573,7 +584,7 @@ void FEniCS_Blood_Sim::ClearConsoles()
      ui->currentCoronalSlice->setText(QString::number(0));
      ui->totalCoronalSlices->setText("...");
      ui->currentSagittalSlice->setText(QString::number(0));
-     ui->totalSagittalSlices>setText("...");
+     ui->totalSagittalSlices->setText("...");
  }
 
  void FEniCS_Blood_Sim::clearViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer)
@@ -729,28 +740,7 @@ void FEniCS_Blood_Sim::ClearConsoles()
     LoadSaggitalImage();
     LoadCoronalImage();
 
-    // Update Slice No
-    LoadSliceNumber();
-
  }
-
-
-
-
-void FEniCS_Blood_Sim::LoadSliceNumber()
-{
-    int _minSlices = 0;
-    int _maxSlices = 0;
-
-    if (_projectData->isEmptyImagingData())
-        return;
-
-    _minSlices = _projectData->getImageData()->getImageViewer()->GetSliceMin();
-    _maxSlices = _projectData->getImageData()->getImageViewer()->GetSliceMax();
-
-    QString newLabel = "Slide:" + QString::number(_minSlices)+"/"+QString::number(_maxSlices);
-    ui->sliceNoLabel->setText(newLabel);
-}
 
 
 void FEniCS_Blood_Sim::loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer)
@@ -815,4 +805,32 @@ void FEniCS_Blood_Sim::on_sagittalSlider_sliderMoved(int position)
 {
     sagittalImViewer->SetSlice(position);
     ui->currentSagittalSlice->setText(QString::number(position));
+}
+
+
+
+// -----------------------------------------------------------------------------------------------------------
+//  workflow
+void FEniCS_Blood_Sim::on_workflowTableWidget_cellClicked(int row, int column)
+{
+    if (column == EYE_COLUMN)
+    {
+        int _cStatus = _workflowTableHelper.modifyEyeInRow(row);
+        if (_cStatus == EYE_CLOSED)
+            clearImageTab();
+        else
+        {
+            LoadMainImageTab();
+            LoadAxialImage();
+            LoadSaggitalImage();
+            LoadCoronalImage();
+        }
+    }
+}
+
+
+void FEniCS_Blood_Sim::on_workflowConfigButton_clicked()
+{
+
+
 }

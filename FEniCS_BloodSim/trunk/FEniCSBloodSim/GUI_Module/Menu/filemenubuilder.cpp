@@ -159,7 +159,7 @@ void FileMenuBuilder::updateUI(int _menu)
 
     if ((_menu == NEW_PROJECT) || (_menu == OPEN_PROJECT) )
     {
-        emit enableMedicalImagingFrameUI(true);
+        emit enableMedicalImagingFrameUI(true);        
         emit enableImageProcessingDialogUI(true);
         emit enableTabUI(true);
     }

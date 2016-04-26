@@ -16,6 +16,18 @@ enum Slicer_no{
 };
 
 
+// Image Processing MENU UI
+enum ImProcMenuUI{
+    EYE_OPEN = 0,
+    EYE_CLOSED = 1
+};
+
+enum ImProcTableCols{
+    EYE_COLUMN = 0,
+    DESC_COLUMN = 1
+};
+
+
 // FILES NAMEs
 
 const QString PREFERENCES_FILE_NAME="fbs_preferences.fbs";

@@ -557,6 +557,23 @@ void FEniCS_Blood_Sim::ClearConsoles()
     clearViewer(ui->axialViewWidget,axialImViewer);
     clearViewer(ui->sagittalViewWidget,sagittalImViewer);
     clearViewer(ui->coronalViewWidget,coronalImViewer);
+
+    resetSliders();
+ }
+
+ void FEniCS_Blood_Sim::resetSliders()
+ {
+     ui->axialSlider->setValue(0);
+     ui->coronalSlider->setValue(0);
+     ui->sagittalSlider->setValue(0);
+
+     // Reseting the values
+     ui->currentAxialSlice->setText(QString::number(0));
+     ui->totalAxialSlices->setText("...");
+     ui->currentCoronalSlice->setText(QString::number(0));
+     ui->totalCoronalSlices->setText("...");
+     ui->currentSagittalSlice->setText(QString::number(0));
+     ui->totalSagittalSlices>setText("...");
  }
 
  void FEniCS_Blood_Sim::clearViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer)
@@ -658,16 +675,22 @@ void FEniCS_Blood_Sim::ClearConsoles()
      case AXIAL_SLICER:
          ui->axialSlider->setMaximum(max);
          ui->axialSlider->setMinimum(min);
+         ui->totalAxialSlices->setText(QString::number(max));
+         ui->currentAxialSlice->setText(QString::number(noSlice));
          ui->axialSlider->setValue(noSlice);
          break;
      case SAGITTAL_SLICER:
          ui->sagittalSlider->setMaximum(max);
          ui->sagittalSlider->setMinimum(min);
+         ui->totalSagittalSlices->setText(QString::number(max));
+         ui->currentSagittalSlice->setText(QString::number(noSlice));
          ui->sagittalSlider->setValue(noSlice);
          break;
      case CORONAL_SLICER:
          ui->coronalSlider->setMaximum(max);
          ui->coronalSlider->setMinimum(min);
+         ui->totalCoronalSlices->setText(QString::number(max));
+         ui->currentCoronalSlice->setText(QString::number(noSlice));
          ui->coronalSlider->setValue(noSlice);
          break;
      }
@@ -778,15 +801,18 @@ void FEniCS_Blood_Sim::on_actionAbout_FEniCs_Blood_Sim_triggered()
 // AXIAL
 void FEniCS_Blood_Sim::on_axialSlider_sliderMoved(int position)
 {
-    int kk = 0;
+   axialImViewer->SetSlice(position);
+   ui->currentAxialSlice->setText(QString::number(position));
 }
 
 void FEniCS_Blood_Sim::on_coronalSlider_sliderMoved(int position)
 {
-
+   coronalImViewer->SetSlice(position);
+   ui->currentCoronalSlice->setText(QString::number(position));
 }
 
 void FEniCS_Blood_Sim::on_sagittalSlider_sliderMoved(int position)
 {
-
+    sagittalImViewer->SetSlice(position);
+    ui->currentSagittalSlice->setText(QString::number(position));
 }

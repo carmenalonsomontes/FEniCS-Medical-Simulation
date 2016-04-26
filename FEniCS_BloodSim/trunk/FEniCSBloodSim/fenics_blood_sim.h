@@ -184,6 +184,7 @@ private:
    // void setOrientation();
     void setOrientation(vtkSmartPointer<vtkImageViewer2> imageViewer,int orientation);
     void updateSlicerMinMax(int noSlice, int max, int min, int typeSlicer);
+    void resetSliders();
 
 };
 

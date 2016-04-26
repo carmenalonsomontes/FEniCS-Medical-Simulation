@@ -122,6 +122,8 @@ private slots:
 
 
 
+    void on_workflowConfigButton_clicked();
+
 private:
     Ui::FEniCS_Blood_Sim *ui;
     FileMenuBuilder *  _fileMenuBuilder;

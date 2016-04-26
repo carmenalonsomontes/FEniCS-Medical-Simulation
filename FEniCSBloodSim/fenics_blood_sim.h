@@ -17,6 +17,10 @@
 #include <vtkSmartPointer.h>
 #include <QVTKWidget.h>
 
+#include <vtkImageViewer2.h>
+
+#include "GUI_Module/UIHelpers/workflowtablehelper.h"
+
 namespace Ui {
 class FEniCS_Blood_Sim;
 }
@@ -114,10 +118,15 @@ private slots:
 
     void on_sagittalSlider_sliderMoved(int position);
 
+    void on_workflowTableWidget_cellClicked(int row, int column);
+
+
+
 private:
     Ui::FEniCS_Blood_Sim *ui;
     FileMenuBuilder *  _fileMenuBuilder;
     ImageProcessingSimMenu * _imProcMenuBuilder;
+    WorkflowTableHelper _workflowTableHelper;
 
     // Data
     FBS_ProjectData * _projectData;
@@ -156,13 +165,22 @@ private:
     void ClearImageInterfaceUI();
 
 
-
+    // Image Tab - Load
     void LoadAxialImage();
     void LoadSaggitalImage();
     void LoadCoronalImage();
     void LoadMainImageTab();
 
+    // Image Tab - Viewer
+    void loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer);
+    void clearViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer);
+    void setOrientation(vtkSmartPointer<vtkImageViewer2> imageViewer,int orientation);
 
+    // Image Tab - Slicer
+    void updateSlicerMinMax(int noSlice, int max, int min, int typeSlicer);
+    void resetSliders();
+
+    // Clear functions - Tab
     void clearImageTab();
     void clearMeshTab();
     void clearFenicsTab();
@@ -170,21 +188,15 @@ private:
     void clearVisualizationTab();
     void ClearConsoles();
 
-
+    // Initialize functions-  Tab
     void initializeImageTab();
     void initializeMeshTab();
     void initializeFenicsTab();
     void initializeSimulationTab();
     void initializeVisualizationTab();
 
-    void LoadSliceNumber();
-    void loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer);
-    void clearViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer);
-   // void setSlice();
-   // void setOrientation();
-    void setOrientation(vtkSmartPointer<vtkImageViewer2> imageViewer,int orientation);
-    void updateSlicerMinMax(int noSlice, int max, int min, int typeSlicer);
-    void resetSliders();
+
+
 
 };
 

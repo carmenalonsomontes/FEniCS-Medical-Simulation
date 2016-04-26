@@ -40,10 +40,6 @@ void ImageReader::readImage(ImageData * imageData,QString imPath)
         reader->SetFileName(imPath.toStdString().c_str());
         reader->Update();
         imageData->setImageData(reader->GetOutput());
-        //imageData->setImageViewer(reader->GetOutputPort());
-
-        imageData->setAlgorithmOutput(reader->GetOutputPort());
-
         mapper->SetInputConnection( reader->GetOutputPort() );
     }else
     {
@@ -51,20 +47,13 @@ void ImageReader::readImage(ImageData * imageData,QString imPath)
         _niftiReader->SetFileName(imPath.toStdString().c_str());
         _niftiReader->Update();
         imageData->setImageData(_niftiReader->GetOutput());
-        //imageData->setImageViewer(_niftiReader->GetOutputPort());
-        imageData->setAlgorithmOutput(_niftiReader->GetOutputPort());
         mapper->SetInputConnection( _niftiReader->GetOutputPort() );
     }
-
-
     property->SetInterpolationTypeToLinear();
-
     // connect up the volume to the property and the mapper
     volume->SetProperty( property );
     volume->SetMapper( mapper );
-
     mapper->SetBlendModeToMaximumIntensity();
-
     imageData->setVolumeData(volume);
 
     // No Slices

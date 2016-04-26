@@ -38,4 +38,8 @@
     <qresource prefix="/logo">
         <file>GUI_Module/images/logo/Fenics_logo.png</file>
     </qresource>
+    <qresource prefix="/frame">
+        <file>GUI_Module/images/frame/eye.png</file>
+        <file>GUI_Module/images/frame/eye_close.png</file>
+    </qresource>
 </RCC>

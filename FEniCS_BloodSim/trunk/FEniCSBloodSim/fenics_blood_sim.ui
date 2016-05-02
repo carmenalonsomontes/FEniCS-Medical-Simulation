@@ -1216,25 +1216,6 @@
              </item>
             </layout>
            </item>
-           <item>
-            <widget class="QSlider" name="brightNessverticalSlider">
-             <property name="minimumSize">
-              <size>
-               <width>20</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>20</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-            </widget>
-           </item>
           </layout>
          </item>
          <item>

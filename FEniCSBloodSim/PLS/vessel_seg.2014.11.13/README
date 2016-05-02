@@ -1,0 +1,142 @@
+
+GPU-Based Segmentation of Retinal Blood Vessels
+===============================================
+This is the first public release of the our retinal vessel tree extraction algorithm. It consists in an hybrid strategy based on global image filtering 
+and contour tracing. The algorithm was designed for efficient execution on 
+commodity graphics processing units (GPUs). The method was published in the 
+paper:
+
+  F. Arguello, D.L. Vilarino, D.B. Heras and A. Nieto 
+  GPU-Based Segmentation of Retinal Blood Vessels
+  Journal of Real-Time Image Processing, 2014
+  DOI: 10.1007/s11554-014-0469-z
+
+
+Directory contents:
+----------------------------------------------------------------------
+- vessel_seg.c : C version of the algorithm
+- vessel_seg.cu : CUDA version of the algorithm
+- README : this file
+- LICENSE
+- images : Input images directory
+- output : Output segmentation images directory
+
+
+Requirements:
+-----------------------------------------------------------------------
+- Linux system
+- unzip and imagemagick packages for image extraction and conversion
+- Gcc compiler (for C version of the program)
+- CUDA enabled GPU with compute capability 2.0  (for CUDA version of the program)
+- Retinal images from the DRIVE, STARE or MESSIDOR databases (see below)
+
+
+Compilation and execution:
+-----------------------------------------------------------------------
+CPU CODE: vessel_seg.c
+tested: Linux (gcc version 4.6.3)
+compile with: gcc vessel_seg.c -O3 -lm
+execute: ./a.out
+
+GPU CODE: vessel_seg.cu
+tested: Linux (CUDA version 4.2)
+compile with: nvcc -arch=sm_20 vessel_seg.cu -O3 -lm
+execute: ./a.out
+
+input: image files in format PPM (color) and PGM (gray)
+       in directory ./images
+output: vessel segmentations 
+       in directory ./output
+
+
+Retinal images:
+------------------------------------------------------------------------
+1) DRIVE database
+   - download DRIVE.zip from http://www.isi.uu.nl/Research/Databases/DRIVE/
+   - save it in: images/drive
+   - execute script in directory images/drive: bash extract_images.sh 
+     (it converts images tiff -> ppm and gif -> pgm)
+     (required packages: unzip, imagemagick)
+   - select in vessel_seg.c and vessel_seg.cu
+     #define COLLECTION DRIVE
+
+2) STARE database
+   - download stare.zip and labels-ah.tar
+     from http://www.ces.clemson.edu/~ahoover/stare/
+   - save them in: images/stare
+   - execute script in directory images/stare: bash extract_images.sh 
+      (required packages: unzip, imagemagick)
+   - select in vessel_seg.c and vessel_seg.cu
+     #define COLLECTION STARE
+
+3) MESSIDOR database
+   - download Base11.zip from http://messidor.crihan.fr/download.php
+   - save it in: images/messidor
+   - execute script in directory images/messidor: bash extract_images.sh 
+      (required packages: unzip, imagemagick)
+   - select in vessel_seg.c and vessel_seg.cu
+     #define COLLECTION MESSIDOR
+
+
+License:
+--------------------------------------------------------------
+Please refer to the LICENSE file.
+
+=========================================================================
+
+ACCURACY RESULTS
+---------------
+
+DRIVE DATABASE:
+
+Results(01_test) Sens=0.805624, Spec=0.965486, MAA=0.944531
+Results(02_test) Sens=0.792723, Spec=0.971175, MAA=0.944439
+Results(03_test) Sens=0.626528, Spec=0.981830, MAA=0.930066
+Results(04_test) Sens=0.734898, Spec=0.979380, MAA=0.946783
+Results(05_test) Sens=0.660302, Spec=0.987713, MAA=0.943283
+Results(06_test) Sens=0.640274, Spec=0.984918, MAA=0.936281
+Results(07_test) Sens=0.700604, Spec=0.975498, MAA=0.939102
+Results(08_test) Sens=0.630744, Spec=0.982431, MAA=0.938228
+Results(09_test) Sens=0.638332, Spec=0.987741, MAA=0.946701
+Results(10_test) Sens=0.695197, Spec=0.981177, MAA=0.947020
+Results(11_test) Sens=0.750584, Spec=0.962240, MAA=0.934802
+Results(12_test) Sens=0.726360, Spec=0.973387, MAA=0.942466
+Results(13_test) Sens=0.684175, Spec=0.979943, MAA=0.938013
+Results(14_test) Sens=0.772558, Spec=0.968703, MAA=0.945575
+Results(15_test) Sens=0.793707, Spec=0.959010, MAA=0.941845
+Results(16_test) Sens=0.751502, Spec=0.975170, MAA=0.945905
+Results(17_test) Sens=0.693835, Spec=0.979342, MAA=0.944139
+Results(18_test) Sens=0.761360, Spec=0.968615, MAA=0.944810
+Results(19_test) Sens=0.820331, Spec=0.976482, MAA=0.957689
+Results(20_test) Sens=0.739120, Spec=0.975701, MAA=0.950471
+-----------------------------------------------------------
+MEAN             Sens=0.720938, Spec=0.975797, MAA=0.943108
+
+===========================================================
+
+STARE DATABASE:
+
+Results(im0001) Sens=0.633835, Spec=0.963570, MAA=0.927785
+Results(im0002) Sens=0.545809, Spec=0.964098, MAA=0.925974
+Results(im0003) Sens=0.790886, Spec=0.955058, MAA=0.941735
+Results(im0004) Sens=0.289510, Spec=0.997761, MAA=0.925446
+Results(im0005) Sens=0.792247, Spec=0.960142, MAA=0.939576
+Results(im0044) Sens=0.867880, Spec=0.958883, MAA=0.951140
+Results(im0077) Sens=0.909991, Spec=0.944553, MAA=0.940770
+Results(im0081) Sens=0.883497, Spec=0.954478, MAA=0.947243
+Results(im0082) Sens=0.862564, Spec=0.957724, MAA=0.947523
+Results(im0139) Sens=0.768476, Spec=0.968449, MAA=0.946511
+Results(im0162) Sens=0.895461, Spec=0.949233, MAA=0.944001
+Results(im0163) Sens=0.903362, Spec=0.958937, MAA=0.953093
+Results(im0235) Sens=0.807480, Spec=0.968063, MAA=0.948487
+Results(im0236) Sens=0.790917, Spec=0.970162, MAA=0.947914
+Results(im0239) Sens=0.782779, Spec=0.968136, MAA=0.946369
+Results(im0240) Sens=0.534514, Spec=0.988844, MAA=0.925322
+Results(im0255) Sens=0.829433, Spec=0.975162, MAA=0.957336
+Results(im0291) Sens=0.606032, Spec=0.994527, MAA=0.967662
+Results(im0319) Sens=0.631022, Spec=0.991032, MAA=0.969840
+Results(im0324) Sens=0.483493, Spec=0.987637, MAA=0.941865
+----------------------------------------------------------
+MEAN            Sens=0.730459, Spec=0.968822, MAA=0.944780
+
+

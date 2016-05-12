@@ -5,7 +5,6 @@ class ImageWorkflow: public GenericWorkflowDialog
 {
 public:
     ImageWorkflow();
-    void loadDragableIcons();
 
 };
 

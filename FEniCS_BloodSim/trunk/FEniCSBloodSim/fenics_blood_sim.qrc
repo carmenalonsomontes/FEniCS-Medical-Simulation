@@ -42,4 +42,9 @@
         <file>GUI_Module/images/frame/eye.png</file>
         <file>GUI_Module/images/frame/eye_close.png</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>GUI_Module/images/boat.png</file>
+        <file>GUI_Module/images/car.png</file>
+        <file>GUI_Module/images/house.png</file>
+    </qresource>
 </RCC>

@@ -1,0 +1,10 @@
+<xml>
+    <imaging-functions>
+        <category name="noise removal">
+            <function name="canny detector" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage"/>
+
+        </category>
+    </imaging-functions>
+
+
+</xml>

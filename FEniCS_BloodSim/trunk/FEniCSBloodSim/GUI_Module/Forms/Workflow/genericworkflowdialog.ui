@@ -10,6 +10,9 @@
     <height>829</height>
    </rect>
   </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
@@ -19,49 +22,68 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QToolBox" name="dragableToolBox">
-      <property name="currentIndex">
-       <number>0</number>
+     <widget class="QTabWidget" name="tabMethods">
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
       </property>
-      <widget class="QWidget" name="page">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>210</width>
-         <height>716</height>
-        </rect>
+      <property name="acceptDrops">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="tabMethods1">
+       <property name="acceptDrops">
+        <bool>true</bool>
        </property>
-       <attribute name="label">
-        <string>Page 1</string>
+       <attribute name="title">
+        <string>Tab 1</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QTableWidget" name="tableMethods1">
+          <property name="acceptDrops">
+           <bool>true</bool>
+          </property>
+          <column>
+           <property name="text">
+            <string>no.</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>action</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
       </widget>
-      <widget class="QWidget" name="page_2">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>210</width>
-         <height>716</height>
-        </rect>
+      <widget class="QWidget" name="tabMethods2">
+       <property name="acceptDrops">
+        <bool>true</bool>
        </property>
-       <attribute name="label">
-        <string>Page 2</string>
+       <attribute name="title">
+        <string>Tab 2</string>
        </attribute>
       </widget>
      </widget>
-     <widget class="QFrame" name="workflowFrame">
+     <widget class="QFrame" name="wkfFrame">
+      <property name="acceptDrops">
+       <bool>true</bool>
+      </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2"/>
      </widget>
     </widget>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
+    <widget class="QDialogButtonBox" name="wkfButtonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -75,7 +97,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>wkfButtonBox</sender>
    <signal>accepted()</signal>
    <receiver>GenericWorkflowDialog</receiver>
    <slot>accept()</slot>
@@ -91,7 +113,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>wkfButtonBox</sender>
    <signal>rejected()</signal>
    <receiver>GenericWorkflowDialog</receiver>
    <slot>reject()</slot>

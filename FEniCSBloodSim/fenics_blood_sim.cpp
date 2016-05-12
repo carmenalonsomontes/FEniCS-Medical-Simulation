@@ -41,6 +41,7 @@
 
 // My libraries
 #include "GUI_Module/UIHelpers/workflowtablehelper.h"
+#include "GUI_Module/Forms/Workflow/imageworkflow.h"
 
 
 using namespace std;
@@ -832,5 +833,9 @@ void FEniCS_Blood_Sim::on_workflowTableWidget_cellClicked(int row, int column)
 void FEniCS_Blood_Sim::on_workflowConfigButton_clicked()
 {
     // TODO
+    GenericWorkflowDialog _imgWkf;
+    //_imgWkf.loadDragableIcons();
+    _imgWkf.loadDragableMethods();
+    _imgWkf.exec();
 
 }

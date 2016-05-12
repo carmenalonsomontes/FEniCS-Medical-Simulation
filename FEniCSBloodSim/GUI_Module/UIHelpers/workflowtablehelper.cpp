@@ -27,6 +27,20 @@ void WorkflowTableHelper::addElementToTable(QString _action,int iconType)
 
 
 }
+
+
+void WorkflowTableHelper::addOnlyDesc(QString _action)
+{
+    int _lastRow = registeredTable->rowCount();
+    registeredTable->insertRow(_lastRow);
+
+    // Add Action
+    registeredTable->setItem(_lastRow,ONLY_DESC_COLUMN,addNonEditableText(_action));
+    registeredTable->setItem(_lastRow,CHECKABLE_COLUMN,addSelectableCheckColumn());
+    registeredTable->resizeColumnsToContents();
+}
+
+
 void WorkflowTableHelper::clearTable()
 {
     int _lastRow = registeredTable->rowCount();
@@ -68,6 +82,8 @@ QLabel * WorkflowTableHelper::addIcon(int iconType)
 
 int WorkflowTableHelper::modifyEyeInRow(int row)
 {
+    if (eyeTableOpen.isEmpty())
+        return -1;
     int _cValue = eyeTableOpen.at(row);
     int iconType = EYE_CLOSED;
     if (_cValue == EYE_CLOSED)
@@ -76,4 +92,12 @@ int WorkflowTableHelper::modifyEyeInRow(int row)
     registeredTable->setCellWidget(row,EYE_COLUMN,addIcon(iconType));
     eyeTableOpen.replace(row,iconType);
     return iconType;
+}
+
+
+QTableWidgetItem * WorkflowTableHelper::addSelectableCheckColumn()
+{
+    QTableWidgetItem * _checkStatusItem = new QTableWidgetItem("");
+    _checkStatusItem->setCheckState(Qt::Unchecked);
+    return _checkStatusItem;
 }

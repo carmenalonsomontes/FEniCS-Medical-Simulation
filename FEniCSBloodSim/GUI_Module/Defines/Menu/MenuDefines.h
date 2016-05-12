@@ -23,10 +23,14 @@ enum ImProcMenuUI{
 };
 
 enum ImProcTableCols{
-    EYE_COLUMN = 0,
+    EYE_COLUMN = 0,    
     DESC_COLUMN = 1
 };
 
+enum genericWkfDialog{
+    CHECKABLE_COLUMN = 0,
+    ONLY_DESC_COLUMN = 1// In the case we only want a column
+};
 
 // FILES NAMEs
 

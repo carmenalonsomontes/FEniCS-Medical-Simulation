@@ -17,7 +17,7 @@ public:
 private:
 
     void loadSpecificMethods();
-    WorkflowData  _wkfData;
+
 
 
     void loadInitialMenu();

@@ -12,6 +12,19 @@ void WorkflowTableHelper::registerTableUI(QTableWidget * _table)
     registeredTable = _table;
 }
 
+void WorkflowTableHelper::registerTableListUI(QTableWidget * _table)
+{
+        registeredTableList.append(_table);
+
+}
+
+void WorkflowTableHelper::setCurrentRegisteredTableFromList(int index)
+{
+    if (index < registeredTableList.size())
+        registeredTable = registeredTableList.at(index);
+}
+
+
 
 void WorkflowTableHelper::addElementToTable(QString _action,int iconType)
 {
@@ -100,4 +113,12 @@ QTableWidgetItem * WorkflowTableHelper::addSelectableCheckColumn()
     QTableWidgetItem * _checkStatusItem = new QTableWidgetItem("");
     _checkStatusItem->setCheckState(Qt::Unchecked);
     return _checkStatusItem;
+}
+
+
+bool WorkflowTableHelper::isRegistered(int index)
+{
+    bool isRegistered = true;
+    if (index >= registeredTableList.size()) isRegistered = false;
+    return isRegistered;
 }

@@ -21,17 +21,18 @@ public:
     void loadDragableMethods();
    // void createProgram();
 
+protected:
+    WorkflowTableHelper * _wkfHelper;
+    DragItem * _dragableArea ;
 private slots:
 
     void on_wkfButtonBox_accepted();
-
-
     void on_tableMethods1_cellClicked(int row, int column);
+
 
 private:
     Ui::GenericWorkflowDialog *ui;
-    WorkflowTableHelper * _wkfHelper;
-    DragItem * _dragableArea ;
+
 
     void loadIcosn(int row);
 

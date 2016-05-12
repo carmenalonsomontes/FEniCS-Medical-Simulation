@@ -833,9 +833,15 @@ void FEniCS_Blood_Sim::on_workflowTableWidget_cellClicked(int row, int column)
 void FEniCS_Blood_Sim::on_workflowConfigButton_clicked()
 {
     // TODO
-    GenericWorkflowDialog _imgWkf;
+    /*GenericWorkflowDialog _imgWkf;
     //_imgWkf.loadDragableIcons();
     _imgWkf.loadDragableMethods();
+    _imgWkf.exec();*/
+
+    ImageWorkflow _imgWkf;
+    _imgWkf.loadDragableMethods();
     _imgWkf.exec();
+
+
 
 }

@@ -18,22 +18,20 @@ public:
     explicit GenericWorkflowDialog(QWidget *parent = 0);
     ~GenericWorkflowDialog();
 
-    void loadDragableMethods();
-   // void createProgram();
-
 protected:
     WorkflowTableHelper * _wkfHelper;
     DragItem * _dragableArea ;
+
+    void createTabWithName(int tabIndex, const QString text);
+
 private slots:
 
     void on_wkfButtonBox_accepted();
     void on_tableMethods1_cellClicked(int row, int column);
-
+    void on_tabMethods_currentChanged(int index);
 
 private:
     Ui::GenericWorkflowDialog *ui;
-
-
     void loadIcosn(int row);
 
 };

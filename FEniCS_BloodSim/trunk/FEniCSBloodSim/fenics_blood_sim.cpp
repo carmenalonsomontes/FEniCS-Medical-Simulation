@@ -839,7 +839,7 @@ void FEniCS_Blood_Sim::on_workflowConfigButton_clicked()
     _imgWkf.exec();*/
 
     ImageWorkflow _imgWkf;
-    _imgWkf.loadDragableMethods();
+    //_imgWkf.loadDragableMethods();
     _imgWkf.exec();
 
 

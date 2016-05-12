@@ -10,33 +10,15 @@ DragItem::DragItem(QWidget *parent)
     setMinimumSize(200, 200);
     setFrameStyle(QFrame::Sunken | QFrame::StyledPanel);
     setAcceptDrops(true);
-
-   /* QLabel *boatIcon = new QLabel(this);
-    boatIcon->setPixmap(QPixmap(":/images/GUI_Module/images/boat.png"));
-    boatIcon->move(10, 10);
-    boatIcon->show();
-    boatIcon->setAttribute(Qt::WA_DeleteOnClose);
-
-    QLabel *carIcon = new QLabel(this);
-    carIcon->setPixmap(QPixmap(":/images/GUI_Module/images/car.png"));
-    carIcon->move(100, 10);
-    carIcon->show();
-    carIcon->setAttribute(Qt::WA_DeleteOnClose);
-
-    QLabel *houseIcon = new QLabel(this);
-    houseIcon->setPixmap(QPixmap(":/images/GUI_Module/images/house.png"));
-    houseIcon->move(10, 80);
-    houseIcon->show();
-    houseIcon->setAttribute(Qt::WA_DeleteOnClose);*/
 }
 
 
 void DragItem::insertItem(int _option)
-{
+{ // TODO
  if (_option ==0)
  {
     QLabel *boatIcon = new QLabel(this);
-        boatIcon->setPixmap(QPixmap(":/images/GUI_Module/images/boat.png"));
+        boatIcon->setPixmap(QPixmap(":/images/GUI_Module/images/images/chart_line.png"));
         boatIcon->move(10, 10);
         boatIcon->show();
         boatIcon->setAttribute(Qt::WA_DeleteOnClose);
@@ -44,7 +26,7 @@ void DragItem::insertItem(int _option)
  if (_option ==1)
  {
      QLabel *carIcon = new QLabel(this);
-     carIcon->setPixmap(QPixmap(":/images/GUI_Module/images/car.png"));
+     carIcon->setPixmap(QPixmap(":/images/GUI_Module/images/images/link.png"));
      carIcon->move(100, 10);
      carIcon->show();
      carIcon->setAttribute(Qt::WA_DeleteOnClose);

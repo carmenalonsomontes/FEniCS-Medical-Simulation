@@ -4,15 +4,28 @@
 
 #include "GUI_Module/UIHelpers/workflowtablehelper.h"
 #include "GUI_Module/DragItem/dragitem.h"
+#include "GUI_Module/Data/WorkflowData/workflowdata.h"
+#include "GUI_Module/Data/WorkflowData/categorywkfdata.h"
+#include "GUI_Module/Data/WorkflowData/imagingwkffunctiondata.h"
+
 class ImageWorkflow: public GenericWorkflowDialog
 {
 public:
     ImageWorkflow();
-    void loadDragableMethods();
+
 
 private:
 
-   //void loadIcons(int row);
+    void loadSpecificMethods();
+    WorkflowData  _wkfData;
+
+
+    void loadInitialMenu();
+    void fillMenuTable(CategoryWkfData _catObj);
+
+    void fillWorkflowTabInfo(QList<CategoryWkfData> catList);
+    void createCategoryTabs(int noTabs,QList<CategoryWkfData> catList);
+
 
 };
 

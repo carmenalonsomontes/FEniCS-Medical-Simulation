@@ -1,8 +1,16 @@
 <xml>
     <imaging-functions>
         <category name="noise removal">
-            <function name="canny detector" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage"/>
-
+            <function name="canny detector" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+            </function>
+            <function name="canny detector2" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+            </function>
+        </category>
+        <category name="noise removal2">
+            <function name="canny detector3" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+            </function>
+            <function name="canny detector4" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+            </function>
         </category>
     </imaging-functions>
 

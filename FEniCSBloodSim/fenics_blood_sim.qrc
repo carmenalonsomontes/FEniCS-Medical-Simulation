@@ -58,4 +58,7 @@
         <file>GUI_Module/images/images/link_go.png</file>
         <file>GUI_Module/images/images/wrench.png</file>
     </qresource>
+    <qresource prefix="/files">
+        <file>GUI_Module/Forms/Workflow/XML/ImageXmlMethods.xml</file>
+    </qresource>
 </RCC>

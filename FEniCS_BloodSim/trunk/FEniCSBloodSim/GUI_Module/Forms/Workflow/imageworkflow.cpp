@@ -7,8 +7,17 @@ ImageWorkflow::ImageWorkflow()
 }
 
 
-void ImageWorkflow::loadDragableIcons()
+/*void ImageWorkflow::loadDragableIcons()
 {
-    DragItem * _item = new DragItem();
+
+
+}*/
+
+
+
+void ImageWorkflow::loadDragableMethods()
+{
+    _wkfHelper->addOnlyDesc("Mi imagen1");
+    _wkfHelper->addOnlyDesc("Mi imagen2");
 
 }

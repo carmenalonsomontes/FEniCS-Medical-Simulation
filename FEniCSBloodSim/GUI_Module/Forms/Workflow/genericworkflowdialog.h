@@ -5,6 +5,9 @@
 
 #include "GUI_Module/UIHelpers/workflowtablehelper.h"
 #include "GUI_Module/DragItem/dragitem.h"
+#include "GUI_Module/Data/WorkflowData/workflowdata.h"
+#include "GUI_Module/Data/WorkflowData/categorywkfdata.h"
+#include "GUI_Module/Data/WorkflowData/imagingwkffunctiondata.h"
 
 namespace Ui {
 class GenericWorkflowDialog;
@@ -21,6 +24,7 @@ public:
 protected:
     WorkflowTableHelper * _wkfHelper;
     DragItem * _dragableArea ;
+    WorkflowData  _wkfData;
 
     void createTabWithName(int tabIndex, const QString text);
 
@@ -32,7 +36,10 @@ private slots:
 
 private:
     Ui::GenericWorkflowDialog *ui;
+
     void loadIcosn(int row);
+    void fillTableWithInformation(int index);
+    void addSignals(int pos);
 
 };
 

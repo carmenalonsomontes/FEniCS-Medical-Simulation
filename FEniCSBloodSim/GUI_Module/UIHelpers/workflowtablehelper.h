@@ -14,6 +14,11 @@ public:
 
     void registerTableUI(QTableWidget * _table);
 
+    void registerTableListUI(QTableWidget * _table);
+
+    void setCurrentRegisteredTableFromList(int index);
+
+
     void addElementToTable(QString _action,int iconType);
 
     void addOnlyDesc(QString _action);
@@ -21,8 +26,11 @@ public:
     int modifyEyeInRow(int row);
 
     void clearTable();
+
+    bool isRegistered(int index);
 private:
     QTableWidget * registeredTable;
+    QList<QTableWidget *> registeredTableList;
     QList<int> eyeTableOpen;
 
     QTableWidgetItem * addNonEditableText(QString _value);

@@ -12,6 +12,12 @@
             <function name="canny detector4" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
             </function>
         </category>
+        <category name="noise removal5">
+            <function name="canny detector7" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+            </function>
+            <function name="canny detector6" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+            </function>
+        </category>
     </imaging-functions>
 
 

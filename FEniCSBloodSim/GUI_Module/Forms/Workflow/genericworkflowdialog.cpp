@@ -3,6 +3,10 @@
 
 #include "GUI_Module/Defines/Menu/MenuDefines.h"
 
+#include <QTableWidgetItem>
+#include <QTableWidget>
+#include <QHBoxLayout>
+
 GenericWorkflowDialog::GenericWorkflowDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::GenericWorkflowDialog)
@@ -12,7 +16,8 @@ GenericWorkflowDialog::GenericWorkflowDialog(QWidget *parent) :
     ui->tableMethods1->setDragEnabled(true);     
 
     _wkfHelper  = new WorkflowTableHelper();
-    _wkfHelper->registerTableUI(ui->tableMethods1);
+    _wkfHelper->registerTableListUI(ui->tableMethods1);
+    _wkfHelper->setCurrentRegisteredTableFromList(0);
 
     // Dragable Area
     _dragableArea = new DragItem(this);
@@ -44,8 +49,6 @@ void GenericWorkflowDialog::on_tableMethods1_cellClicked(int row, int column)
 {
     if (column == CHECKABLE_COLUMN)
         loadIcosn(row);
-
-
 }
 
 void GenericWorkflowDialog::loadIcosn(int row)
@@ -64,21 +67,110 @@ void GenericWorkflowDialog::createTabWithName(int tabIndex, const QString text)
     }
 }
 
-#include <QTableWidget>
-#include <QHBoxLayout>
+
 
 void GenericWorkflowDialog::on_tabMethods_currentChanged(int index)
 {
     // Insert Tablewidget
-    //int cIndex = ui->tabMethods->currentIndex();
+    fillTableWithInformation(index);
+}
+
+void GenericWorkflowDialog::fillTableWithInformation(int index)
+{
     QWidget * _cWidget = ui->tabMethods->currentWidget();
+    QList<CategoryWkfData> _catList = _wkfData.getCategoryList();
+    if (!_wkfHelper->isRegistered(index))
+    {
+
+        QTableWidget * _table = new QTableWidget();
+        _table->insertColumn(CHECKABLE_COLUMN);
+        _table->insertColumn(ONLY_DESC_COLUMN);
+
+        _wkfHelper->registerTableListUI(_table);
+        _wkfHelper->setCurrentRegisteredTableFromList(index);
+
+        if (index < _catList.size())
+        {
+            CategoryWkfData _catSelected = _catList.at(index);
+            QList<ImagingWkfFunctionData> _imgList = _catSelected.getListFunctions();
+
+            for (int i = 0; i< _imgList.size();i++)
+            {
+                ImagingWkfFunctionData cFunction = _imgList.at(i);
+                _wkfHelper->addOnlyDesc(cFunction.getName());
+
+            }
+        }
+        // Nota: necesito el signalMapper
+        //connect(_table, SIGNAL(cellClicked(int,int)), _signalMapper, SLOT(map()),Qt::UniqueConnection);
+        //_signalMapper->setMapping(_comboItem,QString("%1-%2").arg(i).arg(ColumnSelVal));
+        //connect(_signalMapper, SIGNAL(mapped(const QString &)),this, SLOT(changedComboValueByUser(const QString &)),Qt::UniqueConnection);
+
+        QHBoxLayout *l = new QHBoxLayout(_cWidget);
+        l->addWidget(_table);
+
+    }
+}
+void GenericWorkflowDialog::addSignals(int pos)
+{
 
 
-    QTableWidget * _table = new QTableWidget();
-    _table->insertRow(0);
-    _table->insertRow(1);
-    QHBoxLayout *l = new QHBoxLayout(_cWidget);
-    l->addWidget(_table);
 
 
+/*
+    bool _foundCombos = false;
+    bool _foundLineEdit = false;
+    bool _foundCheckList = false;
+
+    if (ui->solverVariablesTable->rowCount() > 0)
+    {
+        for (int i = 0; i< ui->solverVariablesTable->rowCount();i++)
+        {
+                QWidget * _item;
+                _item = ui->solverVariablesTable->cellWidget(i,ColumnSelVal);
+
+                if (_item)
+                {
+                    QComboBox *_comboItem = qobject_cast<QComboBox *> (_item);
+                    if (_comboItem)
+                    {
+                        if (_comboItem->isEditable())
+                        {
+                            connect(_comboItem,SIGNAL(editTextChanged(QString)),_signalMapper,SLOT(map()),Qt::UniqueConnection);
+                            _signalMapper->setMapping(_comboItem,QString("%1-%2").arg(i).arg(ColumnSelVal));
+                        }
+                        connect(_comboItem, SIGNAL(currentIndexChanged(int)), _signalMapper, SLOT(map()),Qt::UniqueConnection);
+                       _signalMapper->setMapping(_comboItem, QString("%1-%2").arg(i).arg(ColumnSelVal));
+
+                        _foundCombos = true;
+                    }else
+                    {
+                        QLineEdit * _lineEdit = qobject_cast<QLineEdit *> (_item);
+                        if (_lineEdit)
+                        {
+                            connect(_lineEdit,SIGNAL(editingFinished()),_signalMapperTxtEdit,SLOT(map()),Qt::UniqueConnection);
+                            _signalMapperTxtEdit->setMapping(_lineEdit,QString("%1").arg(i));
+                            _foundLineEdit = true;
+                        }
+                        else
+                        {
+                            QListWidget * _checkList = qobject_cast<QListWidget *> (_item);
+                            if (_checkList)
+                            {
+                                connect(_checkList,SIGNAL(itemClicked(QListWidgetItem*)),_signalMapperCheckList,SLOT(map()),Qt::UniqueConnection);
+                               _signalMapperCheckList->setMapping(_checkList,QString("%1").arg(i));
+                               _foundCheckList = true;
+                            }
+                        }
+                    }
+                }
+        }
+    }
+    if (_foundCombos)
+        connect(_signalMapper, SIGNAL(mapped(const QString &)),this, SLOT(changedComboValueByUser(const QString &)),Qt::UniqueConnection);
+    if (_foundLineEdit)
+        connect(_signalMapperTxtEdit, SIGNAL(mapped(const QString &)),this, SLOT(textChangedSlot(const QString &)),Qt::UniqueConnection);
+    if (_foundCheckList)
+        connect(_signalMapperCheckList, SIGNAL(mapped(const QString &)),this, SLOT(handleItem(const QString &)),Qt::UniqueConnection);
+        */
 }

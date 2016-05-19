@@ -38,7 +38,7 @@ void ImageWorkflow::loadInitialMenu()
 
 void ImageWorkflow::fillWorkflowTabInfo(QList<CategoryWkfData> catList)
 {
-
+    // Creating the tabs
     createCategoryTabs(catList.size(),catList);
 
     // Fill the table of the first Tab

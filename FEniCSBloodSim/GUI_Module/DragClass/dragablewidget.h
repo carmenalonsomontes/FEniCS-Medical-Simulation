@@ -1,22 +1,23 @@
 #ifndef DRAGABLEWIDGET_H
 #define DRAGABLEWIDGET_H
 
-#include <QFrame>
+#include <QWidget>
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
 #include <QMouseEvent>
 
 
-class DragableWidget : public QFrame
+class DragableWidget : public QWidget
 {
 public:
     DragableWidget(QWidget *parent = 0);
+
 protected:
-    void dragEnterEvent(QDragEnterEvent *event);// Q_DECL_OVERRIDE;
-    void dragMoveEvent(QDragMoveEvent *event); // Q_DECL_OVERRIDE;
-    void dropEvent(QDropEvent *event); // Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event);// Q_DECL_OVERRIDE;
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
+    void dropEvent(QDropEvent *event);
+
 };
 
 #endif // DRAGABLEWIDGET_H

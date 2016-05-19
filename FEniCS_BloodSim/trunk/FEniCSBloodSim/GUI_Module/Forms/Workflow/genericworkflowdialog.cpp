@@ -6,6 +6,7 @@
 #include <QTableWidgetItem>
 #include <QTableWidget>
 #include <QHBoxLayout>
+#include <QObject>
 
 GenericWorkflowDialog::GenericWorkflowDialog(QWidget *parent) :
     QDialog(parent),
@@ -48,12 +49,31 @@ void GenericWorkflowDialog::on_wkfButtonBox_accepted()
 void GenericWorkflowDialog::on_tableMethods1_cellClicked(int row, int column)
 {
     if (column == CHECKABLE_COLUMN)
-        loadIcosn(row);
+        loadIcon(row);
 }
 
-void GenericWorkflowDialog::loadIcosn(int row)
+
+
+void GenericWorkflowDialog::loadIcon(int row)
 {
-    _dragableArea->insertItem(row);
+    QList<CategoryWkfData> _catList = _wkfData.getCategoryList();
+    int _cTab = ui->tabMethods->currentIndex();
+    if (_cTab < _catList.size())
+    {
+        CategoryWkfData _cCategory = _catList.at(_cTab);
+        QString _iconPath = _cCategory.getIconPath();
+        QString _description = buildDescription(_cCategory,row);
+        _dragableArea->insertItem(_iconPath,_description);
+    }
+}
+
+QString GenericWorkflowDialog::buildDescription(CategoryWkfData _cCategory, int _row)
+{
+    QString _text = "";
+    _text = "Category: " + _cCategory.getCategoryName() + "\n";
+    _text = _text + "Function: " + "Row:"+ QString::number(_row);
+    return _text;
+
 }
 
 void GenericWorkflowDialog::createTabWithName(int tabIndex, const QString text)
@@ -72,7 +92,7 @@ void GenericWorkflowDialog::createTabWithName(int tabIndex, const QString text)
 void GenericWorkflowDialog::on_tabMethods_currentChanged(int index)
 {
     // Insert Tablewidget
-    fillTableWithInformation(index);
+    fillTableWithInformation(index);  
 }
 
 void GenericWorkflowDialog::fillTableWithInformation(int index)
@@ -98,79 +118,13 @@ void GenericWorkflowDialog::fillTableWithInformation(int index)
             {
                 ImagingWkfFunctionData cFunction = _imgList.at(i);
                 _wkfHelper->addOnlyDesc(cFunction.getName());
-
             }
         }
-        // Nota: necesito el signalMapper
-        //connect(_table, SIGNAL(cellClicked(int,int)), _signalMapper, SLOT(map()),Qt::UniqueConnection);
-        //_signalMapper->setMapping(_comboItem,QString("%1-%2").arg(i).arg(ColumnSelVal));
-        //connect(_signalMapper, SIGNAL(mapped(const QString &)),this, SLOT(changedComboValueByUser(const QString &)),Qt::UniqueConnection);
+
+        connect(_table, SIGNAL(cellClicked(int,int)), this, SLOT(on_tableMethods1_cellClicked(int,int)));
 
         QHBoxLayout *l = new QHBoxLayout(_cWidget);
         l->addWidget(_table);
 
     }
-}
-void GenericWorkflowDialog::addSignals(int pos)
-{
-
-
-
-
-/*
-    bool _foundCombos = false;
-    bool _foundLineEdit = false;
-    bool _foundCheckList = false;
-
-    if (ui->solverVariablesTable->rowCount() > 0)
-    {
-        for (int i = 0; i< ui->solverVariablesTable->rowCount();i++)
-        {
-                QWidget * _item;
-                _item = ui->solverVariablesTable->cellWidget(i,ColumnSelVal);
-
-                if (_item)
-                {
-                    QComboBox *_comboItem = qobject_cast<QComboBox *> (_item);
-                    if (_comboItem)
-                    {
-                        if (_comboItem->isEditable())
-                        {
-                            connect(_comboItem,SIGNAL(editTextChanged(QString)),_signalMapper,SLOT(map()),Qt::UniqueConnection);
-                            _signalMapper->setMapping(_comboItem,QString("%1-%2").arg(i).arg(ColumnSelVal));
-                        }
-                        connect(_comboItem, SIGNAL(currentIndexChanged(int)), _signalMapper, SLOT(map()),Qt::UniqueConnection);
-                       _signalMapper->setMapping(_comboItem, QString("%1-%2").arg(i).arg(ColumnSelVal));
-
-                        _foundCombos = true;
-                    }else
-                    {
-                        QLineEdit * _lineEdit = qobject_cast<QLineEdit *> (_item);
-                        if (_lineEdit)
-                        {
-                            connect(_lineEdit,SIGNAL(editingFinished()),_signalMapperTxtEdit,SLOT(map()),Qt::UniqueConnection);
-                            _signalMapperTxtEdit->setMapping(_lineEdit,QString("%1").arg(i));
-                            _foundLineEdit = true;
-                        }
-                        else
-                        {
-                            QListWidget * _checkList = qobject_cast<QListWidget *> (_item);
-                            if (_checkList)
-                            {
-                                connect(_checkList,SIGNAL(itemClicked(QListWidgetItem*)),_signalMapperCheckList,SLOT(map()),Qt::UniqueConnection);
-                               _signalMapperCheckList->setMapping(_checkList,QString("%1").arg(i));
-                               _foundCheckList = true;
-                            }
-                        }
-                    }
-                }
-        }
-    }
-    if (_foundCombos)
-        connect(_signalMapper, SIGNAL(mapped(const QString &)),this, SLOT(changedComboValueByUser(const QString &)),Qt::UniqueConnection);
-    if (_foundLineEdit)
-        connect(_signalMapperTxtEdit, SIGNAL(mapped(const QString &)),this, SLOT(textChangedSlot(const QString &)),Qt::UniqueConnection);
-    if (_foundCheckList)
-        connect(_signalMapperCheckList, SIGNAL(mapped(const QString &)),this, SLOT(handleItem(const QString &)),Qt::UniqueConnection);
-        */
 }

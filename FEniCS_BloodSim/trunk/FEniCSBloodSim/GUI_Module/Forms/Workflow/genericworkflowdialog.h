@@ -37,9 +37,10 @@ private slots:
 private:
     Ui::GenericWorkflowDialog *ui;
 
-    void loadIcosn(int row);
+    void loadIcon(int row);
     void fillTableWithInformation(int index);
-    void addSignals(int pos);
+
+    QString buildDescription(CategoryWkfData _cCategory, int _row);
 
 };
 

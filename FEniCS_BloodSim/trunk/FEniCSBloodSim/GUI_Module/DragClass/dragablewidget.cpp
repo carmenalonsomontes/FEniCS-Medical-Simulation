@@ -1,122 +1,120 @@
 #include "dragablewidget.h"
 
-#include <QLabel>
-#include <QPixmap>
-#include <QPainter>
+#include <QString>
+#include <QFile>
+#include <QTextStream>
+#include <QPalette>
+#include <QPoint>
+#include <QMimeData>
+#include <QByteArray>
+#include <QDataStream>
+#include <QStringList>
+#include <QDrag>
+
+#include "draglabel.h"
 
 DragableWidget::DragableWidget(QWidget *parent)
-    : QFrame(parent)
+    : QWidget(parent)
 {
-    /*setMinimumSize(200, 200);
-    setFrameStyle(QFrame::Sunken | QFrame::StyledPanel);
+    QFile dictionaryFile(":/dictionary/words.txt");
+    dictionaryFile.open(QFile::ReadOnly);
+    QTextStream inputStream(&dictionaryFile);
+
+    int x = 5;
+    int y = 5;
+
+    while (!inputStream.atEnd()) {
+        QString word;
+        inputStream >> word;
+        if (!word.isEmpty()) {
+            DragLabel *wordLabel = new DragLabel(word, this);
+            wordLabel->move(x, y);
+            wordLabel->show();
+            x += wordLabel->width() + 2;
+            if (x >= 245) {
+                x = 5;
+                y += wordLabel->height() + 2;
+            }
+        }
+    }
+
+    QPalette newPalette = palette();
+    newPalette.setColor(QPalette::Window, Qt::white);
+    setPalette(newPalette);
+
+    setMinimumSize(400, qMax(200, y));
+    setWindowTitle(tr("Fridge Magnets"));
     setAcceptDrops(true);
-
-    QLabel *boatIcon = new QLabel(this);
-    boatIcon->setPixmap(QPixmap(":/images/boat.png"));
-    boatIcon->move(10, 10);
-    boatIcon->show();
-    boatIcon->setAttribute(Qt::WA_DeleteOnClose);
-
-    QLabel *carIcon = new QLabel(this);
-    carIcon->setPixmap(QPixmap(":/images/car.png"));
-    carIcon->move(100, 10);
-    carIcon->show();
-    carIcon->setAttribute(Qt::WA_DeleteOnClose);
-
-    QLabel *houseIcon = new QLabel(this);
-    houseIcon->setPixmap(QPixmap(":/images/house.png"));
-    houseIcon->move(10, 80);
-    houseIcon->show();
-    houseIcon->setAttribute(Qt::WA_DeleteOnClose);*/
 }
 
 void DragableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-   /* if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
-        if (event->source() == this) {
+    if (event->mimeData()->hasFormat("application/x-fridgemagnet")) {
+        if (children().contains(event->source())) {
             event->setDropAction(Qt::MoveAction);
             event->accept();
         } else {
             event->acceptProposedAction();
         }
+    } else if (event->mimeData()->hasText()) {
+        event->acceptProposedAction();
     } else {
         event->ignore();
-    }*/
+    }
 }
 
 void DragableWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-    /*if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
-        if (event->source() == this) {
+    if (event->mimeData()->hasFormat("application/x-fridgemagnet")) {
+        if (children().contains(event->source())) {
             event->setDropAction(Qt::MoveAction);
             event->accept();
         } else {
             event->acceptProposedAction();
         }
+    } else if (event->mimeData()->hasText()) {
+        event->acceptProposedAction();
     } else {
         event->ignore();
-    }*/
+    }
 }
 
 void DragableWidget::dropEvent(QDropEvent *event)
 {
-   /* if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
-        QByteArray itemData = event->mimeData()->data("application/x-dnditemdata");
+    if (event->mimeData()->hasFormat("application/x-fridgemagnet")) {
+        const QMimeData *mime = event->mimeData();
+        QByteArray itemData = mime->data("application/x-fridgemagnet");
         QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 
-        QPixmap pixmap;
+        QString text;
         QPoint offset;
-        dataStream >> pixmap >> offset;
+        dataStream >> text >> offset;
 
-        QLabel *newIcon = new QLabel(this);
-        newIcon->setPixmap(pixmap);
-        newIcon->move(event->pos() - offset);
-        newIcon->show();
-        newIcon->setAttribute(Qt::WA_DeleteOnClose);
+        DragLabel *newLabel = new DragLabel(text, this);
+        newLabel->move(event->pos() - offset);
+        newLabel->show();
 
-        if (event->source() == this) {
+        if (children().contains(event->source())) {
             event->setDropAction(Qt::MoveAction);
             event->accept();
         } else {
             event->acceptProposedAction();
         }
+    } else if (event->mimeData()->hasText()) {
+        QStringList pieces = event->mimeData()->text().split(QRegExp("\\s+"),
+                             QString::SkipEmptyParts);
+        QPoint position = event->pos();
+
+        foreach (QString piece, pieces) {
+            DragLabel *newLabel = new DragLabel(piece, this);
+            newLabel->move(position);
+            newLabel->show();
+
+            position += QPoint(newLabel->width(), 0);
+        }
+
+        event->acceptProposedAction();
     } else {
         event->ignore();
-    }*/
-}
-
-void DragableWidget::mousePressEvent(QMouseEvent *event)
-{
-   /* QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
-    if (!child)
-        return;
-
-    QPixmap pixmap = *child->pixmap();
-
-    QByteArray itemData;
-    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << pixmap << QPoint(event->pos() - child->pos());
-
-    QMimeData *mimeData = new QMimeData;
-    mimeData->setData("application/x-dnditemdata", itemData);
-
-    QDrag *drag = new QDrag(this);
-    drag->setMimeData(mimeData);
-    drag->setPixmap(pixmap);
-    drag->setHotSpot(event->pos() - child->pos());
-
-    QPixmap tempPixmap = pixmap;
-    QPainter painter;
-    painter.begin(&tempPixmap);
-    painter.fillRect(pixmap.rect(), QColor(127, 127, 127, 127));
-    painter.end();
-
-    child->setPixmap(tempPixmap);
-
-    if (drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction) {
-        child->close();
-    } else {
-        child->show();
-        child->setPixmap(pixmap);
-    }*/
+    }
 }

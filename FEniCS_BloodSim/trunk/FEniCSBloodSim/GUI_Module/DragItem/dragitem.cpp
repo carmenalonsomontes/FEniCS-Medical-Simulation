@@ -4,6 +4,8 @@
 #include <QPixmap>
 #include <QPainter>
 
+#include "GUI_Module/DragClass/draglabel.h"
+
 DragItem::DragItem(QWidget *parent)
     : QFrame(parent)
 {
@@ -13,24 +15,31 @@ DragItem::DragItem(QWidget *parent)
 }
 
 
-void DragItem::insertItem(int _option)
-{ // TODO
- if (_option ==0)
- {
-    QLabel *boatIcon = new QLabel(this);
-        boatIcon->setPixmap(QPixmap(":/images/GUI_Module/images/images/chart_line.png"));
-        boatIcon->move(10, 10);
-        boatIcon->show();
-        boatIcon->setAttribute(Qt::WA_DeleteOnClose);
- }
- if (_option ==1)
- {
-     QLabel *carIcon = new QLabel(this);
-     carIcon->setPixmap(QPixmap(":/images/GUI_Module/images/images/link.png"));
-     carIcon->move(100, 10);
-     carIcon->show();
-     carIcon->setAttribute(Qt::WA_DeleteOnClose);
- }
+void DragItem::insertItem( QString _iconPath, QString _description)
+{
+  /*  QLabel *icon = new QLabel(this);
+        icon->setPixmap(QPixmap(_iconPath));
+        icon->move(10, 10);
+        icon->show();
+        icon->setAttribute(Qt::WA_DeleteOnClose);
+       // icon->setText("hola");
+       // icon->setAcceptDrops(true);
+*/
+
+    int x = 5;
+    int y = 5;
+
+
+    DragLabel *wordLabel = new DragLabel(_description, this);
+    wordLabel->move(x, y);
+    wordLabel->show();
+    x += wordLabel->width() + 2;
+    if (x >= 245) {
+        x = 5;
+        y += wordLabel->height() + 2;
+    }
+
+
 }
 
 
@@ -43,7 +52,9 @@ void DragItem::dragEnterEvent(QDragEnterEvent *event)
         } else {
             event->acceptProposedAction();
         }
-    } else {
+    }  else if (event->mimeData()->hasText()) {
+        event->acceptProposedAction();
+    }else {
         event->ignore();
     }
 }
@@ -57,14 +68,53 @@ void DragItem::dragMoveEvent(QDragMoveEvent *event)
         } else {
             event->acceptProposedAction();
         }
-    } else {
+    } else if (event->mimeData()->hasText()) {
+        event->acceptProposedAction();
+    } else  {
         event->ignore();
     }
 }
 
 void DragItem::dropEvent(QDropEvent *event)
 {
-    if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
+    if (event->mimeData()->hasFormat("application/x-fridgemagnet")) {
+        const QMimeData *mime = event->mimeData();
+        QByteArray itemData = mime->data("application/x-fridgemagnet");
+        QDataStream dataStream(&itemData, QIODevice::ReadOnly);
+
+        QString text;
+        QPoint offset;
+        dataStream >> text >> offset;
+
+        DragLabel *newLabel = new DragLabel(text, this);
+        newLabel->move(event->pos() - offset);
+        newLabel->show();
+
+        if (children().contains(event->source())) {
+            event->setDropAction(Qt::MoveAction);
+            event->accept();
+        } else {
+            event->acceptProposedAction();
+        }
+    } else if (event->mimeData()->hasText()) {
+        QStringList pieces = event->mimeData()->text().split(QRegExp("\\s+"),
+                             QString::SkipEmptyParts);
+        QPoint position = event->pos();
+
+        foreach (QString piece, pieces) {
+            DragLabel *newLabel = new DragLabel(piece, this);
+            newLabel->move(position);
+            newLabel->show();
+
+            position += QPoint(newLabel->width(), 0);
+        }
+
+        event->acceptProposedAction();
+    } else {
+        event->ignore();
+    }
+
+  /*  if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
         QByteArray itemData = event->mimeData()->data("application/x-dnditemdata");
         QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 
@@ -86,10 +136,10 @@ void DragItem::dropEvent(QDropEvent *event)
         }
     } else {
         event->ignore();
-    }
+    }*/
 }
 
-void DragItem::mousePressEvent(QMouseEvent *event)
+/*void DragItem::mousePressEvent(QMouseEvent *event)
 {
     QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
     if (!child)
@@ -123,4 +173,4 @@ void DragItem::mousePressEvent(QMouseEvent *event)
         child->show();
         child->setPixmap(pixmap);
     }
-}
+}*/

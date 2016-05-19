@@ -18,11 +18,15 @@ public:
     void setListFunctions(QList<ImagingWkfFunctionData> newFunctionList);
     void addFunction(ImagingWkfFunctionData newFunction);
 
+    QString getIconPath();
+    void setIconPath(QString iconPath);
+
     void clean();
     bool isEmpty();
 
 private:
     QString _categoryName;
+    QString _iconPath;
     QList<ImagingWkfFunctionData> _listFunctions;
 };
 

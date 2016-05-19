@@ -38,14 +38,14 @@ void XMLWorkflowMethodsData::readImagingWorkflowtData( QXmlStreamReader * xmlRea
                 (QString::compare(xmlReader->name().toString(), WKF_CATEGORY_TAG) == StrEqual) )
         {
                 QXmlStreamAttributes _elementAtt = xmlReader->attributes();
+                 CategoryWkfData _newCategoryObj;
                 if (_elementAtt.hasAttribute(WKF_CATEGORY_NAME_ATT))
-                {
-                    CategoryWkfData _newCategoryObj;
-                    _newCategoryObj.setCategoryName(_elementAtt.value(WKF_CATEGORY_NAME_ATT).toString());
-                    //Note:  We don't suppose to have empty categories
-                    addFunctionList(xmlReader,&_newCategoryObj);
-                    _wkfData->addCategory(_newCategoryObj);
-                }
+                     _newCategoryObj.setCategoryName(_elementAtt.value(WKF_CATEGORY_NAME_ATT).toString());
+                if (_elementAtt.hasAttribute(WKF_CATEGORY_ICON_ATT))
+                     _newCategoryObj.setIconPath(_elementAtt.value(WKF_CATEGORY_ICON_ATT).toString());
+                //Note:  We don't suppose to have empty categories
+                addFunctionList(xmlReader,&_newCategoryObj);
+                _wkfData->addCategory(_newCategoryObj);
         }
 
     }

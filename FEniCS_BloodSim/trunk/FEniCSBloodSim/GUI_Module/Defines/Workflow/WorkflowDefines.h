@@ -14,6 +14,7 @@ enum typeWorkflow{
 const QString WKF_IMAGING_TAG = "imaging-functions";
 const QString WKF_CATEGORY_TAG = "category";
 const QString WKF_CATEGORY_NAME_ATT = "name";
+const QString WKF_CATEGORY_ICON_ATT = "icon";
 const QString WKF_FUNCTION_TAG = "function";
 
 const QString WKF_FUNCTION_NAME_ATT = "name";

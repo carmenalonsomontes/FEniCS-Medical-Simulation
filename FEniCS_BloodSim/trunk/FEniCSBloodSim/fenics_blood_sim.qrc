@@ -61,4 +61,18 @@
     <qresource prefix="/files">
         <file>GUI_Module/Forms/Workflow/XML/ImageXmlMethods.xml</file>
     </qresource>
+    <qresource prefix="/wkf/images">
+        <file>GUI_Module/images/images/color_adjustment.png</file>
+        <file>GUI_Module/images/images/color_management.png</file>
+        <file>GUI_Module/images/images/designmoo.png</file>
+        <file>GUI_Module/images/images/draw_line.png</file>
+        <file>GUI_Module/images/images/gear_in.png</file>
+        <file>GUI_Module/images/images/linechart.png</file>
+        <file>GUI_Module/images/images/link.png</file>
+        <file>GUI_Module/images/images/link_add.png</file>
+        <file>GUI_Module/images/images/link_go.png</file>
+        <file>GUI_Module/images/images/script_gear.png</file>
+        <file>GUI_Module/images/images/spectrum.png</file>
+        <file>GUI_Module/images/images/wrench.png</file>
+    </qresource>
 </RCC>

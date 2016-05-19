@@ -1,18 +1,18 @@
 <xml>
     <imaging-functions>
-        <category name="noise removal">
+        <category name="noise removal" icon=":/wkf/images/GUI_Module/images/images/color_adjustment.png">
             <function name="canny detector" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
             </function>
             <function name="canny detector2" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
             </function>
         </category>
-        <category name="noise removal2">
-            <function name="canny detector3" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+        <category name="segmentation" icon=":/wkf/images/GUI_Module/images/images/designmoo.png">
+            <function name="PLS" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
             </function>
-            <function name="canny detector4" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+            <function name="Level Set" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
             </function>
         </category>
-        <category name="noise removal5">
+        <category name="Others" icon=":/wkf/images/GUI_Module/images/images/gear_in.png">
             <function name="canny detector7" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
             </function>
             <function name="canny detector6" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">

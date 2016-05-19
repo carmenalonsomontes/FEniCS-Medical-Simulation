@@ -3,6 +3,7 @@
 CategoryWkfData::CategoryWkfData()
 {
     _categoryName = "";
+    _iconPath = "";
 }
 
 QString CategoryWkfData::getCategoryName()
@@ -31,16 +32,28 @@ void CategoryWkfData::addFunction(ImagingWkfFunctionData newFunction)
     _listFunctions.append(newFunction);
 }
 
+QString CategoryWkfData::getIconPath()
+{
+    return _iconPath;
+}
+
+void CategoryWkfData::setIconPath(QString iconPath)
+{
+    _iconPath = iconPath;
+}
+
+
 
 void CategoryWkfData::clean()
 {
     _categoryName.clear();
+    _iconPath.clear();
     _listFunctions.clear();
 }
 bool CategoryWkfData::isEmpty()
 {
     bool _isEmpty = true;
-    if ((!_categoryName.isEmpty()) || (!_listFunctions.isEmpty()))
+    if ((!_categoryName.isEmpty()) || (!_listFunctions.isEmpty()) || (_iconPath.isEmpty()))
         _isEmpty = false;
     return _isEmpty;
 

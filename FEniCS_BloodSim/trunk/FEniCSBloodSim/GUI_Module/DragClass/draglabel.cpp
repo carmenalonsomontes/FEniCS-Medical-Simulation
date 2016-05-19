@@ -12,18 +12,31 @@
 
 #include <QMouseEvent>
 
+#include <QTextDocument>
+
 DragLabel::DragLabel(const QString &text, QWidget *parent)
      : QLabel(parent)
  {
-     QFontMetrics metric(font());
-     QSize size = metric.size(Qt::TextSingleLine, text);
+   //QString text2 = "<img src=\":/wkf/images/GUI_Module/images/images/color_adjustment.png\"/> Terminal settings";
+     QString text2="Mi ejemplo \n vaya vaya";
 
-     QImage image(size.width() + 12, size.height() + 12,
+     QTextDocument doc;
+     doc.setHtml(text);// "<p>A QTextDocument can be used to present formatted text  in a nice way.</p> <p align=center>It can be <b>formatted</b> "
+                  //"<font size=+2>in</font> <i>different</i> ways.</p>"
+                  //"<p>The text can be really long and contain many "
+                  //"paragraphs. It is properly wrapped and such...</p>" );
+
+
+     QFontMetrics metric(font());
+     QSize size = doc.size().toSize();//metric.size(Qt::TextSingleLine | Qt::TextWordWrap,text);
+
+    QImage image(size.width() + 10, size.height() + 10,
                   QImage::Format_ARGB32_Premultiplied);
      image.fill(qRgba(0, 0, 0, 0));
 
      QFont font;
      font.setStyleStrategy(QFont::ForceOutline);
+
 
      QPainter painter;
      painter.begin(&image);
@@ -32,14 +45,41 @@ DragLabel::DragLabel(const QString &text, QWidget *parent)
      painter.drawRoundRect(QRectF(0.5, 0.5, image.width()-1, image.height()-1),
                            25, 25);
 
+
      painter.setFont(font);
      painter.setBrush(Qt::black);
-     painter.drawText(QRect(QPoint(6, 6), size), Qt::AlignCenter, text);
+    //--------------------
+
+
+     QRect rect = QRect(QPoint(0, 0), size);
+
+
+     //rect.translate( 0, rect.height()+10 );
+     //rect.setHeight( 300 );
+     doc.setTextWidth( rect.width() );
+     painter.translate( rect.topLeft() );
+     doc.drawContents( &painter, rect.translated( -rect.topLeft() ) );
+
+     //-----------------------------------------
+
+
+ /*  //  painter.drawText(QRect(QPoint(6, 6), size),Qt::TextWordWrap, text);
+      painter.drawText(QRect(QPoint(0, 0), size),Qt::AlignTop | Qt::AlignCenter | Qt::TextWordWrap, text);
+    //  painter.drawText(QRect(QPoint(6, 6), size),Qt::AlignTop | Qt::AlignCenter | Qt::TextWordWrap, text2);//tr("Qt by\nNokia"));
+   //  QPainter::drawText(QRect(QPoint(6, 6), size), Qt::TextWordWrap,text2);
+     */
      painter.end();
 
+
      setPixmap(QPixmap::fromImage(image));
+
      labelText = text;
+
+
  }
+
+
+
 
 
 

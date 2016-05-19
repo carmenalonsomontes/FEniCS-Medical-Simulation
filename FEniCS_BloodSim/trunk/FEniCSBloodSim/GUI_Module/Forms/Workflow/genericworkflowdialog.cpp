@@ -70,8 +70,8 @@ void GenericWorkflowDialog::loadIcon(int row)
 QString GenericWorkflowDialog::buildDescription(CategoryWkfData _cCategory, int _row)
 {
     QString _text = "";
-    _text = "Category: " + _cCategory.getCategoryName() + "\n";
-    _text = _text + "Function: " + "Row:"+ QString::number(_row);
+    _text = "<p> Category: " + _cCategory.getCategoryName() + "</p>";
+    _text = _text + "<p>Function: " + "</p><p>Row:"+ QString::number(_row) +"</p>";
     return _text;
 
 }

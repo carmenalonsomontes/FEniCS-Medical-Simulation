@@ -17,15 +17,6 @@ DragItem::DragItem(QWidget *parent)
 
 void DragItem::insertItem( QString _iconPath, QString _description)
 {
-  /*  QLabel *icon = new QLabel(this);
-        icon->setPixmap(QPixmap(_iconPath));
-        icon->move(10, 10);
-        icon->show();
-        icon->setAttribute(Qt::WA_DeleteOnClose);
-       // icon->setText("hola");
-       // icon->setAcceptDrops(true);
-*/
-
     int x = 5;
     int y = 5;
 

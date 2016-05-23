@@ -105,32 +105,9 @@ void DragItem::dropEvent(QDropEvent *event)
         event->ignore();
     }
 
-  /*  if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
-        QByteArray itemData = event->mimeData()->data("application/x-dnditemdata");
-        QDataStream dataStream(&itemData, QIODevice::ReadOnly);
-
-        QPixmap pixmap;
-        QPoint offset;
-        dataStream >> pixmap >> offset;
-
-        QLabel *newIcon = new QLabel(this);
-        newIcon->setPixmap(pixmap);
-        newIcon->move(event->pos() - offset);
-        newIcon->show();
-        newIcon->setAttribute(Qt::WA_DeleteOnClose);
-
-        if (event->source() == this) {
-            event->setDropAction(Qt::MoveAction);
-            event->accept();
-        } else {
-            event->acceptProposedAction();
-        }
-    } else {
-        event->ignore();
-    }*/
 }
 
-/*void DragItem::mousePressEvent(QMouseEvent *event)
+void DragItem::mousePressEvent(QMouseEvent *event)
 {
     QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
     if (!child)
@@ -164,4 +141,4 @@ void DragItem::dropEvent(QDropEvent *event)
         child->show();
         child->setPixmap(pixmap);
     }
-}*/
+}

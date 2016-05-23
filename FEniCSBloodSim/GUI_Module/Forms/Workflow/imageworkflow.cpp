@@ -79,6 +79,3 @@ void ImageWorkflow::loadSpecificMethods()
 {
 
 }
-
-
-

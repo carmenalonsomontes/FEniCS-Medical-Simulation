@@ -2,6 +2,8 @@
 
 #include "GUI_Module/Defines/Menu/MenuDefines.h"
 #include <QPixmap>
+#include <QIcon>
+#include <QTableWidgetItem>
 
 WorkflowTableHelper::WorkflowTableHelper()
 {
@@ -52,6 +54,40 @@ void WorkflowTableHelper::addOnlyDesc(QString _action)
     registeredTable->setItem(_lastRow,CHECKABLE_COLUMN,addSelectableCheckColumn());
     registeredTable->resizeColumnsToContents();
 }
+int  WorkflowTableHelper::addEmptyRow()
+{
+    int _lastRow = registeredTable->rowCount();
+    registeredTable->insertRow(_lastRow);
+
+    registeredTable->resizeColumnsToContents();
+
+    return _lastRow;
+}
+
+void WorkflowTableHelper::updateRow(QString _iconPath,QString _value, int row)
+{
+    if (row > registeredTable->rowCount())
+        return;
+    registeredTable->setItem(row,CHECKABLE_COLUMN,addIcon(_iconPath));
+    registeredTable->setItem(row,ONLY_DESC_COLUMN,addNonEditableText(_value));
+    registeredTable->setItem(row,UP_ICON_COLUMN,addIcon(UP_ICON_PATH));
+    registeredTable->setItem(row,DOWN_ICON_COLUMN,addIcon(DOWN_ICON_PATH));
+    registeredTable->setItem(row,DELETE_ICON_COLUMN,addIcon(DELETE_ICON_PATH));
+    registeredTable->resizeColumnsToContents();
+}
+
+
+
+QTableWidgetItem * WorkflowTableHelper::addIcon(QString _path)
+{
+    QIcon icon(_path);
+    QTableWidgetItem *icon_item = new QTableWidgetItem;
+    icon_item->setIcon(icon);
+    icon_item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+
+    return icon_item;
+}
+
 
 
 void WorkflowTableHelper::clearTable()

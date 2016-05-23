@@ -2,12 +2,16 @@
 #define GENERICWORKFLOWDIALOG_H
 
 #include <QDialog>
+#include <QMouseEvent>
+#include <QList>
 
 #include "GUI_Module/UIHelpers/workflowtablehelper.h"
-#include "GUI_Module/DragItem/dragitem.h"
+//#include "GUI_Module/DragItem/dragitem.h"
 #include "GUI_Module/Data/WorkflowData/workflowdata.h"
 #include "GUI_Module/Data/WorkflowData/categorywkfdata.h"
 #include "GUI_Module/Data/WorkflowData/imagingwkffunctiondata.h"
+
+#include "GUI_Module/Forms/Workflow/Pipeline/pipelineitem.h"
 
 namespace Ui {
 class GenericWorkflowDialog;
@@ -23,7 +27,8 @@ public:
 
 protected:
     WorkflowTableHelper * _wkfHelper;
-    DragItem * _dragableArea ;
+    WorkflowTableHelper * _pipelineHelper;
+   // DragItem * _dragableArea ;
     WorkflowData  _wkfData;
 
     void createTabWithName(int tabIndex, const QString text);
@@ -33,14 +38,26 @@ private slots:
     void on_wkfButtonBox_accepted();
     void on_tableMethods1_cellClicked(int row, int column);
     void on_tabMethods_currentChanged(int index);
+    void on_addStepToPipelineButton_clicked();
+
+    void on_stepDoneButton_clicked();
+
+    void on_pipelineTable_cellClicked(int row, int column);
 
 private:
     Ui::GenericWorkflowDialog *ui;
+    int _cPipelineRow;
+    QList<PipelineItem> _pipelineItemList;
 
-    void loadIcon(int row);
+
     void fillTableWithInformation(int index);
-
+    void insertRow();
+    void enableNextStep(bool _val);
+    void updateValuesPipelineTable(int row,int column);
     QString buildDescription(CategoryWkfData _cCategory, int _row);
+    void restoreUI();
+    void addSignalPipelineRow();
+    void updatePipelineElement(QString _iconPath, QString _description);
 
 };
 

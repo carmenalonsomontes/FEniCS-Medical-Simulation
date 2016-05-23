@@ -10,8 +10,10 @@
 
 class ImageWorkflow: public GenericWorkflowDialog
 {
+    Q_OBJECT
 public:
     ImageWorkflow();
+
 
 
 private:

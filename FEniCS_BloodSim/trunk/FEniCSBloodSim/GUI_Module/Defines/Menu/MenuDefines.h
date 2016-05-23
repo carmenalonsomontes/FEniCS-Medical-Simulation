@@ -2,6 +2,14 @@
 #define MENUDEFINES_H
 #include <QString>
 
+// Files for icons
+
+const QString UP_ICON_PATH=":/wkf/images/GUI_Module/images/images/bullet_arrow_up.png";
+const QString DOWN_ICON_PATH=":/wkf/images/GUI_Module/images/images/bullet_arrow_down.png";
+const QString DELETE_ICON_PATH=":/menu/GUI_Module/images/menu/cross.png";
+
+
+
 // VIEW ORIENTATION
 enum Orientation_Im{
     SAGITTAL_YZ = 0,
@@ -29,7 +37,10 @@ enum ImProcTableCols{
 
 enum genericWkfDialog{
     CHECKABLE_COLUMN = 0,
-    ONLY_DESC_COLUMN = 1// In the case we only want a column
+    ONLY_DESC_COLUMN = 1,
+    UP_ICON_COLUMN = 2,
+    DOWN_ICON_COLUMN = 3,
+    DELETE_ICON_COLUMN = 4// In the case we only want a column
 };
 
 // FILES NAMEs

@@ -22,6 +22,8 @@ public:
     void addElementToTable(QString _action,int iconType);
 
     void addOnlyDesc(QString _action);
+    int addEmptyRow();
+    void updateRow(QString _iconPath, QString _value, int row);
 
     int modifyEyeInRow(int row);
 
@@ -36,6 +38,8 @@ private:
     QTableWidgetItem * addNonEditableText(QString _value);
     QLabel * addIcon(int iconType);
     QTableWidgetItem * addSelectableCheckColumn();
+    QTableWidgetItem * addIcon(QString _path);
+
 };
 
 #endif // WORKFLOWTABLEHELPER_H

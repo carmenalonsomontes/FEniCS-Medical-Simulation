@@ -1,29 +1,26 @@
 #include "genericworkflowdialog.h"
 #include "ui_genericworkflowdialog.h"
 
-#include "GUI_Module/Defines/Menu/MenuDefines.h"
-
 #include <QTableWidgetItem>
 #include <QTableWidget>
 #include <QHBoxLayout>
 #include <QObject>
+
+
+#include "GUI_Module/Defines/Menu/MenuDefines.h"
 
 GenericWorkflowDialog::GenericWorkflowDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::GenericWorkflowDialog)
 {
     ui->setupUi(this);
-    ui->tableMethods1->setDropIndicatorShown(true);
-    ui->tableMethods1->setDragEnabled(true);     
-
+    _cPipelineRow = -1;
     _wkfHelper  = new WorkflowTableHelper();
     _wkfHelper->registerTableListUI(ui->tableMethods1);
     _wkfHelper->setCurrentRegisteredTableFromList(0);
 
-    // Dragable Area
-    _dragableArea = new DragItem(this);
-     ui->wkfFrame->setAcceptDrops(true);
-     ui->wkfFrame->layout()->addWidget(_dragableArea);
+    _pipelineHelper = new WorkflowTableHelper();
+    _pipelineHelper->registerTableUI(ui->pipelineTable);
 
 }
 
@@ -49,13 +46,12 @@ void GenericWorkflowDialog::on_wkfButtonBox_accepted()
 void GenericWorkflowDialog::on_tableMethods1_cellClicked(int row, int column)
 {
     if (column == CHECKABLE_COLUMN)
-        loadIcon(row);
+        updateValuesPipelineTable(row,column);
 }
 
-
-
-void GenericWorkflowDialog::loadIcon(int row)
+void GenericWorkflowDialog::updateValuesPipelineTable(int row,int column)
 {
+
     QList<CategoryWkfData> _catList = _wkfData.getCategoryList();
     int _cTab = ui->tabMethods->currentIndex();
     if (_cTab < _catList.size())
@@ -63,18 +59,16 @@ void GenericWorkflowDialog::loadIcon(int row)
         CategoryWkfData _cCategory = _catList.at(_cTab);
         QString _iconPath = _cCategory.getIconPath();
         QString _description = buildDescription(_cCategory,row);
-        _dragableArea->insertItem(_iconPath,_description);
+        if (_cPipelineRow == -1)
+            return;
+        _pipelineHelper->updateRow(_iconPath,_description,_cPipelineRow);
+        updatePipelineElement(_iconPath, _description);
     }
-}
-
-QString GenericWorkflowDialog::buildDescription(CategoryWkfData _cCategory, int _row)
-{
-    QString _text = "";
-    _text = "<p> Category: " + _cCategory.getCategoryName() + "</p>";
-    _text = _text + "<p>Function: " + "</p><p>Row:"+ QString::number(_row) +"</p>";
-    return _text;
 
 }
+
+
+
 
 void GenericWorkflowDialog::createTabWithName(int tabIndex, const QString text)
 {
@@ -127,4 +121,131 @@ void GenericWorkflowDialog::fillTableWithInformation(int index)
         l->addWidget(_table);
 
     }
+}
+
+
+
+void GenericWorkflowDialog::on_addStepToPipelineButton_clicked()
+{
+    insertRow();
+    enableNextStep(true);
+
+
+}
+void GenericWorkflowDialog::insertRow()
+{
+    _cPipelineRow =  _pipelineHelper->addEmptyRow();
+}
+
+
+
+void GenericWorkflowDialog::enableNextStep(bool _val)
+{
+    ui->selectOperationStep->setEnabled(_val);
+    ui->tabMethods->setEnabled(_val);
+    ui->configOptionsTitle->setEnabled(_val);
+    ui->optionsConfigFrame->setEnabled(_val);
+    ui->addStepToPipelineButton->setEnabled(!_val);
+}
+
+
+
+
+QString GenericWorkflowDialog::buildDescription(CategoryWkfData _cCategory, int _row)
+{
+    QString _text = "";
+    if (_cCategory.isEmpty())
+        return _text;
+
+    QList<ImagingWkfFunctionData> tempFunctionList = _cCategory.getListFunctions();
+    if (_row < tempFunctionList.size())
+    {
+        ImagingWkfFunctionData _selFunction= tempFunctionList.at(_row);
+         _text =   _selFunction.getName();
+    }
+
+    return _text;
+
+}
+
+
+
+
+void GenericWorkflowDialog::on_stepDoneButton_clicked()
+{
+    enableNextStep(false);
+    restoreUI();
+}
+
+void GenericWorkflowDialog::updatePipelineElement(QString _iconPath, QString _description)
+{
+
+    if (_cPipelineRow < _pipelineItemList.size())
+    {
+       PipelineItem _item = _pipelineItemList.at(_cPipelineRow);
+       _item.setIconPath(_iconPath);
+       _item.setDescription(_description);
+       _pipelineItemList.replace(_cPipelineRow,_item);
+    }
+    if (_cPipelineRow > _pipelineItemList.size())
+    {
+        PipelineItem _item;
+        _item.setIconPath(_iconPath);
+        _item.setDescription(_description);
+        _pipelineItemList.append(_item);
+    }
+
+
+}
+
+
+
+void GenericWorkflowDialog::restoreUI()
+{
+    // TODO
+}
+
+
+
+//------------------------------------------
+// DRAG & DROP FUNCTIONS
+// FOr the future, not now
+/*void GenericWorkflowDialog::loadIcon(int row)
+{
+    QList<CategoryWkfData> _catList = _wkfData.getCategoryList();
+    int _cTab = ui->tabMethods->currentIndex();
+    if (_cTab < _catList.size())
+    {
+        CategoryWkfData _cCategory = _catList.at(_cTab);
+        QString _iconPath = _cCategory.getIconPath();
+        QString _description = buildDescription(_cCategory,row);
+        _dragableArea->insertItem(_iconPath,_description);
+    }
+}*/
+
+void GenericWorkflowDialog::on_pipelineTable_cellClicked(int row, int column)
+{
+    switch (column) {
+    case UP_ICON_COLUMN:
+
+        break;
+    case DOWN_ICON_COLUMN:
+        if (row < ui->pipelineTable->rowCount())
+        {
+            QString _prevDesc = ui->pipelineTable->item(row+1,DESC_COLUMN)->text();
+            QTableWidgetItem *  _prevIcon  = ui->pipelineTable->item(row+1,CHECKABLE_COLUMN);
+
+
+            //_pipelineHelper->updateRow(,ui->pipelineTable->item(row,DESC_COLUMN)->text(),row);
+
+
+        }
+        break;
+    case DELETE_ICON_COLUMN:
+        ui->pipelineTable->removeRow(row);
+        break;
+    default:
+        break;
+    }
+
 }

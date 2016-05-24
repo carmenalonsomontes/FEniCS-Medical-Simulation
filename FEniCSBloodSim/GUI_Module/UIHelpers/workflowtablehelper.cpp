@@ -158,3 +158,4 @@ bool WorkflowTableHelper::isRegistered(int index)
     if (index >= registeredTableList.size()) isRegistered = false;
     return isRegistered;
 }
+

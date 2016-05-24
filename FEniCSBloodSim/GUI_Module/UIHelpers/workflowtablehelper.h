@@ -30,6 +30,8 @@ public:
     void clearTable();
 
     bool isRegistered(int index);
+
+
 private:
     QTableWidget * registeredTable;
     QList<QTableWidget *> registeredTableList;

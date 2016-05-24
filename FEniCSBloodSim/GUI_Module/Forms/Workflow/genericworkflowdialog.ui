@@ -204,6 +204,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="stepDoneButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="maximumSize">
          <size>
           <width>100</width>
@@ -250,6 +253,9 @@
          <enum>Qt::Horizontal</enum>
         </property>
         <widget class="QTableWidget" name="pipelineTable">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <column>
           <property name="text">
            <string>No.</string>

@@ -20,7 +20,13 @@ const QString WKF_FUNCTION_TAG = "function";
 const QString WKF_FUNCTION_NAME_ATT = "name";
 const QString WKF_FUNCTION_CLASSNAME_ATT = "classname";
 const QString WKF_FUNCTION_DESCRIPTION_ATT = "description";
-const QString WKF_FUNCTION_PARAMETERS_ATT = "parameters";
+const QString WKF_FUNCTION_PARAMETERS_TAG = "parameters";
+const QString WKF_FUNCTION_PARAMETER_ITEM_TAG = "parameter";
+const QString WKF_FUNCTION_PARAMETER_NAME_ATT = "name";
+const QString WKF_FUNCTION_PARAMETER_CLASSNAME_ATT = "classname";
+const QString WKF_FUNCTION_PARAMETER_TYPE_ATT = "type";
+const QString WKF_FUNCTION_PARAMETER_DEFAULT_VALUE_ATT = "default_value";
+
 
 
 #endif // WORKFLOWDEFINES_H

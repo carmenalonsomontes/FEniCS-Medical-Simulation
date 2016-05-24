@@ -23,6 +23,10 @@ public:
 
     void addOnlyDesc(QString _action);
     int addEmptyRow();
+
+    void addParameterRow (QString paramName, QString paramType, QString paramClassName, QString _value);
+    //_parameterName,_parameterType,_parameterClassName);
+
     void updateRow(QString _iconPath, QString _value, int row);
 
     int modifyEyeInRow(int row);
@@ -41,6 +45,7 @@ private:
     QLabel * addIcon(int iconType);
     QTableWidgetItem * addSelectableCheckColumn();
     QTableWidgetItem * addIcon(QString _path);
+    QTableWidgetItem * addEditText(QString _value);
 
 };
 

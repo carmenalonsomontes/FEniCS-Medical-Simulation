@@ -35,6 +35,13 @@ enum ImProcTableCols{
     DESC_COLUMN = 1
 };
 
+enum ParamConfigurationTableCols{
+    PARAM_TYPE_COLUMN = 0,
+    PARAM_NAME_COLUMN = 1,
+    PARAM_VALUE_COLUMN = 2,
+    PARAM_CLASS_NAME_COLUMN = 3
+};
+
 enum genericWkfDialog{
     CHECKABLE_COLUMN = 0,
     ONLY_DESC_COLUMN = 1,

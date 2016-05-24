@@ -76,9 +76,7 @@ void XMLWorkflowMethodsData::addFunctionList( QXmlStreamReader * xmlReader,Categ
             if (_elementAtt.hasAttribute(WKF_FUNCTION_DESCRIPTION_ATT))
                 _functionData.setDescription(_elementAtt.value(WKF_FUNCTION_DESCRIPTION_ATT).toString());
 
-            if (_elementAtt.hasAttribute(WKF_FUNCTION_PARAMETERS_ATT))
-                _functionData.setParameters(_elementAtt.value(WKF_FUNCTION_PARAMETERS_ATT).toString());
-
+            addParameterList(xmlReader,&_functionData);
             _funcList.append(_functionData);
 
         }
@@ -89,5 +87,49 @@ void XMLWorkflowMethodsData::addFunctionList( QXmlStreamReader * xmlReader,Categ
     }
 
     catData->setListFunctions(_funcList);
+}
+
+
+void XMLWorkflowMethodsData::addParameterList( QXmlStreamReader * xmlReader,ImagingWkfFunctionData * functionData)
+{
+
+    bool _parameterEnded = false;
+    QStringList _parameterNameList;
+    QStringList _parameterTypeList;
+    QStringList _parameterClassNameList;
+    QStringList _parameterDefaultValueList;
+
+    while ( (!xmlReader->atEnd()) && (!xmlReader->hasError()) && (!_parameterEnded))
+    {
+        QXmlStreamReader::TokenType token = xmlReader->readNext();
+        if ((token == QXmlStreamReader::StartElement) &&
+                (QString::compare(xmlReader->name().toString(), WKF_FUNCTION_PARAMETER_ITEM_TAG) == StrEqual) )
+        {
+
+            QXmlStreamAttributes _elementAtt = xmlReader->attributes();
+            if (_elementAtt.hasAttribute(WKF_FUNCTION_PARAMETER_NAME_ATT))
+                _parameterNameList.append(_elementAtt.value(WKF_FUNCTION_PARAMETER_NAME_ATT).toString());
+
+            if (_elementAtt.hasAttribute(WKF_FUNCTION_PARAMETER_TYPE_ATT))
+                _parameterTypeList.append(_elementAtt.value(WKF_FUNCTION_PARAMETER_TYPE_ATT).toString());
+
+
+            if (_elementAtt.hasAttribute(WKF_FUNCTION_PARAMETER_CLASSNAME_ATT))
+                _parameterClassNameList.append(_elementAtt.value(WKF_FUNCTION_PARAMETER_CLASSNAME_ATT).toString());
+
+            if (_elementAtt.hasAttribute(WKF_FUNCTION_PARAMETER_DEFAULT_VALUE_ATT))
+                _parameterDefaultValueList.append(_elementAtt.value(WKF_FUNCTION_PARAMETER_DEFAULT_VALUE_ATT).toString());
+        }
+
+        if ((token == QXmlStreamReader::EndElement) &&
+                 (QString::compare(xmlReader->name().toString(), WKF_FUNCTION_PARAMETERS_TAG) == StrEqual))
+        {
+            _parameterEnded = true;
+            functionData->setParametersName(_parameterNameList);
+            functionData->setParameterClassName(_parameterClassNameList);
+            functionData->setParameterType(_parameterTypeList);
+            functionData->setDefaultValue(_parameterDefaultValueList);
+        }
+    }
 }
 

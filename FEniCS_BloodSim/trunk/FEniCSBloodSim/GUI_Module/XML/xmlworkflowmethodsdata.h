@@ -15,6 +15,7 @@ public:
 private:
     void readImagingWorkflowtData( QXmlStreamReader * xmlReader,WorkflowData * _wkfData);
     void addFunctionList( QXmlStreamReader * xmlReader,CategoryWkfData * catData);
+    void addParameterList( QXmlStreamReader * xmlReader,ImagingWkfFunctionData * functionData);
 
 
 

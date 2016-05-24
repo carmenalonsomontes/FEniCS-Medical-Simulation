@@ -1,21 +1,38 @@
 <xml>
     <imaging-functions>
         <category name="noise removal" icon=":/wkf/images/GUI_Module/images/images/color_adjustment.png">
-            <function name="canny detector" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+            <function name="Adaptive Histogram Equalization" classname="itkAdaptiveEqualizationHistogram.h" description="Adaptive Histogram Equalization ImageFilter">
+                <parameters>
+                    <parameter name="Radius" classname="SetRadius" type="int" default_value="1" ></parameter>
+                </parameters>
             </function>
-            <function name="canny detector2" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+            <function name="canny detector" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" >
+            <parameters>
+            </parameters>
+            </function>
+            <function name="canny detector2" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection">
+            <parameters>
+            </parameters>
             </function>
         </category>
         <category name="segmentation" icon=":/wkf/images/GUI_Module/images/images/designmoo.png">
-            <function name="PLS" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+            <function name="PLS" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection">
+            <parameters>
+            </parameters>
             </function>
-            <function name="Level Set" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+            <function name="Level Set" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection">
+            <parameters>
+            </parameters>
             </function>
         </category>
         <category name="Others" icon=":/wkf/images/GUI_Module/images/images/gear_in.png">
-            <function name="canny detector7" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+            <function name="canny detector7" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection">
+            <parameters>
+            </parameters>
             </function>
-            <function name="canny detector6" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" parameters="TInputImage, TOutputImage">
+            <function name="canny detector6" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection">
+            <parameters>
+            </parameters>
             </function>
         </category>
     </imaging-functions>

@@ -57,7 +57,10 @@ private:
     QString buildDescription(CategoryWkfData _cCategory, int _row);
     void restoreUI();
     void addSignalPipelineRow();
-    void updatePipelineElement(QString _iconPath, QString _description);
+    void updatePipelineElement(QString _iconPath, QString _description, QString _categoryName);
+
+    void moveDown(int row);
+    void moveUp(int row);
 
 };
 

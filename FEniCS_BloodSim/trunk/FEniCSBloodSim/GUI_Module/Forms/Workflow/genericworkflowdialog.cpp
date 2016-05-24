@@ -62,7 +62,7 @@ void GenericWorkflowDialog::updateValuesPipelineTable(int row,int column)
         if (_cPipelineRow == -1)
             return;
         _pipelineHelper->updateRow(_iconPath,_description,_cPipelineRow);
-        updatePipelineElement(_iconPath, _description);
+        updatePipelineElement(_iconPath, _description, _cCategory.getCategoryName());
     }
 
 }
@@ -145,7 +145,11 @@ void GenericWorkflowDialog::enableNextStep(bool _val)
     ui->tabMethods->setEnabled(_val);
     ui->configOptionsTitle->setEnabled(_val);
     ui->optionsConfigFrame->setEnabled(_val);
+    ui->stepDoneButton->setEnabled(_val);
+
+
     ui->addStepToPipelineButton->setEnabled(!_val);
+    ui->pipelineTable->setEnabled(!_val);
 }
 
 
@@ -177,21 +181,24 @@ void GenericWorkflowDialog::on_stepDoneButton_clicked()
     restoreUI();
 }
 
-void GenericWorkflowDialog::updatePipelineElement(QString _iconPath, QString _description)
+void GenericWorkflowDialog::updatePipelineElement(QString _iconPath, QString _description, QString _categoryName)
 {
+    int _cListSize =  _pipelineItemList.size() -1;
 
-    if (_cPipelineRow < _pipelineItemList.size())
+    if (_cPipelineRow <= _cListSize)
     {
        PipelineItem _item = _pipelineItemList.at(_cPipelineRow);
        _item.setIconPath(_iconPath);
        _item.setDescription(_description);
+       _item.setCategoryName(_categoryName);
        _pipelineItemList.replace(_cPipelineRow,_item);
     }
-    if (_cPipelineRow > _pipelineItemList.size())
+    if (_cPipelineRow > _cListSize)
     {
         PipelineItem _item;
         _item.setIconPath(_iconPath);
         _item.setDescription(_description);
+        _item.setCategoryName(_categoryName);
         _pipelineItemList.append(_item);
     }
 
@@ -206,6 +213,67 @@ void GenericWorkflowDialog::restoreUI()
 }
 
 
+
+
+
+void GenericWorkflowDialog::on_pipelineTable_cellClicked(int row, int column)
+{
+    switch (column) {
+    case UP_ICON_COLUMN:
+        moveUp(row);
+        break;
+    case DOWN_ICON_COLUMN:
+        moveDown(row);
+        break;
+    case DELETE_ICON_COLUMN:
+        ui->pipelineTable->removeRow(row);
+        _pipelineItemList.removeAt(row);
+        break;
+    default:
+        break;
+    }
+
+}
+
+void GenericWorkflowDialog::moveDown(int row)
+{
+     if (row == ui->pipelineTable->rowCount()-1) return;
+
+     int _nextRow = row+1;
+     PipelineItem _nextItem = _pipelineItemList.at(_nextRow);
+     PipelineItem _cItem = _pipelineItemList.at(row);
+
+     // Changing the content of the table view
+     _pipelineHelper->updateRow(_cItem.getIconPath(),_cItem.getDescription(), _nextRow);
+     _pipelineHelper->updateRow(_nextItem.getIconPath(),_nextItem.getDescription(),row);
+
+     // Update the Pipeline list
+
+     _pipelineItemList.replace(_nextRow, _cItem);
+     _pipelineItemList.replace(row, _nextItem);
+
+}
+
+
+void GenericWorkflowDialog::moveUp(int row)
+{
+     if (row == 0) return;
+
+
+     int _previousRow = row-1;
+     PipelineItem _previousItem = _pipelineItemList.at(_previousRow);
+     PipelineItem _cItem = _pipelineItemList.at(row);
+
+     // Changing the content of the table view
+     _pipelineHelper->updateRow(_cItem.getIconPath(),_cItem.getDescription(), _previousRow);
+     _pipelineHelper->updateRow(_previousItem.getIconPath(),_previousItem.getDescription(),row);
+
+     // Update the Pipeline list
+
+     _pipelineItemList.replace(_previousRow, _cItem);
+     _pipelineItemList.replace(row, _previousItem);
+
+}
 
 //------------------------------------------
 // DRAG & DROP FUNCTIONS
@@ -222,30 +290,3 @@ void GenericWorkflowDialog::restoreUI()
         _dragableArea->insertItem(_iconPath,_description);
     }
 }*/
-
-void GenericWorkflowDialog::on_pipelineTable_cellClicked(int row, int column)
-{
-    switch (column) {
-    case UP_ICON_COLUMN:
-
-        break;
-    case DOWN_ICON_COLUMN:
-        if (row < ui->pipelineTable->rowCount())
-        {
-            QString _prevDesc = ui->pipelineTable->item(row+1,DESC_COLUMN)->text();
-            QTableWidgetItem *  _prevIcon  = ui->pipelineTable->item(row+1,CHECKABLE_COLUMN);
-
-
-            //_pipelineHelper->updateRow(,ui->pipelineTable->item(row,DESC_COLUMN)->text(),row);
-
-
-        }
-        break;
-    case DELETE_ICON_COLUMN:
-        ui->pipelineTable->removeRow(row);
-        break;
-    default:
-        break;
-    }
-
-}

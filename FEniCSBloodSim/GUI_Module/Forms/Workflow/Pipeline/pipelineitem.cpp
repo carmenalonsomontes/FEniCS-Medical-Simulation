@@ -54,6 +54,16 @@ void PipelineItem::setCategoryName(QString newCatName)
 }
 
 
+QList<ConfigurationPipelineItem> PipelineItem::getConfigurationItemList()
+{
+    return _configurationItemList;
+}
+
+void  PipelineItem::setConfigurationItemList(QList<ConfigurationPipelineItem> list)
+{
+    _configurationItemList = list;
+}
+
 
 
 bool PipelineItem::isEmpty()
@@ -71,5 +81,6 @@ void PipelineItem::clear()
     _iconPath.clear();
     _description.clear();
     _categoryName.clear();
+    _configurationItemList.clear();
     _positionPipeline = 0;
 }

@@ -24,14 +24,20 @@ class GenericWorkflowDialog : public QDialog
 public:
     explicit GenericWorkflowDialog(QWidget *parent = 0);
     ~GenericWorkflowDialog();
+    QList<PipelineItem> getPipelineItemList();
+    bool userAcceptChanges();
 
 protected:
     WorkflowTableHelper * _wkfHelper;
     WorkflowTableHelper * _pipelineHelper;
+    WorkflowTableHelper * _configurationHelper;
+    WorkflowTableHelper * _summaryHelper;
    // DragItem * _dragableArea ;
     WorkflowData  _wkfData;
 
     void createTabWithName(int tabIndex, const QString text);
+
+
 
 private slots:
 
@@ -44,10 +50,12 @@ private slots:
 
     void on_pipelineTable_cellClicked(int row, int column);
 
+
 private:
     Ui::GenericWorkflowDialog *ui;
     int _cPipelineRow;
     QList<PipelineItem> _pipelineItemList;
+    bool _userAcceptChanges;
 
 
     void fillTableWithInformation(int index);
@@ -61,6 +69,9 @@ private:
 
     void moveDown(int row);
     void moveUp(int row);
+    void addParametersToConfigurationTable(int row,CategoryWkfData cat);
+    void showParameterInformation(int row);
+    void saveConfiguration();
 
 };
 

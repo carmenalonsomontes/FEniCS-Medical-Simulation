@@ -2,8 +2,9 @@
 #define PIPELINEITEM_H
 
 #include <QString>
+#include <QList>
 
-
+#include "configurationpipelineitem.h"
 class PipelineItem
 {
 public:
@@ -22,12 +23,19 @@ public:
     QString getCategoryName();
     void setCategoryName(QString newCatName);
 
+
+    QList<ConfigurationPipelineItem> getConfigurationItemList();
+    void  setConfigurationItemList(QList<ConfigurationPipelineItem> list);
+
     bool isEmpty();
     void clear();
 private:
     QString _categoryName;
     QString _iconPath;
     QString _description;
+
+    QList<ConfigurationPipelineItem> _configurationItemList;
+
     int _positionPipeline;
 };
 

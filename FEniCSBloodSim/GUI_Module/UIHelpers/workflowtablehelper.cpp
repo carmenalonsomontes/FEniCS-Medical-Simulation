@@ -64,6 +64,22 @@ int  WorkflowTableHelper::addEmptyRow()
     return _lastRow;
 }
 
+
+ void WorkflowTableHelper::addParameterRow (QString paramName, QString paramType, QString paramClassName, QString _value)
+ {
+     int _lastRow = registeredTable->rowCount();
+     registeredTable->insertRow(_lastRow);
+
+     // Add Action
+     registeredTable->setItem(_lastRow,PARAM_TYPE_COLUMN,addNonEditableText(paramType));
+     registeredTable->setItem(_lastRow,PARAM_NAME_COLUMN,addNonEditableText(paramName));
+     registeredTable->setItem(_lastRow,PARAM_VALUE_COLUMN,addEditText(_value));
+     registeredTable->setItem(_lastRow,PARAM_CLASS_NAME_COLUMN,addNonEditableText(paramClassName));
+
+     registeredTable->resizeColumnsToContents();
+ }
+
+
 void WorkflowTableHelper::updateRow(QString _iconPath,QString _value, int row)
 {
     if (row > registeredTable->rowCount())
@@ -76,6 +92,12 @@ void WorkflowTableHelper::updateRow(QString _iconPath,QString _value, int row)
     registeredTable->resizeColumnsToContents();
 }
 
+
+QTableWidgetItem * WorkflowTableHelper::addEditText(QString _value)
+{
+     QTableWidgetItem * _defaultTxt = new QTableWidgetItem(_value);
+     return _defaultTxt;
+}
 
 
 QTableWidgetItem * WorkflowTableHelper::addIcon(QString _path)

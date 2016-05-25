@@ -1,9 +1,11 @@
 #include "workflowtablehelper.h"
 
-#include "GUI_Module/Defines/Menu/MenuDefines.h"
+
 #include <QPixmap>
 #include <QIcon>
 #include <QTableWidgetItem>
+
+
 
 WorkflowTableHelper::WorkflowTableHelper()
 {
@@ -20,6 +22,11 @@ void WorkflowTableHelper::registerTableListUI(QTableWidget * _table)
 
 }
 
+QTableWidget * WorkflowTableHelper::getRegisteredTable()
+{
+    return registeredTable;
+}
+
 void WorkflowTableHelper::setCurrentRegisteredTableFromList(int index)
 {
     if (index < registeredTableList.size())
@@ -28,7 +35,7 @@ void WorkflowTableHelper::setCurrentRegisteredTableFromList(int index)
 
 
 
-void WorkflowTableHelper::addElementToTable(QString _action,int iconType)
+void WorkflowTableHelper::addElementToTable(QString _action,ImProcMenuUI iconType)
 {
     int _lastRow = registeredTable->rowCount();
     registeredTable->insertRow(_lastRow);
@@ -54,6 +61,22 @@ void WorkflowTableHelper::addOnlyDesc(QString _action)
     registeredTable->setItem(_lastRow,CHECKABLE_COLUMN,addSelectableCheckColumn());
     registeredTable->resizeColumnsToContents();
 }
+
+
+void WorkflowTableHelper::addMethodsAndAction(QString _action, IconType _icon)
+{
+    int _lastRow = registeredTable->rowCount();
+    registeredTable->insertRow(_lastRow);
+
+    // Add Action
+    registeredTable->setItem(_lastRow,METHOD_NAME_COLUMN,addNonEditableText(_action));
+    registeredTable->setItem(_lastRow,ACTION_COLUMN,addIcon(_icon));
+    registeredTable->resizeColumnsToContents();
+}
+
+#include <QPixmap>
+
+
 int  WorkflowTableHelper::addEmptyRow()
 {
     int _lastRow = registeredTable->rowCount();
@@ -86,9 +109,9 @@ void WorkflowTableHelper::updateRow(QString _iconPath,QString _value, int row)
         return;
     registeredTable->setItem(row,CHECKABLE_COLUMN,addIcon(_iconPath));
     registeredTable->setItem(row,ONLY_DESC_COLUMN,addNonEditableText(_value));
-    registeredTable->setItem(row,UP_ICON_COLUMN,addIcon(UP_ICON_PATH));
-    registeredTable->setItem(row,DOWN_ICON_COLUMN,addIcon(DOWN_ICON_PATH));
-    registeredTable->setItem(row,DELETE_ICON_COLUMN,addIcon(DELETE_ICON_PATH));
+    registeredTable->setItem(row,UP_ICON_COLUMN,addIcon(UP_ICON));
+    registeredTable->setItem(row,DOWN_ICON_COLUMN,addIcon(DOWN_ICON));
+    registeredTable->setItem(row,DELETE_ICON_COLUMN,addIcon(DELETE_ICON));
     registeredTable->resizeColumnsToContents();
 }
 
@@ -110,6 +133,33 @@ QTableWidgetItem * WorkflowTableHelper::addIcon(QString _path)
     return icon_item;
 }
 
+QTableWidgetItem * WorkflowTableHelper::addIcon(IconType _iconType)
+{
+    QIcon icon;
+
+    switch (_iconType) {
+    case ADD_ICON:
+        icon.addPixmap(QPixmap(ADD_BUTTON_ICON_FILE_PATH));
+        break;
+    case UP_ICON:
+        icon.addPixmap(QPixmap(UP_ICON_PATH));
+        break;
+    case DOWN_ICON:
+        icon.addPixmap(QPixmap(DOWN_ICON_PATH));
+        break;
+    case DELETE_ICON:
+        icon.addPixmap(QPixmap(DELETE_ICON_PATH));
+        break;
+    default:
+        break;
+    }
+
+    QTableWidgetItem *icon_item = new QTableWidgetItem;
+    icon_item->setIcon(icon);
+    icon_item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+
+    return icon_item;
+}
 
 
 void WorkflowTableHelper::clearTable()
@@ -129,7 +179,7 @@ QTableWidgetItem * WorkflowTableHelper::addNonEditableText(QString _value)
 }
 
 
-QLabel * WorkflowTableHelper::addIcon(int iconType)
+QLabel * WorkflowTableHelper::addIcon(ImProcMenuUI iconType)
 {
     QPixmap icon;
 
@@ -156,7 +206,7 @@ int WorkflowTableHelper::modifyEyeInRow(int row)
     if (eyeTableOpen.isEmpty())
         return -1;
     int _cValue = eyeTableOpen.at(row);
-    int iconType = EYE_CLOSED;
+    ImProcMenuUI iconType = EYE_CLOSED;
     if (_cValue == EYE_CLOSED)
         iconType = EYE_OPEN;
     registeredTable->removeCellWidget(row, EYE_COLUMN); // removing old one

@@ -4,10 +4,6 @@
 
 // Files for icons
 
-const QString UP_ICON_PATH=":/wkf/images/GUI_Module/images/images/bullet_arrow_up.png";
-const QString DOWN_ICON_PATH=":/wkf/images/GUI_Module/images/images/bullet_arrow_down.png";
-const QString DELETE_ICON_PATH=":/menu/GUI_Module/images/menu/cross.png";
-
 
 
 // VIEW ORIENTATION
@@ -35,20 +31,6 @@ enum ImProcTableCols{
     DESC_COLUMN = 1
 };
 
-enum ParamConfigurationTableCols{
-    PARAM_TYPE_COLUMN = 0,
-    PARAM_NAME_COLUMN = 1,
-    PARAM_VALUE_COLUMN = 2,
-    PARAM_CLASS_NAME_COLUMN = 3
-};
-
-enum genericWkfDialog{
-    CHECKABLE_COLUMN = 0,
-    ONLY_DESC_COLUMN = 1,
-    UP_ICON_COLUMN = 2,
-    DOWN_ICON_COLUMN = 3,
-    DELETE_ICON_COLUMN = 4// In the case we only want a column
-};
 
 // FILES NAMEs
 

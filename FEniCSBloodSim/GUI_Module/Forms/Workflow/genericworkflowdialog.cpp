@@ -59,10 +59,19 @@ void GenericWorkflowDialog::on_wkfButtonBox_accepted()
 // =========================================================================
 
 
+
+// =========================================================================
+// TABLE METHODS
+// =========================================================================
+
 void GenericWorkflowDialog::on_tableMethods1_cellClicked(int row, int column)
 {
-    if (column == CHECKABLE_COLUMN)
+    if (column == ACTION_COLUMN)
+    {
+        insertRow();
+        enableNextStep(true);
         updateValuesPipelineTable(row,column);
+    }
 }
 
 void GenericWorkflowDialog::updateValuesPipelineTable(int row,int column)
@@ -135,12 +144,7 @@ void GenericWorkflowDialog::fillTableWithInformation(int index)
     if (!_wkfHelper->isRegistered(index))
     {
 
-        QTableWidget * _table = new QTableWidget();
-        _table->insertColumn(CHECKABLE_COLUMN);
-        _table->insertColumn(ONLY_DESC_COLUMN);
-
-        _wkfHelper->registerTableListUI(_table);
-        _wkfHelper->setCurrentRegisteredTableFromList(index);
+        createTabTables(index);
 
         if (index < _catList.size())
         {
@@ -150,27 +154,37 @@ void GenericWorkflowDialog::fillTableWithInformation(int index)
             for (int i = 0; i< _imgList.size();i++)
             {
                 ImagingWkfFunctionData cFunction = _imgList.at(i);
-                _wkfHelper->addOnlyDesc(cFunction.getName());
+                _wkfHelper->addMethodsAndAction(cFunction.getName(),ADD_ICON);
+                //_wkfHelper->addOnlyDesc(cFunction.getName());
             }
         }
 
-        connect(_table, SIGNAL(cellClicked(int,int)), this, SLOT(on_tableMethods1_cellClicked(int,int)));
+        connect(_wkfHelper->getRegisteredTable(), SIGNAL(cellClicked(int,int)), this, SLOT(on_tableMethods1_cellClicked(int,int)));
 
         QHBoxLayout *l = new QHBoxLayout(_cWidget);
-        l->addWidget(_table);
+        l->addWidget(_wkfHelper->getRegisteredTable());
 
     }
 }
 
+void GenericWorkflowDialog::createTabTables(int noTable)
+{
+    QTableWidget * _table = new QTableWidget();
+    _table->insertColumn(METHOD_NAME_COLUMN);
+    _table->insertColumn(ACTION_COLUMN);
 
+    _wkfHelper->registerTableListUI(_table);
+    _wkfHelper->setCurrentRegisteredTableFromList(noTable);
+}
 
+/*
 void GenericWorkflowDialog::on_addStepToPipelineButton_clicked()
 {
     insertRow();
     enableNextStep(true);
 
 
-}
+}*/
 void GenericWorkflowDialog::insertRow()
 {
     _cPipelineRow =  _pipelineHelper->addEmptyRow();
@@ -180,15 +194,16 @@ void GenericWorkflowDialog::insertRow()
 
 void GenericWorkflowDialog::enableNextStep(bool _val)
 {
-    ui->selectOperationStep->setEnabled(_val);
-    ui->tabMethods->setEnabled(_val);
+
     ui->configOptionsTitle->setEnabled(_val);
     ui->optionsConfigFrame->setEnabled(_val);
     ui->stepDoneButton->setEnabled(_val);
     ui->cPipelineConfigurationTable->setEnabled(_val);
 
 
-    ui->addStepToPipelineButton->setEnabled(!_val);
+   // ui->addStepToPipelineButton->setEnabled(!_val);
+    ui->selectOperationStep->setEnabled(!_val);
+    ui->tabMethods->setEnabled(!_val);
     ui->pipelineTable->setEnabled(!_val);
     ui->pipelineItemSummaryTable->setEnabled(!_val);
 }

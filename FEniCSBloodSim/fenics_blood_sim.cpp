@@ -816,15 +816,18 @@ void FEniCS_Blood_Sim::on_workflowTableWidget_cellClicked(int row, int column)
 {
     if (column == EYE_COLUMN)
     {
-        int _cStatus = _workflowTableHelper.modifyEyeInRow(row);
-        if (_cStatus == EYE_CLOSED)
-            clearImageTab();
-        else
+        if (row == 0) // Note: At the moment we only allow to see the original image
         {
-            LoadMainImageTab();
-            LoadAxialImage();
-            LoadSaggitalImage();
-            LoadCoronalImage();
+            int _cStatus = _workflowTableHelper.modifyEyeInRow(row);
+            if (_cStatus == EYE_CLOSED)
+                clearImageTab();
+            else
+            {
+                LoadMainImageTab();
+                LoadAxialImage();
+                LoadSaggitalImage();
+                LoadCoronalImage();
+            }
         }
     }
 }

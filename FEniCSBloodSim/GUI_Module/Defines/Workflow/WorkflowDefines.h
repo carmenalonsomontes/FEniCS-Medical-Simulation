@@ -5,10 +5,46 @@
 
 const QString WFK_IMAGE_FILE_PATH =":/files/GUI_Module/Forms/Workflow/XML/ImageXmlMethods.xml";
 
+const QString ADD_BUTTON_ICON_FILE_PATH = ":/menu/GUI_Module/images/menu/add.png";
+const QString UP_ICON_PATH=":/wkf/images/GUI_Module/images/images/bullet_arrow_up.png";
+const QString DOWN_ICON_PATH=":/wkf/images/GUI_Module/images/images/bullet_arrow_down.png";
+const QString DELETE_ICON_PATH=":/menu/GUI_Module/images/menu/cross.png";
+
+
+enum IconType{
+    HELP_ICON = 0,
+    ADD_ICON = 1,
+    UP_ICON = 2,
+    DOWN_ICON = 3,
+    DELETE_ICON = 4
+};
+
 enum typeWorkflow{
     IMAGING_WKF = 0,
     FENICS_WKF = 1
 };
+
+enum ParamConfigurationTableCols{
+    PARAM_TYPE_COLUMN = 0,
+    PARAM_NAME_COLUMN = 1,
+    PARAM_VALUE_COLUMN = 2,
+    PARAM_CLASS_NAME_COLUMN = 3
+};
+
+enum genericWkfDialog{
+    CHECKABLE_COLUMN = 0,
+    ONLY_DESC_COLUMN = 1,
+    UP_ICON_COLUMN = 2,
+    DOWN_ICON_COLUMN = 3,
+    DELETE_ICON_COLUMN = 4// In the case we only want a column
+};
+
+
+enum ImagingWkfDialog{
+    METHOD_NAME_COLUMN = 0,
+    ACTION_COLUMN = 1
+};
+
 
 // XML DEFINEs
 const QString WKF_IMAGING_TAG = "imaging-functions";

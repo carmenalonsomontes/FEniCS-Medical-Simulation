@@ -68,7 +68,8 @@ void ImageWorkflow::fillMenuTable(CategoryWkfData _catObj)
     for (int i = 0; i< _functList.size();i++)
     {
         ImagingWkfFunctionData _functionObj= _functList.at(i);
-        _wkfHelper->addOnlyDesc(_functionObj.getName());
+        _wkfHelper->addMethodsAndAction(_functionObj.getName(),ADD_ICON);
+
     }
 
 }

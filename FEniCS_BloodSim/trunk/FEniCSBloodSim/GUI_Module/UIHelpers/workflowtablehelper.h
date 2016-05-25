@@ -7,19 +7,25 @@
 #include <QLabel>
 #include <QList>
 
+#include "GUI_Module/Defines/Workflow/WorkflowDefines.h"
+
+#include "GUI_Module/Defines/Menu/MenuDefines.h"
+
+
 class WorkflowTableHelper
 {
 public:
     WorkflowTableHelper();
 
     void registerTableUI(QTableWidget * _table);
+    QTableWidget * getRegisteredTable();
 
     void registerTableListUI(QTableWidget * _table);
 
     void setCurrentRegisteredTableFromList(int index);
 
 
-    void addElementToTable(QString _action,int iconType);
+    void addElementToTable(QString _action,ImProcMenuUI iconType);
 
     void addOnlyDesc(QString _action);
     int addEmptyRow();
@@ -35,6 +41,8 @@ public:
 
     bool isRegistered(int index);
 
+    void addMethodsAndAction(QString _action,IconType _icon);
+
 
 private:
     QTableWidget * registeredTable;
@@ -42,10 +50,11 @@ private:
     QList<int> eyeTableOpen;
 
     QTableWidgetItem * addNonEditableText(QString _value);
-    QLabel * addIcon(int iconType);
+    QLabel * addIcon(ImProcMenuUI iconType);
     QTableWidgetItem * addSelectableCheckColumn();
     QTableWidgetItem * addIcon(QString _path);
     QTableWidgetItem * addEditText(QString _value);
+    QTableWidgetItem * addIcon(IconType _iconType);
 
 };
 

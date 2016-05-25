@@ -44,7 +44,7 @@ private slots:
     void on_wkfButtonBox_accepted();
     void on_tableMethods1_cellClicked(int row, int column);
     void on_tabMethods_currentChanged(int index);
-    void on_addStepToPipelineButton_clicked();
+    //void on_addStepToPipelineButton_clicked();
 
     void on_stepDoneButton_clicked();
 
@@ -72,7 +72,7 @@ private:
     void addParametersToConfigurationTable(int row,CategoryWkfData cat);
     void showParameterInformation(int row);
     void saveConfiguration();
-
+    void createTabTables(int noTable);
 };
 
 #endif // GENERICWORKFLOWDIALOG_H

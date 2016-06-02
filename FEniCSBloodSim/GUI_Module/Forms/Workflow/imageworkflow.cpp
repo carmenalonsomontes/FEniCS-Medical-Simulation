@@ -18,6 +18,13 @@ ImageWorkflow::ImageWorkflow()
 
 }
 
+
+void ImageWorkflow::setImagePath(QString imPath)
+{
+    _wkfData.setImagePath(imPath);
+}
+
+
 void ImageWorkflow::loadInitialMenu()
 {
     if (_wkfData.isEmpty())

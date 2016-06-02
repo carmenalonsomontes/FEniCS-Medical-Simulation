@@ -14,14 +14,12 @@ class ImageWorkflow: public GenericWorkflowDialog
 public:
     ImageWorkflow();
 
+    void setImagePath(QString imPath);
 
 
 private:
 
-    void loadSpecificMethods();
-
-
-
+   void loadSpecificMethods();
     void loadInitialMenu();
     void fillMenuTable(CategoryWkfData _catObj);
 

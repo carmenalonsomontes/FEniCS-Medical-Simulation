@@ -5,7 +5,7 @@
 // Files for icons
 
 
-
+const int STR_EQUAL = 0;
 // VIEW ORIENTATION
 enum Orientation_Im{
     SAGITTAL_YZ = 0,

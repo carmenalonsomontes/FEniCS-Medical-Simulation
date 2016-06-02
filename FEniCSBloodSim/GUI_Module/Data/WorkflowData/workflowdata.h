@@ -15,12 +15,16 @@ public:
     void setCategoryList(QList<CategoryWkfData> newList);
     void addCategory(CategoryWkfData newCategory);
 
+    void setImagePath(QString newImPath);
+    QString getImagePath();
+
     void clean();
     bool isEmpty();
 
 private:
 
     QList<CategoryWkfData> _CategoryList;
+    QString _imPath;
 
 };
 

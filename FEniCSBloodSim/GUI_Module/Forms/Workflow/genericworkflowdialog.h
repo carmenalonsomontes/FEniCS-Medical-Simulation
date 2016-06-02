@@ -51,6 +51,8 @@ private slots:
     void on_pipelineTable_cellClicked(int row, int column);
 
 
+    void on_runPipelineButton_clicked();
+
 private:
     Ui::GenericWorkflowDialog *ui;
     int _cPipelineRow;

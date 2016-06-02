@@ -3,6 +3,17 @@
 
 #include <QString>
 
+// --------------------------------------------
+// Values for position of parameters in the PIPELINE
+enum PipelinePosition{
+    PARAMETER_NAME = 0,
+    PARAMETER_VALUE = 1
+};
+
+const QString PARAMETER_SEPARATOR = ";";
+
+
+
 const QString WFK_IMAGE_FILE_PATH =":/files/GUI_Module/Forms/Workflow/XML/ImageXmlMethods.xml";
 
 const QString ADD_BUTTON_ICON_FILE_PATH = ":/menu/GUI_Module/images/menu/add.png";

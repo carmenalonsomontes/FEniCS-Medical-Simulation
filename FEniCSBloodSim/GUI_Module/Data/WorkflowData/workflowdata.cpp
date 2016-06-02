@@ -2,6 +2,7 @@
 
 WorkflowData::WorkflowData()
 {
+    _imPath = "";
 }
 
 
@@ -24,9 +25,21 @@ void WorkflowData::addCategory(CategoryWkfData newCategory)
 }
 
 
+
+void WorkflowData::setImagePath(QString newImPath)
+{
+    _imPath = newImPath;
+}
+
+QString WorkflowData::getImagePath()
+{
+    return _imPath;
+}
+
 void WorkflowData::clean()
 {
     _CategoryList.clear();
+    _imPath.clear();
 }
 
 bool WorkflowData::isEmpty()

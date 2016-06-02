@@ -838,6 +838,7 @@ void FEniCS_Blood_Sim::on_workflowConfigButton_clicked()
 {
     // TODO
     ImageWorkflow _imgWkf;
+    _imgWkf.setImagePath(_projectData->getImPath());
     _imgWkf.exec();
 
     if (_imgWkf.userAcceptChanges())

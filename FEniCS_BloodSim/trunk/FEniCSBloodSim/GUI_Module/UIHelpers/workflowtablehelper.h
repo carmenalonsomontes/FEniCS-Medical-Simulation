@@ -31,7 +31,6 @@ public:
     int addEmptyRow();
 
     void addParameterRow (QString paramName, QString paramType, QString paramClassName, QString _value);
-    //_parameterName,_parameterType,_parameterClassName);
 
     void updateRow(QString _iconPath, QString _value, int row);
 

@@ -394,3 +394,93 @@ bool GenericWorkflowDialog::userAcceptChanges()
 {
     return _userAcceptChanges;
 }
+
+
+#include "itkImage.h"
+#include "itkBinaryThresholdImageFilter.h"
+#include <itkImageFileReader.h>
+#include "QuickView.h"
+
+//#include "GUI_Module/ITK_PIPELINE/itkpipelinefactory.h"
+//#include "GUI_Module/ITK_PIPELINE/itkpipelineoperation.h"
+#include "GUI_Module/Pipeline/ItkPipeline/ioperation.h"
+#include "GUI_Module/Pipeline/ItkPipeline/operationfactory.h"
+void GenericWorkflowDialog::on_runPipelineButton_clicked()
+{
+
+   // ItkPipelineFactory  pipelineFactory("BinaryThreshold2D");
+    typedef itk::Image<unsigned char, 2>  ImageType;
+    typedef itk::ImageFileReader<ImageType> ReaderType;
+
+    int lowerThreshold = 10;
+    int upperThreshold = 30;
+
+    QStringList _parameters;
+    _parameters.append("SetInput;"+_wkfData.getImagePath());
+    _parameters.append("SetLowerThreshold;10");
+    _parameters.append("SetUpperThreshold;30");
+    _parameters.append("SetInsideValue;255");
+    _parameters.append("SetOutsideValue;0");
+
+    IOperation * _operation =
+            OperationFactory::Get()->CreateOperation("Binary");
+    if (_operation)
+    {
+       _operation->SetParameters(_parameters);
+       // _operation->execOperation();
+       QuickView viewer;
+
+       // viewer.AddImage<ImageType>(reader->GetOutput(),true,itksys::SystemTools::GetFilenameName(_wkfData.getImagePath().toStdString()));
+        //std::stringstream desc;
+        //desc << "Threshold\nlower = " << lowerThreshold << " upper = " << upperThreshold;
+        viewer.AddImage<ImageType>(_operation->GetPointer(),true,"");
+        viewer.Visualize();
+
+    }
+  /*  ItkPipelineOperation * _item = pipelineFactory.Create();
+    _item->SetParatemeters(_parameters);
+    _item->exec();
+*/
+
+    // =======================================================================
+    // READING
+ /*  ReaderType::Pointer reader = ReaderType::New();
+    reader->SetFileName(_wkfData.getImagePath().toStdString()); // TODO
+    typedef itk::BinaryThresholdImageFilter <ImageType, ImageType>
+       BinaryThresholdImageFilterType;
+    // =======================================================================
+    // THRESHOLD
+   BinaryThresholdImageFilterType::Pointer thresholdFilter
+       = BinaryThresholdImageFilterType::New();
+     thresholdFilter->SetInput(reader->GetOutput());
+     thresholdFilter->SetLowerThreshold(lowerThreshold);
+     thresholdFilter->SetUpperThreshold(upperThreshold);
+     thresholdFilter->SetInsideValue(255);
+     thresholdFilter->SetOutsideValue(0);
+     // =======================================================================
+     // VISUALIZING
+    QuickView viewer;
+     viewer.AddImage<ImageType>(reader->GetOutput(),true,itksys::SystemTools::GetFilenameName(_wkfData.getImagePath().toStdString()));
+     std::stringstream desc;
+     desc << "Threshold\nlower = " << lowerThreshold << " upper = " << upperThreshold;
+     viewer.AddImage<ImageType>(thresholdFilter->GetOutput(),true,desc.str());
+     viewer.Visualize();
+*/
+
+
+/*
+     if (_pipelineItemList.isEmpty())
+         return;
+
+     for (int i = 0; i < _pipelineItemList.size();i++)
+      {
+          PipelineItem _item = _pipelineItemList.at(i);
+
+          // TODO instantiate the ITK OPERATION ITEM
+
+
+      }
+
+*/
+
+}

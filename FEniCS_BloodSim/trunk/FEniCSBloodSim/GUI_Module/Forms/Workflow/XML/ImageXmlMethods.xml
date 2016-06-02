@@ -1,5 +1,5 @@
 <xml>
-    <imaging-functions>
+    <imaging-functions>    
         <category name="noise removal" icon=":/wkf/images/GUI_Module/images/images/color_adjustment.png">
             <function name="Adaptive Histogram Equalization" classname="itkAdaptiveEqualizationHistogram.h" description="Adaptive Histogram Equalization ImageFilter">
                 <parameters>
@@ -21,6 +21,25 @@
             </parameters>
             </function>
             <function name="Level Set" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection">
+            <parameters>
+            </parameters>
+            </function>
+        </category>
+        <category name="Thresholding" icon=":/wkf/images/GUI_Module/images/images/color_adjustment.png">
+            <function name="Binary Threshold Image Filter" classname="BinaryThreshold2D" description="Adaptive Histogram Equalization ImageFilter">
+                <parameters>
+                    <parameter name="Input" classname="SetInput" type="TImage" default_value="NONE" ></parameter>
+                    <parameter name="Lower Threshold" classname="SetLowerThreshold" type="int" default_value="10" ></parameter>
+                    <parameter name="Upper Threshold" classname="SetUpperThreshold" type="int" default_value="30" ></parameter>
+                    <parameter name="Inside Value" classname="SetInsideValue" type="int" default_value="255" ></parameter>
+                    <parameter name="Outside Value" classname="SetOutsideValue" type="int" default_value="0" ></parameter>
+                </parameters>
+            </function>
+            <function name="canny detector" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" >
+            <parameters>
+            </parameters>
+            </function>
+            <function name="canny detector2" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection">
             <parameters>
             </parameters>
             </function>

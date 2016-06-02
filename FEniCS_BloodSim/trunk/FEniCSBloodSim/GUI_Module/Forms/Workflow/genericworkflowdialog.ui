@@ -314,6 +314,13 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
+      <widget class="QPushButton" name="runPipelineButton">
+       <property name="text">
+        <string>Run Pipeline</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QDialogButtonBox" name="wkfButtonBox">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

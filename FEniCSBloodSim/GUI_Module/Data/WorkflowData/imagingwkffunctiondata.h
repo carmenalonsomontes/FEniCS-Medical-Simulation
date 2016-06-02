@@ -21,11 +21,11 @@ public:
     //void setParameters(QString newParameters);
 
 
-    QStringList getParameterClassName();
+    QStringList getParameterMethodName();
     QStringList getParametersName();
     QStringList getParameterType();
 
-    void setParameterClassName(QStringList list);
+    void setParameterMethodName(QStringList list);
     void setParametersName(QStringList list);
     void setParameterType(QStringList list);
 
@@ -40,7 +40,7 @@ private:
     QString _name;
     QString _className;
     QString _description;
-    QStringList _parameterClassName;
+    QStringList _parameterMethodName;
     QStringList _parametersName;
     QStringList _parameterType;
     QStringList _defaultValue;

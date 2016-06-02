@@ -1,6 +1,6 @@
 #include "imageworkflow.h"
 
-#include "GUI_Module/DragItem/dragitem.h"
+//#include "GUI_Module/DragItem/dragitem.h"
 #include "GUI_Module/XML/xmlworkflowmethodsdata.h"
 #include "GUI_Module/Defines/Workflow/WorkflowDefines.h"
 

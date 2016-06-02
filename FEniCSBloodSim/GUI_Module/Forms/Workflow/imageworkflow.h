@@ -3,7 +3,7 @@
 #include "genericworkflowdialog.h"
 
 #include "GUI_Module/UIHelpers/workflowtablehelper.h"
-#include "GUI_Module/DragItem/dragitem.h"
+//#include "GUI_Module/DragItem/dragitem.h"
 #include "GUI_Module/Data/WorkflowData/workflowdata.h"
 #include "GUI_Module/Data/WorkflowData/categorywkfdata.h"
 #include "GUI_Module/Data/WorkflowData/imagingwkffunctiondata.h"

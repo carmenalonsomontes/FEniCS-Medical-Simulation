@@ -97,7 +97,7 @@ int  WorkflowTableHelper::addEmptyRow()
      registeredTable->setItem(_lastRow,PARAM_TYPE_COLUMN,addNonEditableText(paramType));
      registeredTable->setItem(_lastRow,PARAM_NAME_COLUMN,addNonEditableText(paramName));
      registeredTable->setItem(_lastRow,PARAM_VALUE_COLUMN,addEditText(_value));
-     registeredTable->setItem(_lastRow,PARAM_CLASS_NAME_COLUMN,addNonEditableText(paramClassName));
+     registeredTable->setItem(_lastRow,PARAM_METHOD_NAME_COLUMN,addNonEditableText(paramClassName));
 
      registeredTable->resizeColumnsToContents();
  }

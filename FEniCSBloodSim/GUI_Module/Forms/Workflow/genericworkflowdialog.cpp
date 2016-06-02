@@ -5,12 +5,13 @@
 #include <QTableWidget>
 #include <QHBoxLayout>
 #include <QObject>
-
+#include <QList>
 
 #include "GUI_Module/Defines/Menu/MenuDefines.h"
 
 #include "Pipeline/configurationpipelineitem.h"
-#include <QList>
+#include "GUI_Module/Pipeline/ItkPipeline/ioperation.h"
+#include "GUI_Module/Pipeline/ItkPipeline/operationfactory.h"
 
 GenericWorkflowDialog::GenericWorkflowDialog(QWidget *parent) :
     QDialog(parent),
@@ -88,7 +89,7 @@ void GenericWorkflowDialog::updateValuesPipelineTable(int row,int column)
             return;
         _pipelineHelper->updateRow(_iconPath,_description,_cPipelineRow);
         addParametersToConfigurationTable(row,_cCategory);
-        updatePipelineElement(_iconPath, _description, _cCategory.getCategoryName());
+        updatePipelineElement(_iconPath, _description, _cCategory,row);
     }
 
 }
@@ -102,16 +103,16 @@ void GenericWorkflowDialog::addParametersToConfigurationTable(int row,CategoryWk
 
     QStringList _parameterNameList = _cFunction.getParametersName();
     QStringList _parameterTypeList = _cFunction.getParameterType();
-    QStringList _parameterClassNameList = _cFunction.getParameterClassName();
+    QStringList _parameterMethodNameList = _cFunction.getParameterMethodName();
     QStringList _parameterDefaultValueList = _cFunction.getDefaultValue();
     for (int i = 0; i <_parameterNameList.size();i++)
     {
         QString _parameterName = _parameterNameList.at(i);
         QString _parameterType = _parameterTypeList.at(i);
-        QString _parameterClassName = _parameterClassNameList.at(i);
+        QString _parameterMethodName = _parameterMethodNameList.at(i);
         QString _parameterDefaultValue = _parameterDefaultValueList.at(i);
 
-        _configurationHelper->addParameterRow(_parameterName,_parameterType,_parameterClassName,_parameterDefaultValue);
+        _configurationHelper->addParameterRow(_parameterName,_parameterType,_parameterMethodName,_parameterDefaultValue);
 
     }
 }
@@ -201,7 +202,6 @@ void GenericWorkflowDialog::enableNextStep(bool _val)
     ui->cPipelineConfigurationTable->setEnabled(_val);
 
 
-   // ui->addStepToPipelineButton->setEnabled(!_val);
     ui->selectOperationStep->setEnabled(!_val);
     ui->tabMethods->setEnabled(!_val);
     ui->pipelineTable->setEnabled(!_val);
@@ -252,7 +252,7 @@ void GenericWorkflowDialog::saveConfiguration()
         _item.setOptionName(ui->cPipelineConfigurationTable->item(i, PARAM_NAME_COLUMN)->text());
         _item.setOptionType(ui->cPipelineConfigurationTable->item(i, PARAM_TYPE_COLUMN)->text());
         _item.setCurrentValue(ui->cPipelineConfigurationTable->item(i, PARAM_VALUE_COLUMN)->text());
-        _item.setClassName(ui->cPipelineConfigurationTable->item(i, PARAM_CLASS_NAME_COLUMN)->text());
+        _item.setMethodName(ui->cPipelineConfigurationTable->item(i, PARAM_METHOD_NAME_COLUMN)->text());
         _parameterList.append(_item);
     }
 
@@ -263,26 +263,37 @@ void GenericWorkflowDialog::saveConfiguration()
 }
 
 
-void GenericWorkflowDialog::updatePipelineElement(QString _iconPath, QString _description, QString _categoryName)
+void GenericWorkflowDialog::updatePipelineElement(QString _iconPath, QString _description,CategoryWkfData _category,int noFunction)
 {
+    PipelineItem _item;
     int _cListSize =  _pipelineItemList.size() -1;
 
+    if (_cPipelineRow <= _cListSize) 
+        _item = _pipelineItemList.at(_cPipelineRow);
+
+
+   _item.setIconPath(_iconPath);
+   _item.setDescription(_description);
+   _item.setCategoryName(_category.getCategoryName());
+
+   QList<ImagingWkfFunctionData> _functList = _category.getListFunctions();
+   ImagingWkfFunctionData _function = _functList.at(noFunction);
+   _item.setFunctionName(_function.getName());
+   _item.setFunctionClassName(_function.getClassName());
+   _item.setFunctionDescription(_function.getDescription());
+
     if (_cPipelineRow <= _cListSize)
-    {
-       PipelineItem _item = _pipelineItemList.at(_cPipelineRow);
-       _item.setIconPath(_iconPath);
-       _item.setDescription(_description);
-       _item.setCategoryName(_categoryName);
-       _pipelineItemList.replace(_cPipelineRow,_item);
-    }
+        _pipelineItemList.replace(_cPipelineRow,_item);
     if (_cPipelineRow > _cListSize)
-    {
-        PipelineItem _item;
-        _item.setIconPath(_iconPath);
-        _item.setDescription(_description);
-        _item.setCategoryName(_categoryName);
         _pipelineItemList.append(_item);
-    }
+
+   /*if (_cPipelineRow > _cListSize)
+    {
+         _item.setIconPath(_iconPath);
+        _item.setDescription(_description);
+        _item.setCategoryName(_category.getCategoryName());
+        _pipelineItemList.append(_item);
+    }*/
 
 
 }
@@ -336,7 +347,7 @@ void GenericWorkflowDialog::showParameterInformation(int row)
     {
         ConfigurationPipelineItem _parameter = _itemList.at(i);
          _summaryHelper->addParameterRow(_parameter.getOptionName(),_parameter.getOptionType(),
-                                         _parameter.getClassName(),_parameter.getCurrentValue());
+                                         _parameter.getMethodName(),_parameter.getCurrentValue());
     }
 
 }
@@ -396,91 +407,72 @@ bool GenericWorkflowDialog::userAcceptChanges()
 }
 
 
-#include "itkImage.h"
-#include "itkBinaryThresholdImageFilter.h"
-#include <itkImageFileReader.h>
-#include "QuickView.h"
 
-//#include "GUI_Module/ITK_PIPELINE/itkpipelinefactory.h"
-//#include "GUI_Module/ITK_PIPELINE/itkpipelineoperation.h"
-#include "GUI_Module/Pipeline/ItkPipeline/ioperation.h"
-#include "GUI_Module/Pipeline/ItkPipeline/operationfactory.h"
+QStringList GenericWorkflowDialog::buildParameterList(PipelineItem _item)
+{
+    QStringList _parameterList;
+
+    QList<ConfigurationPipelineItem> _configItemList = _item.getConfigurationItemList();
+
+    // Borrar luego
+   // TO TEST
+   //QString _inputData = "SetInput" + PARAMETER_SEPARATOR +_wkfData.getImagePath();
+   // _parameterList.append(_inputData);
+
+
+
+    //_parameterList.append("SetInput;"+_wkfData.getImagePath());
+
+
+    for (int i = 0; i<  _configItemList.size(); i++)
+    {
+        ConfigurationPipelineItem _configItem = _configItemList.at(i);
+
+        QString _cValue = _configItem.getCurrentValue();
+        if (_cValue.isEmpty())
+            _cValue = _configItem.getOptionDefaultValue();
+        QString _configValue = _configItem.getMethodName() + PARAMETER_SEPARATOR +_cValue;
+        _parameterList.append(_configValue);
+    }
+
+
+
+    return _parameterList;
+}
+
+//#include <QuickView.h>
+//#include "itkImage.h"
+
+void GenericWorkflowDialog::runPipelineItem( QStringList _parameterList,QString className)
+{
+
+    IOperation * _operation =  OperationFactory::Get()->CreateOperation(className.toStdString());
+    if (_operation)
+    {
+       _operation->SetParameters(_parameterList);
+      /* QuickView viewer;
+       viewer.AddImage<ImageType>(_operation->GetOutput(),true,"");
+       viewer.Visualize();
+*/
+
+    }
+}
+
 void GenericWorkflowDialog::on_runPipelineButton_clicked()
 {
 
-   // ItkPipelineFactory  pipelineFactory("BinaryThreshold2D");
-    typedef itk::Image<unsigned char, 2>  ImageType;
-    typedef itk::ImageFileReader<ImageType> ReaderType;
 
-    int lowerThreshold = 10;
-    int upperThreshold = 30;
+    if (_pipelineItemList.isEmpty())
 
-    QStringList _parameters;
-    _parameters.append("SetInput;"+_wkfData.getImagePath());
-    _parameters.append("SetLowerThreshold;10");
-    _parameters.append("SetUpperThreshold;30");
-    _parameters.append("SetInsideValue;255");
-    _parameters.append("SetOutsideValue;0");
+        return;
 
-    IOperation * _operation =
-            OperationFactory::Get()->CreateOperation("Binary");
-    if (_operation)
+    for (int i = 0; i < _pipelineItemList.size();i++)
     {
-       _operation->SetParameters(_parameters);
-       // _operation->execOperation();
-       QuickView viewer;
+         PipelineItem _item = _pipelineItemList.at(i);
 
-       // viewer.AddImage<ImageType>(reader->GetOutput(),true,itksys::SystemTools::GetFilenameName(_wkfData.getImagePath().toStdString()));
-        //std::stringstream desc;
-        //desc << "Threshold\nlower = " << lowerThreshold << " upper = " << upperThreshold;
-        viewer.AddImage<ImageType>(_operation->GetPointer(),true,"");
-        viewer.Visualize();
+         QStringList _parameterList = buildParameterList(_item);
+         runPipelineItem(_parameterList,_item.getFunctionClassName());
 
-    }
-  /*  ItkPipelineOperation * _item = pipelineFactory.Create();
-    _item->SetParatemeters(_parameters);
-    _item->exec();
-*/
-
-    // =======================================================================
-    // READING
- /*  ReaderType::Pointer reader = ReaderType::New();
-    reader->SetFileName(_wkfData.getImagePath().toStdString()); // TODO
-    typedef itk::BinaryThresholdImageFilter <ImageType, ImageType>
-       BinaryThresholdImageFilterType;
-    // =======================================================================
-    // THRESHOLD
-   BinaryThresholdImageFilterType::Pointer thresholdFilter
-       = BinaryThresholdImageFilterType::New();
-     thresholdFilter->SetInput(reader->GetOutput());
-     thresholdFilter->SetLowerThreshold(lowerThreshold);
-     thresholdFilter->SetUpperThreshold(upperThreshold);
-     thresholdFilter->SetInsideValue(255);
-     thresholdFilter->SetOutsideValue(0);
-     // =======================================================================
-     // VISUALIZING
-    QuickView viewer;
-     viewer.AddImage<ImageType>(reader->GetOutput(),true,itksys::SystemTools::GetFilenameName(_wkfData.getImagePath().toStdString()));
-     std::stringstream desc;
-     desc << "Threshold\nlower = " << lowerThreshold << " upper = " << upperThreshold;
-     viewer.AddImage<ImageType>(thresholdFilter->GetOutput(),true,desc.str());
-     viewer.Visualize();
-*/
-
-
-/*
-     if (_pipelineItemList.isEmpty())
-         return;
-
-     for (int i = 0; i < _pipelineItemList.size();i++)
-      {
-          PipelineItem _item = _pipelineItemList.at(i);
-
-          // TODO instantiate the ITK OPERATION ITEM
-
-
-      }
-
-*/
+     }
 
 }

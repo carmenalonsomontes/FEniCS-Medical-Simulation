@@ -39,7 +39,7 @@ enum ParamConfigurationTableCols{
     PARAM_TYPE_COLUMN = 0,
     PARAM_NAME_COLUMN = 1,
     PARAM_VALUE_COLUMN = 2,
-    PARAM_CLASS_NAME_COLUMN = 3
+    PARAM_METHOD_NAME_COLUMN = 3
 };
 
 enum genericWkfDialog{
@@ -70,7 +70,7 @@ const QString WKF_FUNCTION_DESCRIPTION_ATT = "description";
 const QString WKF_FUNCTION_PARAMETERS_TAG = "parameters";
 const QString WKF_FUNCTION_PARAMETER_ITEM_TAG = "parameter";
 const QString WKF_FUNCTION_PARAMETER_NAME_ATT = "name";
-const QString WKF_FUNCTION_PARAMETER_CLASSNAME_ATT = "classname";
+const QString WKF_FUNCTION_PARAMETER_METHOD_NAME_ATT = "methodname";
 const QString WKF_FUNCTION_PARAMETER_TYPE_ATT = "type";
 const QString WKF_FUNCTION_PARAMETER_DEFAULT_VALUE_ATT = "default_value";
 

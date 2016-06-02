@@ -7,6 +7,10 @@ PipelineItem::PipelineItem()
     _description = "";
     _categoryName = "";
     _positionPipeline = 0;
+
+    _functionName = "";
+    _functionClassName = "";
+    _functionDescription = "";
 }
 
 
@@ -65,6 +69,32 @@ void  PipelineItem::setConfigurationItemList(QList<ConfigurationPipelineItem> li
 }
 
 
+QString PipelineItem::getFunctionName()
+{
+    return _functionName;
+}
+QString PipelineItem::getFunctionClassName()
+{
+    return _functionClassName;
+}
+QString PipelineItem::getFunctionDescription()
+{
+    return _functionDescription;
+}
+
+void PipelineItem::setFunctionName(QString name)
+{
+    _functionName = name;
+}
+void PipelineItem::setFunctionClassName(QString className)
+{
+    _functionClassName = className;
+}
+void PipelineItem::setFunctionDescription(QString  desc)
+{
+    _functionDescription = desc;
+}
+
 
 bool PipelineItem::isEmpty()
 {
@@ -83,4 +113,9 @@ void PipelineItem::clear()
     _categoryName.clear();
     _configurationItemList.clear();
     _positionPipeline = 0;
+
+
+    _functionName.clear();
+    _functionClassName.clear();
+    _functionDescription.clear();
 }

@@ -20,8 +20,8 @@ public:
     QString getCurrentValue();
     void setCurrentValue(QString newValue);
 
-    QString getClassName();
-    void setClassName(QString newName);
+    QString getMethodName();
+    void setMethodName(QString newName);
 
     bool isEmpty();
     void clear();
@@ -30,7 +30,7 @@ private:
     QString _optionName;
     QString _optionType;
     QString _optionDefaultValue;
-    QString _className;
+    QString _methodName;
     QString _cValue;
 };
 

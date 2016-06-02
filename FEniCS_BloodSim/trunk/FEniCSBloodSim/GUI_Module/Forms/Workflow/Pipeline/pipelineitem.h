@@ -27,12 +27,27 @@ public:
     QList<ConfigurationPipelineItem> getConfigurationItemList();
     void  setConfigurationItemList(QList<ConfigurationPipelineItem> list);
 
+
+    QString getFunctionName();
+    QString getFunctionClassName();
+    QString getFunctionDescription();
+
+    void setFunctionName(QString name);
+    void setFunctionClassName(QString className);
+    void setFunctionDescription(QString  desc);
+
+
+
     bool isEmpty();
     void clear();
 private:
     QString _categoryName;
     QString _iconPath;
     QString _description;
+
+    QString _functionName;
+    QString _functionClassName;
+    QString _functionDescription;
 
     QList<ConfigurationPipelineItem> _configurationItemList;
 

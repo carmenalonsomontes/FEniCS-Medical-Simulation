@@ -6,7 +6,7 @@ ConfigurationPipelineItem::ConfigurationPipelineItem()
     _optionType = "";
     _optionName = "";
     _cValue = "";
-    _className = "";
+    _methodName = "";
 }
 
 
@@ -51,14 +51,14 @@ void ConfigurationPipelineItem::setCurrentValue(QString newValue)
 }
 
 
-QString ConfigurationPipelineItem::getClassName()
+QString ConfigurationPipelineItem::getMethodName()
 {
-    return _className;
+    return _methodName;
 }
 
-void ConfigurationPipelineItem::setClassName(QString newName)
+void ConfigurationPipelineItem::setMethodName(QString newName)
 {
-    _className = newName;
+    _methodName = newName;
 }
 
 bool ConfigurationPipelineItem::isEmpty()
@@ -75,6 +75,6 @@ void ConfigurationPipelineItem::clear()
     _optionDefaultValue.clear();
     _optionName.clear();
     _optionType.clear();
-    _className.clear();
+    _methodName.clear();
     _cValue.clear();
 }

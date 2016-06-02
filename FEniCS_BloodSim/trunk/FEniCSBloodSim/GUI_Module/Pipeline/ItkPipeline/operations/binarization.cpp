@@ -10,12 +10,6 @@ Binarization::Binarization()
 }
 
 
-/*
-#include "itkImage.h"
-#include "itkBinaryThresholdImageFilter.h"
-#include <itkImageFileReader.h>
-#include "QuickView.h"
-*/
 void Binarization::SetParameters(QStringList _parameterList)
 {
    ReaderType::Pointer reader = ReaderType::New();
@@ -52,19 +46,14 @@ void Binarization::SetParameters(QStringList _parameterList)
 }
 
 
-
-void Binarization::execOperation()
+ImageType::Pointer Binarization::GetOutput()
 {
-    QuickView viewer;
-   // viewer.AddImage<ImageType>(reader->GetOutput(),true,"");//itksys::SystemTools::GetFilenameName(_wkfData.getImagePath().toStdString()));
-    std::stringstream desc;
-    desc << "Threshold\nlower = " ;
-    viewer.AddImage<ImageType>(thresholdFilter->GetOutput(),true,desc.str());
-    viewer.Visualize();
-    cout << "Ejecutandoooooo" << endl;
+    return thresholdFilter->GetOutput();
 }
 
 IOperation * Binarization::Create() {
     return new Binarization();
 }
+
+
 

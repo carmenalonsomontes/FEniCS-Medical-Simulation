@@ -4,7 +4,7 @@
 
 OperationFactory::OperationFactory()
 {
-    Register("Binary",&Binarization::Create);
+    Register("BinaryThreshold2D",&Binarization::Create);
 }
 OperationFactory::OperationFactory(const OperationFactory &)
 {

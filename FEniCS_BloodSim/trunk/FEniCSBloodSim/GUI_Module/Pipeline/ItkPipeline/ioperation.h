@@ -14,8 +14,7 @@ public:
 
     //IOperation();
     virtual void SetParameters(QStringList _parameterList) = 0;
-    virtual void execOperation() = 0;
-    virtual ImageType::Pointer GetPointer() = 0;
+    virtual ImageType::Pointer GetOutput() = 0;
 
 };
 

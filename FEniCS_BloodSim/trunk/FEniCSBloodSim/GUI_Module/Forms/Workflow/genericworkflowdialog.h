@@ -67,7 +67,7 @@ private:
     QString buildDescription(CategoryWkfData _cCategory, int _row);
     void restoreUI();
     void addSignalPipelineRow();
-    void updatePipelineElement(QString _iconPath, QString _description, QString _categoryName);
+    void updatePipelineElement(QString _iconPath, QString _description, CategoryWkfData _category,int noFunction);
 
     void moveDown(int row);
     void moveUp(int row);
@@ -75,6 +75,10 @@ private:
     void showParameterInformation(int row);
     void saveConfiguration();
     void createTabTables(int noTable);
+
+
+    QStringList buildParameterList(PipelineItem _item);
+    void runPipelineItem( QStringList _parameterList,QString className);
 };
 
 #endif // GENERICWORKFLOWDIALOG_H

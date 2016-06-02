@@ -96,7 +96,7 @@ void XMLWorkflowMethodsData::addParameterList( QXmlStreamReader * xmlReader,Imag
     bool _parameterEnded = false;
     QStringList _parameterNameList;
     QStringList _parameterTypeList;
-    QStringList _parameterClassNameList;
+    QStringList _parameterMethodNameList;
     QStringList _parameterDefaultValueList;
 
     while ( (!xmlReader->atEnd()) && (!xmlReader->hasError()) && (!_parameterEnded))
@@ -114,8 +114,8 @@ void XMLWorkflowMethodsData::addParameterList( QXmlStreamReader * xmlReader,Imag
                 _parameterTypeList.append(_elementAtt.value(WKF_FUNCTION_PARAMETER_TYPE_ATT).toString());
 
 
-            if (_elementAtt.hasAttribute(WKF_FUNCTION_PARAMETER_CLASSNAME_ATT))
-                _parameterClassNameList.append(_elementAtt.value(WKF_FUNCTION_PARAMETER_CLASSNAME_ATT).toString());
+            if (_elementAtt.hasAttribute(WKF_FUNCTION_PARAMETER_METHOD_NAME_ATT))
+                _parameterMethodNameList.append(_elementAtt.value(WKF_FUNCTION_PARAMETER_METHOD_NAME_ATT).toString());
 
             if (_elementAtt.hasAttribute(WKF_FUNCTION_PARAMETER_DEFAULT_VALUE_ATT))
                 _parameterDefaultValueList.append(_elementAtt.value(WKF_FUNCTION_PARAMETER_DEFAULT_VALUE_ATT).toString());
@@ -126,7 +126,7 @@ void XMLWorkflowMethodsData::addParameterList( QXmlStreamReader * xmlReader,Imag
         {
             _parameterEnded = true;
             functionData->setParametersName(_parameterNameList);
-            functionData->setParameterClassName(_parameterClassNameList);
+            functionData->setParameterMethodName(_parameterMethodNameList);
             functionData->setParameterType(_parameterTypeList);
             functionData->setDefaultValue(_parameterDefaultValueList);
         }

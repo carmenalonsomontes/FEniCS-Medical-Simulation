@@ -3,7 +3,7 @@
         <category name="noise removal" icon=":/wkf/images/GUI_Module/images/images/color_adjustment.png">
             <function name="Adaptive Histogram Equalization" classname="itkAdaptiveEqualizationHistogram.h" description="Adaptive Histogram Equalization ImageFilter">
                 <parameters>
-                    <parameter name="Radius" classname="SetRadius" type="int" default_value="1" ></parameter>
+                    <parameter name="Radius" methodname="SetRadius" type="int" default_value="1" ></parameter>
                 </parameters>
             </function>
             <function name="canny detector" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" >
@@ -27,12 +27,11 @@
         </category>
         <category name="Thresholding" icon=":/wkf/images/GUI_Module/images/images/color_adjustment.png">
             <function name="Binary Threshold Image Filter" classname="BinaryThreshold2D" description="Adaptive Histogram Equalization ImageFilter">
-                <parameters>
-                    <parameter name="Input" classname="SetInput" type="TImage" default_value="NONE" ></parameter>
-                    <parameter name="Lower Threshold" classname="SetLowerThreshold" type="int" default_value="10" ></parameter>
-                    <parameter name="Upper Threshold" classname="SetUpperThreshold" type="int" default_value="30" ></parameter>
-                    <parameter name="Inside Value" classname="SetInsideValue" type="int" default_value="255" ></parameter>
-                    <parameter name="Outside Value" classname="SetOutsideValue" type="int" default_value="0" ></parameter>
+                <parameters>                    
+                    <parameter name="Lower Threshold" methodname="SetLowerThreshold" type="int" default_value="10" ></parameter>
+                    <parameter name="Upper Threshold" methodname="SetUpperThreshold" type="int" default_value="30" ></parameter>
+                    <parameter name="Inside Value" methodname="SetInsideValue" type="int" default_value="255" ></parameter>
+                    <parameter name="Outside Value" methodname="SetOutsideValue" type="int" default_value="0" ></parameter>
                 </parameters>
             </function>
             <function name="canny detector" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" >

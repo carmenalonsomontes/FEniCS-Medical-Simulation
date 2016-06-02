@@ -50,9 +50,9 @@ void ImagingWkfFunctionData::setDescription(QString newDescription)
 */
 
 
-QStringList ImagingWkfFunctionData::getParameterClassName()
+QStringList ImagingWkfFunctionData::getParameterMethodName()
 {
-    return _parameterClassName;
+    return _parameterMethodName;
 }
 
 QStringList ImagingWkfFunctionData::getParametersName()
@@ -65,9 +65,9 @@ QStringList ImagingWkfFunctionData::getParameterType()
     return _parameterType;
 }
 
-void ImagingWkfFunctionData::setParameterClassName(QStringList list)
+void ImagingWkfFunctionData::setParameterMethodName(QStringList list)
 {
-    _parameterClassName = list;
+    _parameterMethodName = list;
 }
 
 void ImagingWkfFunctionData::setParametersName(QStringList list)
@@ -97,7 +97,7 @@ void ImagingWkfFunctionData::clear()
     _className.clear();
     _description.clear();
    // _parameters.clear();
-    _parameterClassName.clear();
+    _parameterMethodName.clear();
     _parametersName.clear();
     _parameterType.clear();
     _defaultValue.clear();

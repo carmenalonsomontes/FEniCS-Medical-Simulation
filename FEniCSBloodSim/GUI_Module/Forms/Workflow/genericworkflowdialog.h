@@ -33,11 +33,9 @@ protected:
     WorkflowTableHelper * _configurationHelper;
     WorkflowTableHelper * _summaryHelper;
    // DragItem * _dragableArea ;
-    WorkflowData  _wkfData;
+    WorkflowData  * _wkfData;
 
     void createTabWithName(int tabIndex, const QString text);
-
-
 
 private slots:
 

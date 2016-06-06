@@ -13,6 +13,7 @@ class IOperation
 public:
 
     //IOperation();
+    virtual void SetInPut(ImageType::Pointer _input) = 0;
     virtual void SetParameters(QStringList _parameterList) = 0;
     virtual ImageType::Pointer GetOutput() = 0;
 

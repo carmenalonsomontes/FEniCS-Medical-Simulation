@@ -1,10 +1,11 @@
 #include "operationfactory.h"
 #include "operations/binarization.h"
-
+#include "operations/slicebyslicefilter.h"
 
 OperationFactory::OperationFactory()
 {
     Register("BinaryThreshold2D",&Binarization::Create);
+    Register("SliceBySliceFilter",&SliceBySliceFilter::Create);
 }
 OperationFactory::OperationFactory(const OperationFactory &)
 {

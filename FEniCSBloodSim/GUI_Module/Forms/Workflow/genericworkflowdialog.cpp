@@ -32,6 +32,8 @@ GenericWorkflowDialog::GenericWorkflowDialog(QWidget *parent) :
     _summaryHelper = new WorkflowTableHelper();
     _summaryHelper->registerTableUI(ui->pipelineItemSummaryTable);
 
+    _wkfData = new WorkflowData();
+
     _userAcceptChanges = false;
 
 }
@@ -43,6 +45,7 @@ GenericWorkflowDialog::~GenericWorkflowDialog()
     delete _pipelineHelper;
     delete _configurationHelper;
     delete _summaryHelper;
+    delete _wkfData;
 }
 
 
@@ -78,7 +81,7 @@ void GenericWorkflowDialog::on_tableMethods1_cellClicked(int row, int column)
 void GenericWorkflowDialog::updateValuesPipelineTable(int row,int column)
 {
 
-    QList<CategoryWkfData> _catList = _wkfData.getCategoryList();
+    QList<CategoryWkfData> _catList = _wkfData->getCategoryList();
     int _cTab = ui->tabMethods->currentIndex();
     if (_cTab < _catList.size())
     {
@@ -141,7 +144,7 @@ void GenericWorkflowDialog::on_tabMethods_currentChanged(int index)
 void GenericWorkflowDialog::fillTableWithInformation(int index)
 {
     QWidget * _cWidget = ui->tabMethods->currentWidget();
-    QList<CategoryWkfData> _catList = _wkfData.getCategoryList();
+    QList<CategoryWkfData> _catList = _wkfData->getCategoryList();
     if (!_wkfHelper->isRegistered(index))
     {
 
@@ -416,12 +419,8 @@ QStringList GenericWorkflowDialog::buildParameterList(PipelineItem _item)
 
     // Borrar luego
    // TO TEST
-   //QString _inputData = "SetInput" + PARAMETER_SEPARATOR +_wkfData.getImagePath();
-   // _parameterList.append(_inputData);
-
-
-
-    //_parameterList.append("SetInput;"+_wkfData.getImagePath());
+   QString _inputData = "SetInput" + PARAMETER_SEPARATOR +_wkfData->getImagePath();
+    _parameterList.append(_inputData);
 
 
     for (int i = 0; i<  _configItemList.size(); i++)
@@ -434,9 +433,6 @@ QStringList GenericWorkflowDialog::buildParameterList(PipelineItem _item)
         QString _configValue = _configItem.getMethodName() + PARAMETER_SEPARATOR +_cValue;
         _parameterList.append(_configValue);
     }
-
-
-
     return _parameterList;
 }
 
@@ -450,18 +446,16 @@ void GenericWorkflowDialog::runPipelineItem( QStringList _parameterList,QString 
     if (_operation)
     {
        _operation->SetParameters(_parameterList);
-      /* QuickView viewer;
+  /*     QuickView viewer;
        viewer.AddImage<ImageType>(_operation->GetOutput(),true,"");
        viewer.Visualize();
-*/
+       */
 
     }
 }
 
 void GenericWorkflowDialog::on_runPipelineButton_clicked()
 {
-
-
     if (_pipelineItemList.isEmpty())
 
         return;
@@ -472,7 +466,6 @@ void GenericWorkflowDialog::on_runPipelineButton_clicked()
 
          QStringList _parameterList = buildParameterList(_item);
          runPipelineItem(_parameterList,_item.getFunctionClassName());
-
-     }
+    }
 
 }

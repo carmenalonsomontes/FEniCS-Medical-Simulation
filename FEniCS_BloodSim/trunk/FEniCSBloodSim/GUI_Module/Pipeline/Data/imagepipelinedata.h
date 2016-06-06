@@ -13,7 +13,6 @@ class ImagePipelineData
 {
 public:
     ImagePipelineData();
-
     void addImage2Pipeline(ImageType::Pointer _image);
     ImageType::Pointer getImage(int posPipeline);
 

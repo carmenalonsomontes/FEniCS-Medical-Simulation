@@ -12,7 +12,7 @@ ImageWorkflow::ImageWorkflow()
 {
     // Loading the menu
     XMLWorkflowMethodsData _xmlReader;
-    _xmlReader.readWorkflowMethodsFile(&_wkfData,IMAGING_WKF);
+    _xmlReader.readWorkflowMethodsFile(_wkfData,IMAGING_WKF);
 
     loadInitialMenu();
 
@@ -21,15 +21,15 @@ ImageWorkflow::ImageWorkflow()
 
 void ImageWorkflow::setImagePath(QString imPath)
 {
-    _wkfData.setImagePath(imPath);
+    _wkfData->setImagePath(imPath);
 }
 
 
 void ImageWorkflow::loadInitialMenu()
 {
-    if (_wkfData.isEmpty())
+    if (_wkfData->isEmpty())
         return;
-    QList<CategoryWkfData> _catList = _wkfData.getCategoryList();
+    QList<CategoryWkfData> _catList = _wkfData->getCategoryList();
 
     if (_catList.isEmpty())
         return;

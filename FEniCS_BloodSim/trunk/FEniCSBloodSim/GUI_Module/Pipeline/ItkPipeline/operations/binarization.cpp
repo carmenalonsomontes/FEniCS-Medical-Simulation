@@ -9,6 +9,10 @@ Binarization::Binarization()
 {
 }
 
+void Binarization::SetInPut(ImageType::Pointer _input)
+{
+    thresholdFilter->SetInput(_input);
+}
 
 void Binarization::SetParameters(QStringList _parameterList)
 {
@@ -26,7 +30,8 @@ void Binarization::SetParameters(QStringList _parameterList)
         if (QString::compare(_parameterItems.at(PARAMETER_NAME),"SetInput") == STR_EQUAL)
         {
             reader->SetFileName(_parameterItems.at(PARAMETER_VALUE).toStdString());
-            thresholdFilter->SetInput(reader->GetOutput());
+            SetInPut(reader->GetOutput());
+           // thresholdFilter->SetInput(reader->GetOutput());
         }
 
         if (QString::compare(_parameterItems.at(PARAMETER_NAME),"SetLowerThreshold") == STR_EQUAL)

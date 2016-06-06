@@ -17,14 +17,3 @@ int main( int argc, char** argv )
 }
 
 
-
-/*#include <iostream>
-
-using namespace std;
-
-int main()
-{
-    cout << "Hello World!" << endl;
-    return 0;
-}*/
-

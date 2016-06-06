@@ -4,6 +4,7 @@ ImagePipelineData::ImagePipelineData()
 {
 }
 
+
 void ImagePipelineData::addImage2Pipeline(ImageType::Pointer _image)
 {
     _imagesPipeline.append(_image);

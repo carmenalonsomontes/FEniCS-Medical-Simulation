@@ -33,25 +33,21 @@
                     <parameter name="Inside Value" methodname="SetInsideValue" type="int" default_value="255" ></parameter>
                     <parameter name="Outside Value" methodname="SetOutsideValue" type="int" default_value="0" ></parameter>
                 </parameters>
-            </function>
-            <function name="canny detector" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" >
+            </function>           
+        </category>
+        <category name="Filter" icon=":/wkf/images/GUI_Module/images/images/designmoo2.png">
+            <function name="Slice by Slice filtering" classname="SliceBySliceFilter" description="Slice by Slice Filtering">
             <parameters>
-            </parameters>
-            </function>
-            <function name="canny detector2" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection">
-            <parameters>
+                <parameter name="Filter" methodname="SetFilter" type="TFilter" default_value="MEDIAN_FILTER" ></parameter>
+                <parameter name="Radius" methodname="SetRadius" type="int" default_value="5" ></parameter>
             </parameters>
             </function>
         </category>
         <category name="Others" icon=":/wkf/images/GUI_Module/images/images/gear_in.png">
-            <function name="canny detector7" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection">
+            <function name="XXXX" classname="NONE.h" description="NONE">
             <parameters>
             </parameters>
-            </function>
-            <function name="canny detector6" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection">
-            <parameters>
-            </parameters>
-            </function>
+            </function>           
         </category>
     </imaging-functions>
 

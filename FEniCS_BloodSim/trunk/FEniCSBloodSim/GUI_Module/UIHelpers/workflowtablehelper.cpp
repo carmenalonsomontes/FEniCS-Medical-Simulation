@@ -81,8 +81,19 @@ int  WorkflowTableHelper::addEmptyRow()
 {
     int _lastRow = registeredTable->rowCount();
     registeredTable->insertRow(_lastRow);
-
     registeredTable->resizeColumnsToContents();
+
+
+    return _lastRow;
+}
+
+int  WorkflowTableHelper::addHiddenEmptyRow()
+{
+    int _lastRow = registeredTable->rowCount();
+    registeredTable->insertRow(_lastRow);
+    registeredTable->resizeColumnsToContents();
+    registeredTable->setRowHidden(_lastRow,true);
+
 
     return _lastRow;
 }

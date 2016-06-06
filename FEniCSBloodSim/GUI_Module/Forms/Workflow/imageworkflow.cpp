@@ -37,8 +37,11 @@ void ImageWorkflow::loadInitialMenu()
     // Create tabs & Update names
     fillWorkflowTabInfo(_catList);
 
-    // Update Project Info
-    // TODO
+    // Registering the rest of the tables
+    for (int i=1;i<_catList.size();i++)
+        fillTableWithInformation(i);
+
+
 }
 
 
@@ -61,7 +64,8 @@ void ImageWorkflow::createCategoryTabs(int noTabs,QList<CategoryWkfData> catList
     for (int i= 0; i< noTabs; i++)
     {
         CategoryWkfData _catData = catList.at(i);
-         createTabWithName(i,_catData.getCategoryName());
+        createTabWithName(i,_catData.getCategoryName());
+
     }
 
 }
@@ -76,9 +80,7 @@ void ImageWorkflow::fillMenuTable(CategoryWkfData _catObj)
     {
         ImagingWkfFunctionData _functionObj= _functList.at(i);
         _wkfHelper->addMethodsAndAction(_functionObj.getName(),ADD_ICON);
-
     }
-
 }
 
 

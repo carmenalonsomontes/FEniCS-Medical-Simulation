@@ -19,7 +19,7 @@ public:
 
 private:
 
-   void loadSpecificMethods();
+    void loadSpecificMethods();
     void loadInitialMenu();
     void fillMenuTable(CategoryWkfData _catObj);
 

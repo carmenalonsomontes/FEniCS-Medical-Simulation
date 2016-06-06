@@ -29,6 +29,7 @@ public:
 
     void addOnlyDesc(QString _action);
     int addEmptyRow();
+    int addHiddenEmptyRow();
 
     void addParameterRow (QString paramName, QString paramType, QString paramClassName, QString _value);
 

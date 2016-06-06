@@ -32,24 +32,21 @@ protected:
     WorkflowTableHelper * _pipelineHelper;
     WorkflowTableHelper * _configurationHelper;
     WorkflowTableHelper * _summaryHelper;
-   // DragItem * _dragableArea ;
     WorkflowData  * _wkfData;
 
     void createTabWithName(int tabIndex, const QString text);
+    void createTabTables(int noTable);
+    void fillTableWithInformation(int index);
 
 private slots:
 
     void on_wkfButtonBox_accepted();
     void on_tableMethods1_cellClicked(int row, int column);
-    void on_tabMethods_currentChanged(int index);
-    //void on_addStepToPipelineButton_clicked();
-
     void on_stepDoneButton_clicked();
-
     void on_pipelineTable_cellClicked(int row, int column);
-
-
     void on_runPipelineButton_clicked();
+
+    void on_cancelSelection_clicked();
 
 private:
     Ui::GenericWorkflowDialog *ui;
@@ -57,13 +54,15 @@ private:
     QList<PipelineItem> _pipelineItemList;
     bool _userAcceptChanges;
 
+    int _selectedRow;
 
-    void fillTableWithInformation(int index);
+
+
     void insertRow();
-    void enableNextStep(bool _val);
+
     void updateValuesPipelineTable(int row,int column);
     QString buildDescription(CategoryWkfData _cCategory, int _row);
-    void restoreUI();
+
     void addSignalPipelineRow();
     void updatePipelineElement(QString _iconPath, QString _description, CategoryWkfData _category,int noFunction);
 
@@ -72,11 +71,15 @@ private:
     void addParametersToConfigurationTable(int row,CategoryWkfData cat);
     void showParameterInformation(int row);
     void saveConfiguration();
-    void createTabTables(int noTable);
+
 
 
     QStringList buildParameterList(PipelineItem _item);
     void runPipelineItem( QStringList _parameterList,QString className);
+
+    void enableNextStep(bool _val);
+    //void enablePipelineArea(bool _val);
+    void restoreUI();
 };
 
 #endif // GENERICWORKFLOWDIALOG_H

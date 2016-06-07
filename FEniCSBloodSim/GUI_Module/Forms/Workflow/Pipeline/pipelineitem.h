@@ -37,6 +37,7 @@ public:
     void setFunctionDescription(QString  desc);
 
 
+    void updateConfiguredItemValue(QString _itemValue, int pos);
 
     bool isEmpty();
     void clear();

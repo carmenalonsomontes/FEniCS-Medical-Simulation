@@ -89,10 +89,32 @@ const QString FBS_GUI_TAG = "fbs_gui";
 const QString FBS_PROJECT_TAG = "fbs_project";
 const QString FBS_PROJECT_PATH_ATT = "fbs_project_path";
 const QString FBS_PROJECT_NAME_ATT = "fbs_project_name";
+
 const QString FBS_IMAGE_TAG = "fbs_image";
 const QString FBS_IMAGE_PATH_ATT = "fbs_image_path";
 const QString FBS_IMAGE_NAME_ATT = "fbs_image_name";
 const QString FBS_IMAGE_PREFIX_NAME_ATT = "fbs_image_prefix_name";
+
+// FBS_IMAGE_PIPELINE
+const QString FBS_IMAGE_PIPELINE_TAG = "fbs_image_pipeline";
+const QString FBS_IMAGE_PIPELINE_CATEGORY_TAG = "fbs_image_category";
+const QString FBS_IMAGE_PIPELINE_CATEGORY_NAME_ATT = "name";
+const QString FBS_IMAGE_PIPELINE_CATEGORY_ICONPATH_ATT = "icon_path";
+const QString FBS_IMAGE_PIPELINE_CATEGORY_DESCRIPTION_ATT = "description";
+
+const QString FBS_IMAGE_PIPELINE_FUNCTION_TAG = "fbs_image_function";
+const QString FBS_IMAGE_PIPELINE_FUNCTION_NAME_ATT = "name";
+const QString FBS_IMAGE_PIPELINE_FUNCTION_CLASSNAME_ATT = "classname";
+const QString FBS_IMAGE_PIPELINE_FUNCTION_DESCRIPTION_ATT = "description";
+const QString FBS_IMAGE_PIPELINE_FUNCTION_POSITION_PIPELINE_ATT = "position_pipeline";
+
+const QString FBS_IMAGE_PIPELINE_PARAMETER_LIST_TAG = "fbs_image_parameter_list";
+const QString FBS_IMAGE_PIPELINE_PARAMETER_TAG = "fbs_image_parameter";
+const QString FBS_IMAGE_PIPELINE_PARAMETER_NAME_ATT = "name";
+const QString FBS_IMAGE_PIPELINE_PARAMETER_TYPE_ATT = "type";
+const QString FBS_IMAGE_PIPELINE_PARAMETER_DEFAULT_VALUE_ATT = "default_value";
+const QString FBS_IMAGE_PIPELINE_PARAMETER_METHOD_NAME_ATT = "method_name";
+const QString FBS_IMAGE_PIPELINE_PARAMETER_CURRENT_VALUE_ATT = "current_value";
 
 // PReferences XML Tags
 const QString FBS_PREFERENCES_TAG = "fbs_preferences";

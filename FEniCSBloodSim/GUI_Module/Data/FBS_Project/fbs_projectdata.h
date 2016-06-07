@@ -2,8 +2,10 @@
 #define FBS_PROJECTDATA_H
 
 #include <QString>
+#include <QList>
 
 #include "ImageProcessing_Module/imagedata.h"
+#include "GUI_Module/Forms/Workflow/Pipeline/pipelineitem.h"
 
 
 class FBS_ProjectData
@@ -34,10 +36,14 @@ public:
     void saveProjectInfoToFile();
     void readProjectInfoFromFile(QString _projectFilePath);
 
+    QList<PipelineItem> getListPipelineItems();
+    void setListPipelineItems( QList<PipelineItem> _list);
+
     void clearData();
 
     bool isEmpty();
     bool isEmptyImagingData();
+    bool isEmptyPipelineData();
 
 private:
     QString _projectPath;
@@ -49,7 +55,10 @@ private:
 
     ImageData * _imageData;
 
+    QList<PipelineItem> _listPipelineItems;
+
     void initializeVariables();
+
 
 };
 

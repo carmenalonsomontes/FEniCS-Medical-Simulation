@@ -43,6 +43,8 @@ public:
 
     void addMethodsAndAction(QString _action,IconType _icon);
 
+    void removeRowsFromThisOnwards(int initRow);
+
 
 private:
     QTableWidget * registeredTable;

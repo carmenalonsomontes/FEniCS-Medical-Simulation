@@ -96,6 +96,14 @@ void PipelineItem::setFunctionDescription(QString  desc)
 }
 
 
+void  PipelineItem::updateConfiguredItemValue(QString _itemValue, int pos)
+{
+    ConfigurationPipelineItem _item = _configurationItemList.at(pos);
+    _item.setCurrentValue(_itemValue);
+    _configurationItemList.replace(pos,_item);
+}
+
+
 bool PipelineItem::isEmpty()
 {
    bool _isEmpty = true;

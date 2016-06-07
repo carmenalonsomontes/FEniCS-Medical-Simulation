@@ -21,6 +21,8 @@
 
 #include "GUI_Module/UIHelpers/workflowtablehelper.h"
 
+#include "GUI_Module/Forms/Workflow/Pipeline/pipelineitem.h"
+
 namespace Ui {
 class FEniCS_Blood_Sim;
 }
@@ -150,6 +152,7 @@ private:
     vtkSmartPointer<vtkRenderer> visualizationRenderer;
 
 
+    //QList<PipelineItem> _pipelineItemList;
 
 
 
@@ -196,6 +199,8 @@ private:
     void initializeFenicsTab();
     void initializeSimulationTab();
     void initializeVisualizationTab();
+
+    void addPipelineItems();
 
 
 

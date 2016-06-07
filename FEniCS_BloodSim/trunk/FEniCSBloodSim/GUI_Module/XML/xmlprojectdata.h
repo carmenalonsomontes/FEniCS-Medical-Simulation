@@ -25,6 +25,15 @@ private:
 
     void readProjectData( QXmlStreamReader * xmlReader,FBS_ProjectData * _projectData);
 
+    void readPipelineFunctions(QXmlStreamReader * xmlReader, FBS_ProjectData * _projectData );
+    void readPipelineCategory(QXmlStreamReader * xmlReader, PipelineItem * _item );
+    void readParameters(QXmlStreamReader * xmlReader, PipelineItem * _item );
+
+    void writePipeline(QXmlStreamWriter * xmlWriter, QList<PipelineItem> _pipeline);
+    void writePipelineFunction(QXmlStreamWriter * xmlWriter, PipelineItem _pipeline);
+    void writeCategory(QXmlStreamWriter * xmlWriter, PipelineItem _pipeline);
+    void writeParametersList(QXmlStreamWriter * xmlWriter, PipelineItem _pipeline);
+
 
 };
 

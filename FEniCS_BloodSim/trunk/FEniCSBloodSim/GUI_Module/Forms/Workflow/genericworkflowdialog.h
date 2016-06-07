@@ -25,6 +25,8 @@ public:
     explicit GenericWorkflowDialog(QWidget *parent = 0);
     ~GenericWorkflowDialog();
     QList<PipelineItem> getPipelineItemList();
+    void setPipelineItemList(QList<PipelineItem> _list);
+
     bool userAcceptChanges();
 
 protected:
@@ -48,6 +50,10 @@ private slots:
 
     void on_cancelSelection_clicked();
 
+    void on_wkfButtonBox_rejected();
+
+    void on_pipelineItemSummaryTable_cellChanged(int row, int column);
+
 private:
     Ui::GenericWorkflowDialog *ui;
     int _cPipelineRow;
@@ -55,6 +61,8 @@ private:
     bool _userAcceptChanges;
 
     int _selectedRow;
+
+
 
 
 
@@ -80,6 +88,9 @@ private:
     void enableNextStep(bool _val);
     //void enablePipelineArea(bool _val);
     void restoreUI();
+    void loadUserData();
+
+
 };
 
 #endif // GENERICWORKFLOWDIALOG_H

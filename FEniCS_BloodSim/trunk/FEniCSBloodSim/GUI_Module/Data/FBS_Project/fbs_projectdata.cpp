@@ -22,6 +22,9 @@ void FBS_ProjectData::initializeVariables()
     _imPrefixSeries = "";
 
     _imageData = new ImageData();
+
+    _listPipelineItems.clear();
+
 }
 
 QString FBS_ProjectData::getProjectPath()
@@ -103,6 +106,20 @@ void FBS_ProjectData::readProjectInfoFromFile(QString _projectFilePath)
 }
 
 
+QList<PipelineItem> FBS_ProjectData::getListPipelineItems()
+{
+    return _listPipelineItems;
+}
+
+void FBS_ProjectData::setListPipelineItems( QList<PipelineItem> _list)
+{
+    _listPipelineItems = _list;
+}
+
+
+
+
+
 void FBS_ProjectData::clearData()
 {
   initializeVariables();
@@ -120,7 +137,11 @@ bool FBS_ProjectData::isEmptyImagingData()
             return false;
     return true;
 }
+bool FBS_ProjectData::isEmptyPipelineData()
+{
+    return _listPipelineItems.isEmpty();
 
+}
 
 void FBS_ProjectData::loadImData()
 {

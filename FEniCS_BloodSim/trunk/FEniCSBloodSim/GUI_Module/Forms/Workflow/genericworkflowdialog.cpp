@@ -19,6 +19,8 @@ GenericWorkflowDialog::GenericWorkflowDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     _cPipelineRow = -1;
+
+    // One helper per each table
     _wkfHelper  = new WorkflowTableHelper();
     _wkfHelper->registerTableListUI(ui->tableMethods1);
     _wkfHelper->setCurrentRegisteredTableFromList(0);
@@ -52,22 +54,110 @@ GenericWorkflowDialog::~GenericWorkflowDialog()
 
 
 // =========================================================================
-// Accepted BUTTONBOX
-// =========================================================================
-void GenericWorkflowDialog::on_wkfButtonBox_accepted()
-{
-    _userAcceptChanges = true;
-    close();
-}
-// =========================================================================
 // General Logic
 // =========================================================================
 
+bool GenericWorkflowDialog::userAcceptChanges()
+{
+    return _userAcceptChanges;
+}
 
+QList<PipelineItem> GenericWorkflowDialog::getPipelineItemList()
+{
+    return _pipelineItemList;
+}
+
+void GenericWorkflowDialog::setPipelineItemList(QList<PipelineItem> _list)
+{
+    if (_list.isEmpty())
+        return;
+    _pipelineItemList = _list;
+    loadUserData();
+}
+
+void GenericWorkflowDialog::loadUserData()
+{
+    for (int i = 0; i < _pipelineItemList.size();i++)
+    {
+        PipelineItem _item = _pipelineItemList.at(i);
+        insertRow();
+        _pipelineHelper->updateRow(_item.getIconPath(),_item.getDescription(),_cPipelineRow);
+    }
+}
+
+void GenericWorkflowDialog::restoreUI()
+{
+    // TODO
+    _configurationHelper->clearTable();
+    _selectedRow = -1;
+
+}
+
+void GenericWorkflowDialog::enableNextStep(bool _val)
+{
+
+    ui->configOptionsTitle->setEnabled(_val);
+    ui->optionsConfigFrame->setEnabled(_val);
+    ui->stepDoneButton->setEnabled(_val);
+    ui->cancelSelection->setEnabled(_val);
+    ui->cPipelineConfigurationTable->setEnabled(_val);
+
+
+    ui->selectOperationStep->setEnabled(!_val);
+    ui->tabMethods->setEnabled(!_val);
+    ui->runPipelineButton->setEnabled(!_val);
+}
+
+// Save the changes of the user during the configuration phase
+void GenericWorkflowDialog::saveConfiguration()
+{
+    int _noParams = ui->cPipelineConfigurationTable->rowCount();
+    if (_noParams == 0 ) return;
+
+    QList<ConfigurationPipelineItem> _parameterList;
+    for (int i= 0; i < _noParams ; i++)
+    {
+        ConfigurationPipelineItem _item;
+        _item.setOptionName(ui->cPipelineConfigurationTable->item(i, PARAM_NAME_COLUMN)->text());
+        _item.setOptionType(ui->cPipelineConfigurationTable->item(i, PARAM_TYPE_COLUMN)->text());
+        _item.setCurrentValue(ui->cPipelineConfigurationTable->item(i, PARAM_VALUE_COLUMN)->text());
+        _item.setMethodName(ui->cPipelineConfigurationTable->item(i, PARAM_METHOD_NAME_COLUMN)->text());
+        _parameterList.append(_item);
+    }
+    int _lastPos = _pipelineItemList.size() -1;
+    PipelineItem  _cPipelineItem = _pipelineItemList.at(_lastPos);
+    _cPipelineItem.setConfigurationItemList(_parameterList);
+    _pipelineItemList.replace(_lastPos,_cPipelineItem);
+}
+
+
+
+// If the pipeline item is changed --> We need to save the item
+void GenericWorkflowDialog::on_pipelineItemSummaryTable_cellChanged(int row, int column)
+{
+    if (column != PARAM_VALUE_COLUMN)
+        return;
+
+    int _selectedItem = ui->pipelineTable->currentRow();
+    PipelineItem  _previousValuesItem = _pipelineItemList.at(_selectedItem);
+    QList<ConfigurationPipelineItem> _previousConfig = _previousValuesItem.getConfigurationItemList();
+    ConfigurationPipelineItem _previousValue = _previousConfig.at(row);
+
+    if (QString::compare(_previousValue.getCurrentValue(),ui->pipelineItemSummaryTable->item(row,column)->text()) != STR_EQUAL)
+    {
+        _previousValuesItem.updateConfiguredItemValue(ui->pipelineItemSummaryTable->item(row,column)->text(),row);
+        _pipelineItemList.replace(_selectedItem,_previousValuesItem);
+    }
+
+}
 
 // =========================================================================
 // TABLE METHODS
 // =========================================================================
+
+
+// =========================================================================
+// TAB METHODS
 
 void GenericWorkflowDialog::on_tableMethods1_cellClicked(int row, int column)
 {
@@ -88,13 +178,7 @@ void GenericWorkflowDialog::updateValuesPipelineTable(int row,int column)
     if (_cTab < _catList.size())
     {
         CategoryWkfData _cCategory = _catList.at(_cTab);
-        //QString _iconPath = _cCategory.getIconPath();
-        //QString _description = buildDescription(_cCategory,row);
-        /*if (_cPipelineRow == -1)
-            return;
-        _pipelineHelper->updateRow(_iconPath,_description,_cPipelineRow);*/
         addParametersToConfigurationTable(row,_cCategory);
-        //updatePipelineElement(_iconPath, _description, _cCategory,row);
     }
 
 }
@@ -122,15 +206,14 @@ void GenericWorkflowDialog::addParametersToConfigurationTable(int row,CategoryWk
     }
 }
 
+// =========================================================================
+// TAB CREATION
 
 
 void GenericWorkflowDialog::createTabWithName(int tabIndex, const QString text)
 {
-    if ((tabIndex == 0) || (tabIndex == 1))
-    {
+    if ((tabIndex == 0) || (tabIndex == 1))   
         ui->tabMethods->setTabText(tabIndex,text);
-        //fillTableWithInformation(tabIndex);
-    }
     else
     {
         QWidget *newTab = new QWidget(ui->tabMethods);
@@ -145,7 +228,6 @@ void GenericWorkflowDialog::fillTableWithInformation(int index)
     QList<CategoryWkfData> _catList = _wkfData->getCategoryList();
     if (!_wkfHelper->isRegistered(index))
     {
-
         createTabTables(index);
 
         if (index < _catList.size())
@@ -164,14 +246,12 @@ void GenericWorkflowDialog::fillTableWithInformation(int index)
 
         QHBoxLayout *l = new QHBoxLayout(_cWidget);
         l->addWidget(_wkfHelper->getRegisteredTable());
-
     }
 }
 
 void GenericWorkflowDialog::createTabTables(int noTable)
 {
     QTableWidget * _table = new QTableWidget();
-
 
     _table->insertColumn(METHOD_NAME_COLUMN);
     _table->insertColumn(ACTION_COLUMN);
@@ -189,35 +269,6 @@ void GenericWorkflowDialog::insertRow()
 }
 
 
-
-void GenericWorkflowDialog::enableNextStep(bool _val)
-{
-
-    ui->configOptionsTitle->setEnabled(_val);
-    ui->optionsConfigFrame->setEnabled(_val);
-    ui->stepDoneButton->setEnabled(_val);
-    ui->cancelSelection->setEnabled(_val);
-    ui->cPipelineConfigurationTable->setEnabled(_val);
-
-
-    ui->selectOperationStep->setEnabled(!_val);
-    ui->tabMethods->setEnabled(!_val);
-    ui->runPipelineButton->setEnabled(!_val);
-
-   // enablePipelineArea(! _val);
-}
-
-
-/*
-void GenericWorkflowDialog::enablePipelineArea(bool _val)
-{
-
-    ui->pipelineTable->setEnabled(_val);
-    ui->pipelineOperationInfoFrame->setEnabled(_val);
-    ui->pipelineItemSummaryTable->setEnabled(_val);
-    ui->runPipelineButton->setEnabled(_val);
-}
-*/
 
 QString GenericWorkflowDialog::buildDescription(CategoryWkfData _cCategory, int _row)
 {
@@ -239,61 +290,12 @@ QString GenericWorkflowDialog::buildDescription(CategoryWkfData _cCategory, int 
 
 
 
-void GenericWorkflowDialog::on_stepDoneButton_clicked()
-{
-    // Adding the info to the pipeline
-    insertRow();
-    QList<CategoryWkfData> _catList = _wkfData->getCategoryList();
-    int _cTab = ui->tabMethods->currentIndex();
-    if (_cTab < _catList.size())
-    {
-        CategoryWkfData _cCategory = _catList.at(_cTab);
-        QString _iconPath = _cCategory.getIconPath();
-        QString _description = buildDescription(_cCategory,_selectedRow);
-        if (_cPipelineRow == -1)
-            return;
-        _pipelineHelper->updateRow(_iconPath,_description,_cPipelineRow);
-        //addParametersToConfigurationTable(row,_cCategory);
-        updatePipelineElement(_iconPath, _description, _cCategory,_selectedRow);
-    }
-
-
-
-    enableNextStep(false);
-    //enablePipelineArea(false);
-    saveConfiguration();
-    restoreUI();
-}
-
-
-
-
-void GenericWorkflowDialog::saveConfiguration()
-{
-    int _noParams = ui->cPipelineConfigurationTable->rowCount();
-    if (_noParams == 0 ) return;
-
-    QList<ConfigurationPipelineItem> _parameterList;
-    for (int i= 0; i < _noParams ; i++)
-    {
-        ConfigurationPipelineItem _item;
-        _item.setOptionName(ui->cPipelineConfigurationTable->item(i, PARAM_NAME_COLUMN)->text());
-        _item.setOptionType(ui->cPipelineConfigurationTable->item(i, PARAM_TYPE_COLUMN)->text());
-        _item.setCurrentValue(ui->cPipelineConfigurationTable->item(i, PARAM_VALUE_COLUMN)->text());
-        _item.setMethodName(ui->cPipelineConfigurationTable->item(i, PARAM_METHOD_NAME_COLUMN)->text());
-        _parameterList.append(_item);
-    }
-
-    int _lastPos = _pipelineItemList.size() -1;
-    PipelineItem _cPipelineItem = _pipelineItemList.at(_lastPos);
-    _cPipelineItem.setConfigurationItemList(_parameterList);
-    _pipelineItemList.replace(_lastPos,_cPipelineItem);
-}
-
+// =========================================================================
+// PIPELINE TABLE
 
 void GenericWorkflowDialog::updatePipelineElement(QString _iconPath, QString _description,CategoryWkfData _category,int noFunction)
 {
-    PipelineItem _item;
+    PipelineItem  _item;
     int _cListSize =  _pipelineItemList.size() -1;
 
     if (_cPipelineRow <= _cListSize) 
@@ -319,48 +321,12 @@ void GenericWorkflowDialog::updatePipelineElement(QString _iconPath, QString _de
 
 
 
-void GenericWorkflowDialog::restoreUI()
-{
-    // TODO
-    _configurationHelper->clearTable();
-    _selectedRow = -1;
-
-}
-
-
-
-
-
-void GenericWorkflowDialog::on_pipelineTable_cellClicked(int row, int column)
-{
-    _summaryHelper->clearTable();
-    switch (column) {
-    case UP_ICON_COLUMN:
-        moveUp(row);
-        showParameterInformation(row);
-        break;
-    case DOWN_ICON_COLUMN:
-        moveDown(row);
-        showParameterInformation(row);
-        break;
-    case DELETE_ICON_COLUMN:
-        ui->pipelineTable->removeRow(row);
-        _pipelineItemList.removeAt(row);
-        break;
-    default:
-        showParameterInformation(row);
-        break;
-    }
-
-
-}
-
 
 void GenericWorkflowDialog::showParameterInformation(int row)
 {
     if (_pipelineItemList.isEmpty())
         return;
-    PipelineItem _itemToShow = _pipelineItemList.at(row);
+    PipelineItem  _itemToShow = _pipelineItemList.at(row);
 
     QList<ConfigurationPipelineItem> _itemList = _itemToShow.getConfigurationItemList();
     for (int i = 0; i< _itemList.size();i++)
@@ -373,64 +339,11 @@ void GenericWorkflowDialog::showParameterInformation(int row)
 }
 
 
-
-void GenericWorkflowDialog::moveDown(int row)
-{
-     if (row == ui->pipelineTable->rowCount()-1) return;
-
-     int _nextRow = row+1;
-     PipelineItem _nextItem = _pipelineItemList.at(_nextRow);
-     PipelineItem _cItem = _pipelineItemList.at(row);
-
-     // Changing the content of the table view
-     _pipelineHelper->updateRow(_cItem.getIconPath(),_cItem.getDescription(), _nextRow);
-     _pipelineHelper->updateRow(_nextItem.getIconPath(),_nextItem.getDescription(),row);
-
-     // Update the Pipeline list
-
-     _pipelineItemList.replace(_nextRow, _cItem);
-     _pipelineItemList.replace(row, _nextItem);
-
-}
+// =========================================================================
+// RUN PIPELINE LOGIC
 
 
-void GenericWorkflowDialog::moveUp(int row)
-{
-     if (row == 0) return;
-
-
-     int _previousRow = row-1;
-     PipelineItem _previousItem = _pipelineItemList.at(_previousRow);
-     PipelineItem _cItem = _pipelineItemList.at(row);
-
-     // Changing the content of the table view
-     _pipelineHelper->updateRow(_cItem.getIconPath(),_cItem.getDescription(), _previousRow);
-     _pipelineHelper->updateRow(_previousItem.getIconPath(),_previousItem.getDescription(),row);
-
-     // Update the Pipeline list
-
-     _pipelineItemList.replace(_previousRow, _cItem);
-     _pipelineItemList.replace(row, _previousItem);
-
-}
-
-
-
-
-QList<PipelineItem> GenericWorkflowDialog::getPipelineItemList()
-{
-    return _pipelineItemList;
-}
-
-
-bool GenericWorkflowDialog::userAcceptChanges()
-{
-    return _userAcceptChanges;
-}
-
-
-
-QStringList GenericWorkflowDialog::buildParameterList(PipelineItem _item)
+QStringList GenericWorkflowDialog::buildParameterList(PipelineItem  _item)
 {
     QStringList _parameterList;
 
@@ -473,22 +386,88 @@ void GenericWorkflowDialog::runPipelineItem( QStringList _parameterList,QString 
     }
 }
 
-void GenericWorkflowDialog::on_runPipelineButton_clicked()
+// **********************************************************************************+
+// PIPELINE TABLE  --> ROWS
+
+// =========================================================================
+// MOVE DOWN
+// =========================================================================
+
+void GenericWorkflowDialog::moveDown(int row)
 {
-    if (_pipelineItemList.isEmpty())
+     if (row == ui->pipelineTable->rowCount()-1) return;
 
-        return;
+     int _nextRow = row+1;
+     PipelineItem _nextItem = _pipelineItemList.at(_nextRow);
+     PipelineItem _cItem = _pipelineItemList.at(row);
 
-    for (int i = 0; i < _pipelineItemList.size();i++)
-    {
-         PipelineItem _item = _pipelineItemList.at(i);
+     // Changing the content of the table view
+     _pipelineHelper->updateRow(_cItem.getIconPath(),_cItem.getDescription(), _nextRow);
+     _pipelineHelper->updateRow(_nextItem.getIconPath(),_nextItem.getDescription(),row);
 
-         QStringList _parameterList = buildParameterList(_item);
-         runPipelineItem(_parameterList,_item.getFunctionClassName());
-    }
+     // Update the Pipeline list
+
+     _pipelineItemList.replace(_nextRow, _cItem);
+     _pipelineItemList.replace(row, _nextItem);
 
 }
 
+// =========================================================================
+// MOVE UP
+// =========================================================================
+
+void GenericWorkflowDialog::moveUp(int row)
+{
+     if (row == 0) return;
+
+
+     int _previousRow = row-1;
+     PipelineItem  _previousItem = _pipelineItemList.at(_previousRow);
+     PipelineItem  _cItem = _pipelineItemList.at(row);
+
+     // Changing the content of the table view
+     _pipelineHelper->updateRow(_cItem.getIconPath(),_cItem.getDescription(), _previousRow);
+     _pipelineHelper->updateRow(_previousItem.getIconPath(),_previousItem.getDescription(),row);
+
+     // Update the Pipeline list
+
+     _pipelineItemList.replace(_previousRow, _cItem);
+     _pipelineItemList.replace(row, _previousItem);
+
+}
+
+
+void GenericWorkflowDialog::on_pipelineTable_cellClicked(int row, int column)
+{
+    _summaryHelper->clearTable();
+    switch (column) {
+    case UP_ICON_COLUMN:
+        moveUp(row);
+        showParameterInformation(row);
+        break;
+    case DOWN_ICON_COLUMN:
+        moveDown(row);
+        showParameterInformation(row);
+        break;
+    case DELETE_ICON_COLUMN:
+        ui->pipelineTable->removeRow(row);
+        _pipelineItemList.removeAt(row);
+        break;
+    default:
+        showParameterInformation(row);
+        break;
+    }
+
+
+}
+
+// **********************************************************************************+
+// BUTTONS
+
+// =========================================================================
+// SELECTION STEPS PIPELINE
+// =========================================================================
+//
 void GenericWorkflowDialog::on_cancelSelection_clicked()
 {
 
@@ -498,3 +477,61 @@ void GenericWorkflowDialog::on_cancelSelection_clicked()
     // TODO
     restoreUI();
 }
+
+// =========================================================================
+// RUN PIPELINE
+// =========================================================================
+
+void GenericWorkflowDialog::on_runPipelineButton_clicked()
+{
+    if (_pipelineItemList.isEmpty())
+
+        return;
+
+    for (int i = 0; i < _pipelineItemList.size();i++)
+    {
+         PipelineItem  _item = _pipelineItemList.at(i);
+
+         QStringList _parameterList = buildParameterList(_item);
+         runPipelineItem(_parameterList,_item.getFunctionClassName());
+    }
+
+}
+
+void GenericWorkflowDialog::on_stepDoneButton_clicked()
+{
+    // Adding the info to the pipeline
+    insertRow();
+    QList<CategoryWkfData> _catList = _wkfData->getCategoryList();
+    int _cTab = ui->tabMethods->currentIndex();
+    if (_cTab < _catList.size())
+    {
+        CategoryWkfData _cCategory = _catList.at(_cTab);
+        QString _iconPath = _cCategory.getIconPath();
+        QString _description = buildDescription(_cCategory,_selectedRow);
+        if (_cPipelineRow == -1)
+            return;
+        _pipelineHelper->updateRow(_iconPath,_description,_cPipelineRow);
+        updatePipelineElement(_iconPath, _description, _cCategory,_selectedRow);
+    }
+    enableNextStep(false);
+    saveConfiguration();
+    restoreUI();
+}
+
+
+// =========================================================================
+// Accepted BUTTONBOX
+// =========================================================================
+void GenericWorkflowDialog::on_wkfButtonBox_accepted()
+{
+    _userAcceptChanges = true;
+    close();
+}
+
+void GenericWorkflowDialog::on_wkfButtonBox_rejected()
+{
+    _userAcceptChanges = false;
+    close();
+}
+

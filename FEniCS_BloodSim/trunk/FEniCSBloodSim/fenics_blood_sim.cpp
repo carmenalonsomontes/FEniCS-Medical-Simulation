@@ -467,6 +467,10 @@ void FEniCS_Blood_Sim::EnableImageProcessingDialog(bool val)
     {
         QString msg = "Original File: " + QFileInfo(_projectData->getImPath()).baseName();
         _workflowTableHelper.addElementToTable(msg,EYE_OPEN);
+
+        if (!_projectData->isEmptyPipelineData())
+            addPipelineItems();
+
     }else
         _workflowTableHelper.clearTable();
 }
@@ -832,26 +836,33 @@ void FEniCS_Blood_Sim::on_workflowTableWidget_cellClicked(int row, int column)
     }
 }
 
-#include "GUI_Module/Forms/Workflow/Pipeline/pipelineitem.h"
 
 void FEniCS_Blood_Sim::on_workflowConfigButton_clicked()
 {
     // TODO
     ImageWorkflow _imgWkf;
     _imgWkf.setImagePath(_projectData->getImPath());
+    if (!_projectData->getListPipelineItems().isEmpty())
+        _imgWkf.setPipelineItemList(_projectData->getListPipelineItems());
     _imgWkf.exec();
 
     if (_imgWkf.userAcceptChanges())
     {
-        QList<PipelineItem> _itemList = _imgWkf.getPipelineItemList();
-        for (int i = 0;i <_itemList.size();i++)
-        {
-            PipelineItem _item = _itemList.at(i);
-
-            _workflowTableHelper.addElementToTable(_item.getDescription(),EYE_CLOSED);
-        }
-
+        _workflowTableHelper.removeRowsFromThisOnwards(1);
+        _projectData->setListPipelineItems(_imgWkf.getPipelineItemList());
+        addPipelineItems();
+        EnableSaveProjectUI(true);
     }
 
+}
 
+
+void FEniCS_Blood_Sim::addPipelineItems()
+{
+
+    for (int i = 0;i <_projectData->getListPipelineItems().size();i++)
+    {
+        PipelineItem  _item = _projectData->getListPipelineItems().at(i);
+        _workflowTableHelper.addElementToTable(_item.getDescription(),EYE_CLOSED);
+    }
 }

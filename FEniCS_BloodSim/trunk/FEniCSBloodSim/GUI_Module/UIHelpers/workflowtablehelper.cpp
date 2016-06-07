@@ -242,3 +242,9 @@ bool WorkflowTableHelper::isRegistered(int index)
     return isRegistered;
 }
 
+void WorkflowTableHelper::removeRowsFromThisOnwards(int initRow)
+{
+    int _lastRow = registeredTable->rowCount();
+    for (int i = _lastRow; i>=initRow; i--)
+        registeredTable->removeRow(i);
+}

@@ -3,6 +3,11 @@
 
 #include <QString>
 
+const QString TEMP_FOLDER_WKF_IMAGES="images";
+const QString TEMP_WKF_PIPELINE_IMAGE_PREFIX = "tmp_wkf_";
+
+
+
 enum LoadUserImage{
     LOAD_USER_IMAGE = 1,
     NOT_LOAD_USER_IMAGE = 0

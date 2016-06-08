@@ -6,6 +6,7 @@
 #include <QHBoxLayout>
 #include <QObject>
 #include <QList>
+#include <QDir>
 
 #include "GUI_Module/Defines/Menu/MenuDefines.h"
 
@@ -42,6 +43,8 @@ GenericWorkflowDialog::GenericWorkflowDialog(QWidget *parent) :
     _userAcceptChanges = false;
     _selectedRow = -1;
 
+
+
 }
 
 GenericWorkflowDialog::~GenericWorkflowDialog()
@@ -75,6 +78,12 @@ void GenericWorkflowDialog::setUserImageData(ImageData * _image)
     _userImage = _image;
 }
 
+void GenericWorkflowDialog::setUserProjectPath(QString _path)
+{
+    _projectPath = _path;
+    _imgProjectPath = createImageResultFolder();
+}
+
 void GenericWorkflowDialog::setPipelineItemList(QList<PipelineItem> _list)
 {
     if (_list.isEmpty())
@@ -98,6 +107,16 @@ void GenericWorkflowDialog::restoreUI()
     // TODO
     _configurationHelper->clearTable();
     _selectedRow = -1;
+
+}
+
+QString GenericWorkflowDialog::createImageResultFolder()
+{
+
+    QDir dir(_projectPath);
+    dir.mkdir(TEMP_FOLDER_WKF_IMAGES);
+
+    return QDir(_projectPath).filePath(TEMP_FOLDER_WKF_IMAGES);
 
 }
 
@@ -469,29 +488,55 @@ void GenericWorkflowDialog::on_stepDoneButton_clicked()
 // =========================================================================
 // RUN PIPELINE
 // =========================================================================
+/*#include <QDir>
+#include <QuickView.h>
+
+#include "itkSimpleFilterWatcher.h"
+
+#include "itkMedianImageFilter.h"
+
+#include "itkSliceBySliceImageFilter.h"
+
+#include "itkBinaryThresholdImageFilter.h"
+
+#include "itkImage.h"
+
+#include "itkBinaryThresholdImageFilter.h"
+
+#include <itkImageFileReader.h>
+
+#include "QuickView.h"*/
 
 void GenericWorkflowDialog::on_runPipelineButton_clicked()
 {
+    bool _is3D = true; // At the moment by default!!! Need to be changed in the future!!! TODO
+
     if (_pipelineItemList.isEmpty())
         return;
 
+
+
+
     QStringList _parameterList;
-    // Load Image
+
     ReaderType3D::Pointer reader = ReaderType3D::New();
     reader->SetFileName(_wkfData->getImagePath().toStdString());
-    bool _is3D = true;
+    QString _imageSuffix = QFileInfo(_wkfData->getImagePath()).completeSuffix();
 
-    // Create the rest of the pipeline
+   // Create the rest of the pipeline
     for (int i = 0; i < _pipelineItemList.size();i++)
     {
         PipelineItem  _item = _pipelineItemList.at(i);
         _parameterList = buildParameterList(_item);
         // Creating the pipeline Element
         IOperation * _operation =  OperationFactory::Get()->CreateOperation(_item.getFunctionClassName().toStdString());
+
         if (i == 0)
-            _operation->SetInPut(reader->GetOutput());
+            _operation->SetInPut(reader->GetOutput()); // Nota, por algun motivo si meto el reader aqui dentro, pierde la referencia al puntero ¿Smart pointers vida util?? --> Checkear en la conexion del pipeline
         else
         {
+            // BUG !!!!! Si hay mas de dos items no funciona!!! Aqui está el problema, no se guarda!
+            // Mirar soluciones en http://ootips.org/yonat/4dev/smart-pointers.html
             PipelineItem _previousItem = _pipelineItemList.at(i-1);
             if (_is3D)
                 _operation->SetInPut(_previousItem.getImage3D());
@@ -500,126 +545,29 @@ void GenericWorkflowDialog::on_runPipelineButton_clicked()
         }
 
         _operation->SetParameters(_parameterList);
-
         _operation->exec();
+        QString _imgFileName = TEMP_WKF_PIPELINE_IMAGE_PREFIX + QString::number(i) +"."+ _imageSuffix;
+        QString _imgTmpFile = QDir(_imgProjectPath).filePath(_imgFileName);
+        _operation->save(_imgTmpFile);
 
-        _operation->save("/home/calonso/miresultado.mha");
-        if (_is3D)
-            _item.setImage3D(_operation->GetOutput3D());
-        else
-            _item.setImage2D(_operation->GetOutput2D());
+        _item.setImage3D(_operation->GetOutput3D());
 
        _pipelineItemList.replace(i, _item);
-
-
     }
 
 
 
 }
+
+
+
+
+
 /*
-#include <QuickView.h>
-#include "itkSimpleFilterWatcher.h"
-#include "itkMedianImageFilter.h"
-#include "itkSliceBySliceImageFilter.h"
-#include "itkBinaryThresholdImageFilter.h"
-#include "itkImage.h"
-#include "itkBinaryThresholdImageFilter.h"
-#include <itkImageFileReader.h>
-
-#include "QuickView.h"
-
-*/
-#include "GUI_Module/Pipeline/ItkPipeline/defines/OperationDefines.h"
-/*
-void GenericWorkflowDialog::runPipelineItem( QStringList _parameterList,QString className,ReaderType3D::Pointer reader)
-{
-
-    // Luego descomentar esto...
-   IOperation * _operation =  OperationFactory::Get()->CreateOperation(className.toStdString());
-    if (_operation)
-    {
-        switch (_loadImage){
-        case LOAD_USER_IMAGE:
-            //_operation->SetInPut();
-            break;
-        case NOT_LOAD_USER_IMAGE:
-             QString _inputData = "SetInput" + PARAMETER_SEPARATOR +_wkfData->getImagePath();
-             QStringList _inputParameterList;
-             _inputParameterList.append(_inputData);
-             _parameterList = _inputParameterList + _parameterList;
-             _operation->set3D(true); // At the moment, we consider 3D by default
-            break;
-        }
-
-       _operation->SetParameters(_parameterList);
-
-
-        // Pruebas
-
-    // Step 1. Read the image
-
-    //    ReaderType3D::Pointer reader = ReaderType3D::New();
-    //WriterType3D::Pointer writer = WriterType3D::New();
-
-    //reader->SetFileName(_wkfData->getImagePath().toStdString());
-
-    // Apply filter
-    //typedef SliceBySliceImageFilter<ImageType2D,ImageType2D> FilterType;
-
-    // Filters
-    //typedef MedianImageFilter<FilterType::InternalInputImageType,FilterType::InternalOutputImageType> MedianType;
-
-    //FilterType::Pointer filter = FilterType::New();
-
-
-    //MedianType::Pointer median = MedianType::New();
-    //MedianType::InputSizeType rad;// = MedianType::New();
-
-    //rad.Fill(5);
-    //median->SetRadius(rad);
-
-  //  typedef itk::Image<unsigned char, 3>  ImageType;
-  //  typedef itk::ImageFileReader<ImageType> ReaderType;
-
-  //  ReaderType::Pointer reader = ReaderType::New();
-  //  reader->SetFileName(argv[1]);
-
-    typedef BinaryThresholdImageFilter <ImageType3D, ImageType3D>
-      BinaryThresholdImageFilterType;
-
-    BinaryThresholdImageFilterType::Pointer thresholdFilter
-      = BinaryThresholdImageFilterType::New();
-    thresholdFilter->SetInput(reader->GetOutput());
-    thresholdFilter->SetLowerThreshold(10);
-    thresholdFilter->SetUpperThreshold(30);
-    thresholdFilter->SetInsideValue(255);
-    thresholdFilter->SetOutsideValue(0);
-
-
-
-
-
-    writer->SetFileName("/home/calonso/output.mha");
-    writer->SetInput(thresholdFilter->GetOutput());
-
-    try
-    {
-        writer->Update();
-    }catch(itk::ExceptionObject & err)
-    {
-        std::cout << "Error !!!" << std::endl;
-        std::cout << err << std::endl;
-    }
-
-
-
        // Visualize -- Only for checking purposes
        //QuickView viewer;
        //viewer.AddImage<ImageType2D>(_operation->GetOutput(),true,"");
-       //viewer.Visualize();
-    //}
-}
+
 
 */
 QStringList GenericWorkflowDialog::buildParameterList(PipelineItem  _item)

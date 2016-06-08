@@ -5,14 +5,14 @@ SliceBySliceFilter::SliceBySliceFilter()
 {
     filter = FilterType::New();
 }
-void SliceBySliceFilter::SetInPut(ImageType::Pointer _input)
+void SliceBySliceFilter::SetInPut(ImageType2D::Pointer _input)
 {
     filter->SetInput(_input);
 }
 
 void SliceBySliceFilter::SetParameters(QStringList _parameterList)
 {
-   ReaderType::Pointer reader = ReaderType::New();
+   ReaderType2D::Pointer reader = ReaderType2D::New();
    int _radius = -1;
    TypeFilters _typeFilter = NO_FILTER_FOUND;
 
@@ -73,14 +73,15 @@ TypeFilters SliceBySliceFilter::getFilterNumber(QString _filterName)
 }
 
 
-ImageType::Pointer SliceBySliceFilter::GetOutput()
+ImageType2D::Pointer SliceBySliceFilter::GetOutput()
 {
     return filter->GetOutput();
 }
 
+/*
 IOperation * SliceBySliceFilter::Create() {
     return new SliceBySliceFilter();
 }
-
+*/
 
 

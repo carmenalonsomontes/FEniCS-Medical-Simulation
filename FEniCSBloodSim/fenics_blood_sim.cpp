@@ -842,6 +842,7 @@ void FEniCS_Blood_Sim::on_workflowConfigButton_clicked()
     // TODO
     ImageWorkflow _imgWkf;
     _imgWkf.setImagePath(_projectData->getImPath());
+    _imgWkf.setUserImageData(_projectData->getImageData());
     if (!_projectData->getListPipelineItems().isEmpty())
         _imgWkf.setPipelineItemList(_projectData->getListPipelineItems());
     _imgWkf.exec();

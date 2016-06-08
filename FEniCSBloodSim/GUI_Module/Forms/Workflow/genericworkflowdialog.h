@@ -6,12 +6,12 @@
 #include <QList>
 
 #include "GUI_Module/UIHelpers/workflowtablehelper.h"
-//#include "GUI_Module/DragItem/dragitem.h"
 #include "GUI_Module/Data/WorkflowData/workflowdata.h"
 #include "GUI_Module/Data/WorkflowData/categorywkfdata.h"
 #include "GUI_Module/Data/WorkflowData/imagingwkffunctiondata.h"
-
 #include "GUI_Module/Forms/Workflow/Pipeline/pipelineitem.h"
+#include "ImageProcessing_Module/imagedata.h"
+
 
 namespace Ui {
 class GenericWorkflowDialog;
@@ -24,8 +24,12 @@ class GenericWorkflowDialog : public QDialog
 public:
     explicit GenericWorkflowDialog(QWidget *parent = 0);
     ~GenericWorkflowDialog();
+
     QList<PipelineItem> getPipelineItemList();
+
     void setPipelineItemList(QList<PipelineItem> _list);
+    void setUserImageData(ImageData * _image);
+
 
     bool userAcceptChanges();
 
@@ -35,6 +39,7 @@ protected:
     WorkflowTableHelper * _configurationHelper;
     WorkflowTableHelper * _summaryHelper;
     WorkflowData  * _wkfData;
+    ImageData * _userImage;
 
     void createTabWithName(int tabIndex, const QString text);
     void createTabTables(int noTable);
@@ -59,10 +64,7 @@ private:
     int _cPipelineRow;
     QList<PipelineItem> _pipelineItemList;
     bool _userAcceptChanges;
-
     int _selectedRow;
-
-
 
 
 
@@ -83,7 +85,7 @@ private:
 
 
     QStringList buildParameterList(PipelineItem _item);
-    void runPipelineItem( QStringList _parameterList,QString className);
+   // void runPipelineItem( QStringList _parameterList,QString className,ReaderType3D::Pointer reader);
 
     void enableNextStep(bool _val);
     //void enablePipelineArea(bool _val);

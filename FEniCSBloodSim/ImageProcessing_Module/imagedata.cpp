@@ -6,6 +6,7 @@ ImageData::ImageData()
       _imVolumeData = vtkVolume::New();
       _imageData = vtkImageData::New();
       _isEmpty = true;
+      _is3D = true; // By default this is considered for 3D volumes
 
 }
 
@@ -40,6 +41,21 @@ void ImageData::loadImageData(QString imPath)
     _imReader.readImage(this,imPath);
     _isEmpty = false;
 }
+
+bool ImageData::isVolume3D()
+{
+    return _is3D;
+}
+
+bool ImageData::setIsVolume3D(bool _val)
+{
+ _is3D = _val;
+}
+
+
+
+
+
 
 bool ImageData::isEmptyData()
 {

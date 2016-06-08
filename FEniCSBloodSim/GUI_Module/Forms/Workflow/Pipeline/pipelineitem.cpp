@@ -11,6 +11,9 @@ PipelineItem::PipelineItem()
     _functionName = "";
     _functionClassName = "";
     _functionDescription = "";
+
+    _image3D = ImageType3D::New();
+    _image2D = ImageType2D::New();
 }
 
 
@@ -104,6 +107,29 @@ void  PipelineItem::updateConfiguredItemValue(QString _itemValue, int pos)
 }
 
 
+ImageType3D::Pointer PipelineItem::getImage3D()
+{
+    return _image3D;
+}
+
+void PipelineItem::setImage3D( ImageType3D::Pointer _image)
+{
+    _image3D = _image;
+}
+
+ImageType2D::Pointer PipelineItem::getImage2D()
+{
+    return _image2D;
+}
+
+void PipelineItem::setImage2D( ImageType2D::Pointer _image)
+{
+    _image2D = _image;
+}
+
+
+
+
 bool PipelineItem::isEmpty()
 {
    bool _isEmpty = true;
@@ -126,4 +152,7 @@ void PipelineItem::clear()
     _functionName.clear();
     _functionClassName.clear();
     _functionDescription.clear();
+
+    _image2D = NULL;
+    _image3D = NULL;
 }

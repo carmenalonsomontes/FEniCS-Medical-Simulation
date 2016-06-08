@@ -2,35 +2,27 @@
 #define SLICEBYSLICEFILTER_H
 #include <QStringList>
 
-#include "itkImage.h"
 #include "itkSimpleFilterWatcher.h"
 #include "itkMedianImageFilter.h"
 #include "itkSliceBySliceImageFilter.h"
-#include "itkImageFileReader.h"
-#include "itkImageFileWriter.h"
 #include "../defines/OperationDefines.h"
-
 #include "../ioperation.h"
 
-
-using namespace std;
-using namespace itk;
-typedef ImageFileReader<ImageType> ReaderType;
-typedef SliceBySliceImageFilter<ImageType,ImageType> FilterType;
+typedef SliceBySliceImageFilter<ImageType2D,ImageType2D> FilterType;
 
 // Filters
 typedef MedianImageFilter<FilterType::InternalInputImageType,FilterType::InternalOutputImageType> MedianType;
 
 
-class SliceBySliceFilter: public IOperation
+class SliceBySliceFilter //: public IOperation
 {
 public:
     SliceBySliceFilter();
-    void SetInPut(ImageType::Pointer _input);
+    void SetInPut(ImageType2D::Pointer _input);
     void SetParameters(QStringList _parameterList);
 
     static IOperation * Create();
-    ImageType::Pointer GetOutput();
+    ImageType2D::Pointer GetOutput();
 
 private:
     FilterType::Pointer filter;

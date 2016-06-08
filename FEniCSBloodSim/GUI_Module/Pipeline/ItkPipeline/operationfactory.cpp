@@ -5,7 +5,7 @@
 OperationFactory::OperationFactory()
 {
     Register("BinaryThreshold2D",&Binarization::Create);
-    Register("SliceBySliceFilter",&SliceBySliceFilter::Create);
+   // Register("SliceBySliceFilter",&SliceBySliceFilter::Create);
 }
 OperationFactory::OperationFactory(const OperationFactory &)
 {

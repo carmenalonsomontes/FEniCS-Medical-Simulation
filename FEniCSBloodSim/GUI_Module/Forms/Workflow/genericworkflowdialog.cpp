@@ -55,7 +55,8 @@ GenericWorkflowDialog::~GenericWorkflowDialog()
     delete _configurationHelper;
     delete _summaryHelper;
     delete _wkfData;
-    delete _userImage;
+    //delete _userImage; // Throws an exception
+
 }
 
 
@@ -90,6 +91,7 @@ void GenericWorkflowDialog::setPipelineItemList(QList<PipelineItem> _list)
         return;
     _pipelineItemList = _list;
     loadUserData();
+    ui->runPipelineButton->setEnabled(true);
 }
 
 void GenericWorkflowDialog::loadUserData()

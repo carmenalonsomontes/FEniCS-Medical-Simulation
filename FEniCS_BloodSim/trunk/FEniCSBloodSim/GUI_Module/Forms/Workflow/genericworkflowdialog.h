@@ -29,7 +29,7 @@ public:
 
     void setPipelineItemList(QList<PipelineItem> _list);
     void setUserImageData(ImageData * _image);
-
+    void setUserProjectPath(QString _path);
 
     bool userAcceptChanges();
 
@@ -65,7 +65,8 @@ private:
     QList<PipelineItem> _pipelineItemList;
     bool _userAcceptChanges;
     int _selectedRow;
-
+    QString _projectPath;
+    QString _imgProjectPath;
 
 
     void insertRow();
@@ -91,6 +92,7 @@ private:
     //void enablePipelineArea(bool _val);
     void restoreUI();
     void loadUserData();
+    QString createImageResultFolder();
 
 
 };

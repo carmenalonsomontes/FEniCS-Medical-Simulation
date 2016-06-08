@@ -55,7 +55,7 @@ void ImageReader::readImage(ImageData * imageData,QString imPath)
     volume->SetMapper( mapper );
     mapper->SetBlendModeToMaximumIntensity();
     imageData->setVolumeData(volume);
-
+    imageData->setIsVolume3D(true);
     // No Slices
 
 

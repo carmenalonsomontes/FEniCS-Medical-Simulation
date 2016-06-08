@@ -3,6 +3,12 @@
 
 #include <QString>
 
+enum LoadUserImage{
+    LOAD_USER_IMAGE = 1,
+    NOT_LOAD_USER_IMAGE = 0
+};
+
+
 // --------------------------------------------
 // Values for position of parameters in the PIPELINE
 enum PipelinePosition{

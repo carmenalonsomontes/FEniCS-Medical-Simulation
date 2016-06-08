@@ -20,12 +20,16 @@ public:
 
     bool isEmptyData();
 
+    bool isVolume3D();
+    bool setIsVolume3D(bool _val);
+
 
 private:
 
     vtkImageData * _imageData;
     vtkVolume * _imVolumeData;
     bool _isEmpty;
+    bool _is3D;
 
 
 };

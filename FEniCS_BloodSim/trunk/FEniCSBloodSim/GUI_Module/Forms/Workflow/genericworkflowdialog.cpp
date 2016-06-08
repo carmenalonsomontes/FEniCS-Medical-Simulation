@@ -36,6 +36,9 @@ GenericWorkflowDialog::GenericWorkflowDialog(QWidget *parent) :
 
     _wkfData = new WorkflowData();
 
+
+    _userImage = new ImageData();
+
     _userAcceptChanges = false;
     _selectedRow = -1;
 
@@ -49,6 +52,7 @@ GenericWorkflowDialog::~GenericWorkflowDialog()
     delete _configurationHelper;
     delete _summaryHelper;
     delete _wkfData;
+    delete _userImage;
 }
 
 
@@ -65,6 +69,10 @@ bool GenericWorkflowDialog::userAcceptChanges()
 QList<PipelineItem> GenericWorkflowDialog::getPipelineItemList()
 {
     return _pipelineItemList;
+}
+void GenericWorkflowDialog::setUserImageData(ImageData * _image)
+{
+    _userImage = _image;
 }
 
 void GenericWorkflowDialog::setPipelineItemList(QList<PipelineItem> _list)
@@ -339,52 +347,9 @@ void GenericWorkflowDialog::showParameterInformation(int row)
 }
 
 
-// =========================================================================
-// RUN PIPELINE LOGIC
 
 
-QStringList GenericWorkflowDialog::buildParameterList(PipelineItem  _item)
-{
-    QStringList _parameterList;
 
-    QList<ConfigurationPipelineItem> _configItemList = _item.getConfigurationItemList();
-
-    // Borrar luego
-   // TO TEST
-   QString _inputData = "SetInput" + PARAMETER_SEPARATOR +_wkfData->getImagePath();
-    _parameterList.append(_inputData);
-
-
-    for (int i = 0; i<  _configItemList.size(); i++)
-    {
-        ConfigurationPipelineItem _configItem = _configItemList.at(i);
-
-        QString _cValue = _configItem.getCurrentValue();
-        if (_cValue.isEmpty())
-            _cValue = _configItem.getOptionDefaultValue();
-        QString _configValue = _configItem.getMethodName() + PARAMETER_SEPARATOR +_cValue;
-        _parameterList.append(_configValue);
-    }
-    return _parameterList;
-}
-
-//#include <QuickView.h>
-//#include "itkImage.h"
-
-void GenericWorkflowDialog::runPipelineItem( QStringList _parameterList,QString className)
-{
-
-    IOperation * _operation =  OperationFactory::Get()->CreateOperation(className.toStdString());
-    if (_operation)
-    {
-       _operation->SetParameters(_parameterList);
-  /*     QuickView viewer;
-       viewer.AddImage<ImageType>(_operation->GetOutput(),true,"");
-       viewer.Visualize();
-       */
-
-    }
-}
 
 // **********************************************************************************+
 // PIPELINE TABLE  --> ROWS
@@ -478,25 +443,6 @@ void GenericWorkflowDialog::on_cancelSelection_clicked()
     restoreUI();
 }
 
-// =========================================================================
-// RUN PIPELINE
-// =========================================================================
-
-void GenericWorkflowDialog::on_runPipelineButton_clicked()
-{
-    if (_pipelineItemList.isEmpty())
-
-        return;
-
-    for (int i = 0; i < _pipelineItemList.size();i++)
-    {
-         PipelineItem  _item = _pipelineItemList.at(i);
-
-         QStringList _parameterList = buildParameterList(_item);
-         runPipelineItem(_parameterList,_item.getFunctionClassName());
-    }
-
-}
 
 void GenericWorkflowDialog::on_stepDoneButton_clicked()
 {
@@ -519,6 +465,181 @@ void GenericWorkflowDialog::on_stepDoneButton_clicked()
     restoreUI();
 }
 
+
+// =========================================================================
+// RUN PIPELINE
+// =========================================================================
+
+void GenericWorkflowDialog::on_runPipelineButton_clicked()
+{
+    if (_pipelineItemList.isEmpty())
+        return;
+
+    QStringList _parameterList;
+    // Load Image
+    ReaderType3D::Pointer reader = ReaderType3D::New();
+    reader->SetFileName(_wkfData->getImagePath().toStdString());
+    bool _is3D = true;
+
+    // Create the rest of the pipeline
+    for (int i = 0; i < _pipelineItemList.size();i++)
+    {
+        PipelineItem  _item = _pipelineItemList.at(i);
+        _parameterList = buildParameterList(_item);
+        // Creating the pipeline Element
+        IOperation * _operation =  OperationFactory::Get()->CreateOperation(_item.getFunctionClassName().toStdString());
+        if (i == 0)
+            _operation->SetInPut(reader->GetOutput());
+        else
+        {
+            PipelineItem _previousItem = _pipelineItemList.at(i-1);
+            if (_is3D)
+                _operation->SetInPut(_previousItem.getImage3D());
+            else
+                _operation->SetInPut(_previousItem.getImage2D());
+        }
+
+        _operation->SetParameters(_parameterList);
+
+        _operation->exec();
+
+        _operation->save("/home/calonso/miresultado.mha");
+        if (_is3D)
+            _item.setImage3D(_operation->GetOutput3D());
+        else
+            _item.setImage2D(_operation->GetOutput2D());
+
+       _pipelineItemList.replace(i, _item);
+
+
+    }
+
+
+
+}
+/*
+#include <QuickView.h>
+#include "itkSimpleFilterWatcher.h"
+#include "itkMedianImageFilter.h"
+#include "itkSliceBySliceImageFilter.h"
+#include "itkBinaryThresholdImageFilter.h"
+#include "itkImage.h"
+#include "itkBinaryThresholdImageFilter.h"
+#include <itkImageFileReader.h>
+
+#include "QuickView.h"
+
+*/
+#include "GUI_Module/Pipeline/ItkPipeline/defines/OperationDefines.h"
+/*
+void GenericWorkflowDialog::runPipelineItem( QStringList _parameterList,QString className,ReaderType3D::Pointer reader)
+{
+
+    // Luego descomentar esto...
+   IOperation * _operation =  OperationFactory::Get()->CreateOperation(className.toStdString());
+    if (_operation)
+    {
+        switch (_loadImage){
+        case LOAD_USER_IMAGE:
+            //_operation->SetInPut();
+            break;
+        case NOT_LOAD_USER_IMAGE:
+             QString _inputData = "SetInput" + PARAMETER_SEPARATOR +_wkfData->getImagePath();
+             QStringList _inputParameterList;
+             _inputParameterList.append(_inputData);
+             _parameterList = _inputParameterList + _parameterList;
+             _operation->set3D(true); // At the moment, we consider 3D by default
+            break;
+        }
+
+       _operation->SetParameters(_parameterList);
+
+
+        // Pruebas
+
+    // Step 1. Read the image
+
+    //    ReaderType3D::Pointer reader = ReaderType3D::New();
+    //WriterType3D::Pointer writer = WriterType3D::New();
+
+    //reader->SetFileName(_wkfData->getImagePath().toStdString());
+
+    // Apply filter
+    //typedef SliceBySliceImageFilter<ImageType2D,ImageType2D> FilterType;
+
+    // Filters
+    //typedef MedianImageFilter<FilterType::InternalInputImageType,FilterType::InternalOutputImageType> MedianType;
+
+    //FilterType::Pointer filter = FilterType::New();
+
+
+    //MedianType::Pointer median = MedianType::New();
+    //MedianType::InputSizeType rad;// = MedianType::New();
+
+    //rad.Fill(5);
+    //median->SetRadius(rad);
+
+  //  typedef itk::Image<unsigned char, 3>  ImageType;
+  //  typedef itk::ImageFileReader<ImageType> ReaderType;
+
+  //  ReaderType::Pointer reader = ReaderType::New();
+  //  reader->SetFileName(argv[1]);
+
+    typedef BinaryThresholdImageFilter <ImageType3D, ImageType3D>
+      BinaryThresholdImageFilterType;
+
+    BinaryThresholdImageFilterType::Pointer thresholdFilter
+      = BinaryThresholdImageFilterType::New();
+    thresholdFilter->SetInput(reader->GetOutput());
+    thresholdFilter->SetLowerThreshold(10);
+    thresholdFilter->SetUpperThreshold(30);
+    thresholdFilter->SetInsideValue(255);
+    thresholdFilter->SetOutsideValue(0);
+
+
+
+
+
+    writer->SetFileName("/home/calonso/output.mha");
+    writer->SetInput(thresholdFilter->GetOutput());
+
+    try
+    {
+        writer->Update();
+    }catch(itk::ExceptionObject & err)
+    {
+        std::cout << "Error !!!" << std::endl;
+        std::cout << err << std::endl;
+    }
+
+
+
+       // Visualize -- Only for checking purposes
+       //QuickView viewer;
+       //viewer.AddImage<ImageType2D>(_operation->GetOutput(),true,"");
+       //viewer.Visualize();
+    //}
+}
+
+*/
+QStringList GenericWorkflowDialog::buildParameterList(PipelineItem  _item)
+{
+    QStringList _parameterList;
+
+    QList<ConfigurationPipelineItem> _configItemList = _item.getConfigurationItemList();
+
+    for (int i = 0; i<  _configItemList.size(); i++)
+    {
+        ConfigurationPipelineItem _configItem = _configItemList.at(i);
+
+        QString _cValue = _configItem.getCurrentValue();
+        if (_cValue.isEmpty())
+            _cValue = _configItem.getOptionDefaultValue();
+        QString _configValue = _configItem.getMethodName() + PARAMETER_SEPARATOR +_cValue;
+        _parameterList.append(_configValue);
+    }
+    return _parameterList;
+}
 
 // =========================================================================
 // Accepted BUTTONBOX

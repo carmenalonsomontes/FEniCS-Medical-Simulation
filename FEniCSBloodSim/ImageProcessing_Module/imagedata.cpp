@@ -55,7 +55,11 @@ bool ImageData::setIsVolume3D(bool _val)
 
 
 
-
+void ImageData::clear()
+{
+    _imVolumeData = NULL;
+    _imageData = NULL;
+}
 
 bool ImageData::isEmptyData()
 {

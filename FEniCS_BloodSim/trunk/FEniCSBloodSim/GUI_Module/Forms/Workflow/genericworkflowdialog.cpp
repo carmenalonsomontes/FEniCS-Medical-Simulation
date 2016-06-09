@@ -55,7 +55,7 @@ GenericWorkflowDialog::~GenericWorkflowDialog()
     delete _configurationHelper;
     delete _summaryHelper;
     delete _wkfData;
-    //delete _userImage; // Throws an exception
+    _userImage->clear();
 
 }
 
@@ -537,8 +537,6 @@ void GenericWorkflowDialog::on_runPipelineButton_clicked()
             _operation->SetInPut(reader->GetOutput()); // Nota, por algun motivo si meto el reader aqui dentro, pierde la referencia al puntero ¿Smart pointers vida util?? --> Checkear en la conexion del pipeline
         else
         {
-            // BUG !!!!! Si hay mas de dos items no funciona!!! Aqui está el problema, no se guarda!
-            // Mirar soluciones en http://ootips.org/yonat/4dev/smart-pointers.html
             PipelineItem _previousItem = _pipelineItemList.at(i-1);
             if (_is3D)
                 _operation->SetInPut(_previousItem.getImage3D());
@@ -556,9 +554,6 @@ void GenericWorkflowDialog::on_runPipelineButton_clicked()
 
        _pipelineItemList.replace(i, _item);
     }
-
-
-
 }
 
 

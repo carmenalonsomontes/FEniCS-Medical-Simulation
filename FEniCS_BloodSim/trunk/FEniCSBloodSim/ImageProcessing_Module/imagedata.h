@@ -23,6 +23,8 @@ public:
     bool isVolume3D();
     bool setIsVolume3D(bool _val);
 
+    void clear();
+
 
 private:
 

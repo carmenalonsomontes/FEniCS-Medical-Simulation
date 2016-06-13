@@ -35,7 +35,7 @@ void WorkflowTableHelper::setCurrentRegisteredTableFromList(int index)
 
 
 
-void WorkflowTableHelper::addElementToTable(QString _action,ImProcMenuUI iconType)
+void WorkflowTableHelper::addElementToTable(QString _action,EyeTableValue iconType)
 {
     int _lastRow = registeredTable->rowCount();
     registeredTable->insertRow(_lastRow);
@@ -176,9 +176,15 @@ QTableWidgetItem * WorkflowTableHelper::addIcon(IconType _iconType)
 void WorkflowTableHelper::clearTable()
 {
     int _lastRow = registeredTable->rowCount();
-    for (int i= _lastRow-1; i>=0; i--)
-        registeredTable->removeRow(i);
+    registeredTable->clear();
 
+   for (int i= _lastRow-1; i>=0; i--)
+        registeredTable->removeRow(i);
+}
+
+void WorkflowTableHelper::clearEyeAssociateddTable()
+{
+    eyeTableOpen.clear();
 }
 
 QTableWidgetItem * WorkflowTableHelper::addNonEditableText(QString _value)
@@ -190,7 +196,7 @@ QTableWidgetItem * WorkflowTableHelper::addNonEditableText(QString _value)
 }
 
 
-QLabel * WorkflowTableHelper::addIcon(ImProcMenuUI iconType)
+QLabel * WorkflowTableHelper::addIcon(EyeTableValue iconType)
 {
     QPixmap icon;
 
@@ -212,18 +218,40 @@ QLabel * WorkflowTableHelper::addIcon(ImProcMenuUI iconType)
 }
 
 
-int WorkflowTableHelper::modifyEyeInRow(int row)
+EyeTableValue WorkflowTableHelper::modifyEyeInRow(int row)
 {
     if (eyeTableOpen.isEmpty())
-        return -1;
-    int _cValue = eyeTableOpen.at(row);
-    ImProcMenuUI iconType = EYE_CLOSED;
+        return NO_STATUS;
+    EyeTableValue _cValue = eyeTableOpen.at(row);
+    EyeTableValue iconType = EYE_CLOSED;
     if (_cValue == EYE_CLOSED)
         iconType = EYE_OPEN;
     registeredTable->removeCellWidget(row, EYE_COLUMN); // removing old one
     registeredTable->setCellWidget(row,EYE_COLUMN,addIcon(iconType));
     eyeTableOpen.replace(row,iconType);
+
     return iconType;
+}
+
+EyeTableValue WorkflowTableHelper::getEyeStatus(int row)
+{
+    if ((eyeTableOpen.isEmpty()) || (row >= eyeTableOpen.size()))
+        return NO_STATUS;
+    return eyeTableOpen.at(row);
+}
+int WorkflowTableHelper::getCurrentRowWithOpenEye()
+{
+    bool _found = false;
+    int _rowResult = -1;
+    for (int i = 0; ((i < eyeTableOpen.size()) && (!_found)); i++)
+    {
+        if (eyeTableOpen.at(i) == EYE_OPEN)
+        {
+            _found = true;
+            _rowResult = i;
+        }
+    }
+    return _rowResult;
 }
 
 

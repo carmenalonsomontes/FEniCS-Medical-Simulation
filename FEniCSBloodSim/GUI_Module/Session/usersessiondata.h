@@ -2,6 +2,10 @@
 #define USERSESSIONDATA_H
 
 #include <QStringList>
+#include <QList>
+
+#include "GUI_Module/Defines/Menu/MenuDefines.h"
+#include "userimageinfosession.h"
 class UserSessionData
 {
 public:
@@ -29,6 +33,11 @@ public:
     void setFenicsToolPath(QString toolpath);
 
 
+    void setImageTabsInfo(int noImageRow, ImageTabs sliceType, int noSlice, int maxSlice, int minSlice);
+    UserImageInfoSession getImageTabsInfo(int noImageRow, ImageTabs sliceType );
+    void clearImageTabsInfo();
+    bool isEmptyImageTabInfo();
+    bool existImageInfo(int noImageRow, ImageTabs sliceType );
 
 private:
     QStringList _recentProjectList;
@@ -36,6 +45,8 @@ private:
     QString _filePath;
     QString _meshToolPath;
     QString _fenicsToolPath;
+
+    QList<UserImageInfoSession> _imagesTabInfo; // De momento no se guarda en fichero ...
 
 
 };

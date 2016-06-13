@@ -12,8 +12,6 @@ public:
     ImageTabUIHelper();
     ~ImageTabUIHelper();
 
-signals:
-
 private:
 
 

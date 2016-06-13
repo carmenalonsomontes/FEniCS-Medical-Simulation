@@ -25,7 +25,7 @@ public:
     void setCurrentRegisteredTableFromList(int index);
 
 
-    void addElementToTable(QString _action,ImProcMenuUI iconType);
+    void addElementToTable(QString _action,EyeTableValue iconType);
 
     void addOnlyDesc(QString _action);
     int addEmptyRow();
@@ -35,9 +35,13 @@ public:
 
     void updateRow(QString _iconPath, QString _value, int row);
 
-    int modifyEyeInRow(int row);
+    EyeTableValue modifyEyeInRow(int row);
+    EyeTableValue getEyeStatus(int row);
+    int getCurrentRowWithOpenEye();
 
     void clearTable();
+    void clearEyeAssociateddTable();
+
 
     bool isRegistered(int index);
 
@@ -46,13 +50,15 @@ public:
     void removeRowsFromThisOnwards(int initRow);
 
 
+
+
 private:
     QTableWidget * registeredTable;
     QList<QTableWidget *> registeredTableList;
-    QList<int> eyeTableOpen;
+    QList<EyeTableValue> eyeTableOpen;
 
     QTableWidgetItem * addNonEditableText(QString _value);
-    QLabel * addIcon(ImProcMenuUI iconType);
+    QLabel * addIcon(EyeTableValue iconType);
     QTableWidgetItem * addSelectableCheckColumn();
     QTableWidgetItem * addIcon(QString _path);
     QTableWidgetItem * addEditText(QString _value);

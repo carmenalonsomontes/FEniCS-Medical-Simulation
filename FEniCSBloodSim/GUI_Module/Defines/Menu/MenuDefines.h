@@ -20,10 +20,20 @@ enum Slicer_no{
 };
 
 
+// TAB DEFINES
+enum ImageTabs{
+    AXIAL_TAB = 0,
+    SAGITTAL_TAB = 1,
+    CORONAL_TAB = 2,
+    NON_TYPE_SELECTED = -1
+};
+
+
 // Image Processing MENU UI
-enum ImProcMenuUI{
+enum EyeTableValue{
     EYE_OPEN = 0,
-    EYE_CLOSED = 1
+    EYE_CLOSED = 1,
+    NO_STATUS = -1
 };
 
 enum ImProcTableCols{
@@ -83,6 +93,9 @@ enum SimulationMenuVar{
     VISUALIZATION_TOOL = 3
 
 };
+
+
+
 
 // XML Defines
 const QString FBS_GUI_TAG = "fbs_gui";

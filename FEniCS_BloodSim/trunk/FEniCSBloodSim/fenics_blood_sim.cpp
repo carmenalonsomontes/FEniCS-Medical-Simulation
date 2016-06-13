@@ -70,6 +70,8 @@ FEniCS_Blood_Sim::FEniCS_Blood_Sim(QWidget *parent) :
     // Helpers
     _workflowTableHelper.registerTableUI(ui->workflowTableWidget);
 
+   // _currentRowVisibleItem = -1;
+
     // ----------------------------------------------------
     // VTK initializations
     //
@@ -472,7 +474,10 @@ void FEniCS_Blood_Sim::EnableImageProcessingDialog(bool val)
             addPipelineItems();
 
     }else
+    {
         _workflowTableHelper.clearTable();
+        _workflowTableHelper.clearEyeAssociateddTable();
+    }
 }
 
 void FEniCS_Blood_Sim::EnableTab(bool val)
@@ -505,6 +510,8 @@ void FEniCS_Blood_Sim::RestoreUI()
 
     ClearImageInterfaceUI();
     ClearConsoles();
+
+   // _currentRowVisibleItem = -1;
 }
 
 void FEniCS_Blood_Sim::ClearConsoles()
@@ -523,28 +530,6 @@ void FEniCS_Blood_Sim::ClearConsoles()
  * IMAGING
  * */
 
-
-/* bool FEniCS_Blood_Sim::eventFilter(QObject *obj, QEvent *event)
- {
-
-     QVTKWidget * _qvtkWidget =  qobject_cast<QVTKWidget *>(obj);
-     if (( _qvtkWidget)  && (event->type() == QEvent::MouseButtonPress))
-     {
-         QString _widgetName = _qvtkWidget->objectName();
-
-         if (QString::compare(_widgetName,ui->axialViewWidget->objectName(),Qt::CaseSensitive) == StrEqual)
-             LoadAxialImage();
-         if (QString::compare(_widgetName,ui->sagittalViewWidget->objectName(),Qt::CaseSensitive) == StrEqual)
-            LoadSaggitalImage();
-         if (QString::compare(_widgetName,ui->coronalViewWidget->objectName(),Qt::CaseSensitive) == StrEqual)
-            LoadCoronalImage();
-
-         return true;
-     } else {
-         // standard event processing
-         return QObject::eventFilter(obj, event);
-     }
- }*/
 
  void FEniCS_Blood_Sim::ClearImageInterfaceUI()
  {
@@ -568,7 +553,7 @@ void FEniCS_Blood_Sim::ClearConsoles()
          mainImRendererTab->RemoveAllViewProps();
          mainImRendererTab->ResetCamera();
      }
-    ui->mainImageWidget->setEnabled(false);
+   // ui->mainImageWidget->setEnabled(false);
 
     clearViewer(ui->axialViewWidget,axialImViewer);
     clearViewer(ui->sagittalViewWidget,sagittalImViewer);
@@ -642,7 +627,7 @@ void FEniCS_Blood_Sim::ClearConsoles()
 
 
 
- void FEniCS_Blood_Sim::LoadMainImageTab()
+ void FEniCS_Blood_Sim::LoadMainImageTab(vtkVolume * _volume)
  {
      if (!ui->mainImageWidget->isEnabled())
          ui->mainImageWidget->setEnabled(true);
@@ -651,36 +636,63 @@ void FEniCS_Blood_Sim::ClearConsoles()
     mainImRendererTab->RemoveAllViewProps();
     mainImRendererTab->ResetCamera();
     // Adding the volume
-    mainImRendererTab->AddVolume(  _projectData->getImageData()->getVolumeData() );
+    mainImRendererTab->AddVolume(_volume);
     mainImRendererTab->ResetCamera();
     ui->mainImageWidget->GetRenderWindow()->AddRenderer(mainImRendererTab);
  }
 
 
- void FEniCS_Blood_Sim::LoadAxialImage()
+ void FEniCS_Blood_Sim::LoadAxialImage(vtkImageData * _imageData)
  {
-    loadViewer( ui->axialViewWidget, axialImViewer);
-    updateSlicerMinMax(axialImViewer->GetSlice(),axialImViewer->GetSliceMax(),axialImViewer->GetSliceMin(),AXIAL_SLICER);
+    loadViewer( ui->axialViewWidget, axialImViewer,_imageData);
+    updateSlicerSesionInfo(axialImViewer,AXIAL_TAB);
+
  }
 
 
- void FEniCS_Blood_Sim::LoadSaggitalImage()
+ void FEniCS_Blood_Sim::LoadSaggitalImage(vtkImageData * _imageData)
  {
-
-    loadViewer( ui->sagittalViewWidget, sagittalImViewer);
+    loadViewer( ui->sagittalViewWidget, sagittalImViewer,_imageData);
     setOrientation(sagittalImViewer,SAGITTAL_YZ);
-    updateSlicerMinMax(sagittalImViewer->GetSlice(),sagittalImViewer->GetSliceMax(),sagittalImViewer->GetSliceMin(),SAGITTAL_SLICER);
-
+    updateSlicerSesionInfo(sagittalImViewer,SAGITTAL_TAB);
 
  }
 
- void FEniCS_Blood_Sim::LoadCoronalImage()
+ void FEniCS_Blood_Sim::LoadCoronalImage(vtkImageData * _imageData)
  {
-    loadViewer( ui->coronalViewWidget, coronalImViewer);
+    loadViewer( ui->coronalViewWidget, coronalImViewer,_imageData);
     setOrientation(coronalImViewer,CORONAL_XZ);
+    updateSlicerSesionInfo(coronalImViewer,CORONAL_TAB);
+ }
 
-    updateSlicerMinMax(coronalImViewer->GetSlice(),coronalImViewer->GetSliceMax(),coronalImViewer->GetSliceMin(),CORONAL_SLICER);
 
+ void FEniCS_Blood_Sim::updateSlicerSesionInfo(vtkSmartPointer<vtkImageViewer2> imageViewer,ImageTabs typeSlice)
+ {
+     int _currentRowVisibleItem = _workflowTableHelper.getCurrentRowWithOpenEye();
+
+
+     Slicer_no _sliceTabNo;
+     switch (typeSlice) {
+     case AXIAL_TAB:
+         _sliceTabNo = AXIAL_SLICER;
+         break;
+     case SAGITTAL_TAB:
+         _sliceTabNo = SAGITTAL_SLICER;
+         break;
+     case CORONAL_TAB:
+         _sliceTabNo = CORONAL_SLICER;
+         break;
+     default:
+         break;
+     }
+
+     if ( (_currentRowVisibleItem != -1) && (! _userSessionData->existImageInfo(_currentRowVisibleItem,typeSlice)))
+        _userSessionData->setImageTabsInfo(_currentRowVisibleItem,typeSlice,imageViewer->GetSlice(),imageViewer->GetSliceMax(),imageViewer->GetSliceMin());
+
+
+     UserImageInfoSession _imageInfo = _userSessionData->getImageTabsInfo(_currentRowVisibleItem,typeSlice);
+     setSliceNumber(imageViewer,_imageInfo.getNoSlice());
+     updateSlicerMinMax(_imageInfo.getNoSlice(),_imageInfo.getMaxSlice(),_imageInfo.getMinSlice(),_sliceTabNo);
  }
 
  void FEniCS_Blood_Sim::updateSlicerMinMax(int noSlice, int max, int min, int typeSlicer)
@@ -730,6 +742,13 @@ void FEniCS_Blood_Sim::ClearConsoles()
      imageViewer->Render();
  }
 
+ void FEniCS_Blood_Sim::setSliceNumber(vtkSmartPointer<vtkImageViewer2> imageViewer,int sliceNo)
+ {
+     imageViewer->SetSlice(sliceNo);
+     imageViewer->GetRenderer()->ResetCamera();
+     imageViewer->Render();
+ }
+
 
  void FEniCS_Blood_Sim::LoadImageInterfaceUI(const QString imPath)
  {
@@ -740,21 +759,16 @@ void FEniCS_Blood_Sim::ClearConsoles()
     _projectData->loadImData();
 
     // Updating the UI
-    LoadMainImageTab();
-    LoadAxialImage();
-    LoadSaggitalImage();
-    LoadCoronalImage();
-
- }
+    loadImages(_projectData->getImageData()->getVolumeData(), _projectData->getImageData()->getImageData());
+   }
 
 
-void FEniCS_Blood_Sim::loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer)
+void FEniCS_Blood_Sim::loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer, vtkImageData * _imageData)
 {
     if (!widget->isEnabled())
         widget->setEnabled(true);
 
-     imageViewer->SetInputData(_projectData->getImageData()->getImageData());
-
+     imageViewer->SetInputData(_imageData);
 
      if (!imageViewer->GetRenderer()->HasViewProp(imageViewer->GetImageActor()) )
          imageViewer->GetRenderer()->AddViewProp(imageViewer->GetImageActor());
@@ -765,8 +779,6 @@ void FEniCS_Blood_Sim::loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageV
      imageViewer->GetRenderer()->ResetCamera();
      imageViewer->Render();
      widget->update();
-
-
 
 }
 
@@ -798,44 +810,109 @@ void FEniCS_Blood_Sim::on_axialSlider_sliderMoved(int position)
 {
    axialImViewer->SetSlice(position);
    ui->currentAxialSlice->setText(QString::number(position));
+
+
 }
 
 void FEniCS_Blood_Sim::on_coronalSlider_sliderMoved(int position)
 {
    coronalImViewer->SetSlice(position);
    ui->currentCoronalSlice->setText(QString::number(position));
+
 }
 
 void FEniCS_Blood_Sim::on_sagittalSlider_sliderMoved(int position)
 {
     sagittalImViewer->SetSlice(position);
     ui->currentSagittalSlice->setText(QString::number(position));
+
 }
 
+void FEniCS_Blood_Sim::on_axialSlider_sliderReleased()
+{
+   saveImageSessionData(AXIAL_TAB,axialImViewer->GetSlice(),axialImViewer->GetSliceMax(),axialImViewer->GetSliceMin());
+}
+
+void FEniCS_Blood_Sim::on_coronalSlider_sliderReleased()
+{
+    saveImageSessionData(CORONAL_TAB,coronalImViewer->GetSlice(),coronalImViewer->GetSliceMax(),coronalImViewer->GetSliceMin());
+}
+
+void FEniCS_Blood_Sim::on_sagittalSlider_sliderReleased()
+{
+     saveImageSessionData(SAGITTAL_TAB,sagittalImViewer->GetSlice(),sagittalImViewer->GetSliceMax(),sagittalImViewer->GetSliceMin());
+}
+
+void FEniCS_Blood_Sim::saveImageSessionData(ImageTabs typeView, int noSlice,int maxSlice, int minSlice)
+{
+    int _currentRowSelected = _workflowTableHelper.getCurrentRowWithOpenEye();
+    _userSessionData->setImageTabsInfo(_currentRowSelected,typeView,noSlice,maxSlice,minSlice);
+
+}
 
 
 // -----------------------------------------------------------------------------------------------------------
 //  workflow
 void FEniCS_Blood_Sim::on_workflowTableWidget_cellClicked(int row, int column)
 {
-    if (column == EYE_COLUMN)
-    {
-        if (row == 0) // Note: At the moment we only allow to see the original image
-        {
-            int _cStatus = _workflowTableHelper.modifyEyeInRow(row);
-            if (_cStatus == EYE_CLOSED)
-                clearImageTab();
-            else
-            {
-                LoadMainImageTab();
-                LoadAxialImage();
-                LoadSaggitalImage();
-                LoadCoronalImage();
-            }
-        }
-    }
+    if (column == EYE_COLUMN)  
+        showImage(row);
+
 }
 
+#include <itkImageToVTKImageFilter.h>
+void FEniCS_Blood_Sim::showImage(int row)
+{
+
+    int _currentRowVisibleItem = _workflowTableHelper.getCurrentRowWithOpenEye();
+
+    if (_currentRowVisibleItem == -1) return;
+
+    if (row != _currentRowVisibleItem)
+    {
+        clearImageTab();
+         _workflowTableHelper.modifyEyeInRow(row);
+         _workflowTableHelper.modifyEyeInRow(_currentRowVisibleItem);
+
+         if (row == 0) // Volume Data
+            loadImages(_projectData->getImageData()->getVolumeData(), _projectData->getImageData()->getImageData());
+         else
+             if( (!_projectData->getListPipelineItems().isEmpty()) && ((row -1) <= _projectData->getListPipelineItems().size()))
+             {
+                 QList<PipelineItem> _imagingPipelineItems = _projectData->getListPipelineItems();
+
+                 PipelineItem _item = _imagingPipelineItems.at(row-1);
+                // TODO - Convert ITK - VTK
+                 // Mirar estos dos ejemplos: https://itk.org/Wiki/ITK/Examples/IO/ImageToVTKImageFilter
+                 //https://itk.org/Wiki/ITK/Examples/Visualization/QuickView
+
+                 // Solucion - Vistas Axial, Coaxial y Saggital
+                 typedef itk::ImageToVTKImageFilter<ImageType3D>       ConnectorType3D;
+                 typedef itk::ImageToVTKImageFilter<ImageType2D>       ConnectorType2D;
+                 ConnectorType3D::Pointer connector = ConnectorType3D::New();
+                 connector->SetInput(_item.getImage3D());
+                 connector->Update();
+
+                 // Volumen
+                 // Pos. Solucion:  http://www.vtk.org/Wiki/ITK/Examples/WishList/IO/itkVtkImageConvertDICOM
+                 //http://www.vtk.org/pipermail/vtkusers/2011-July/068611.html
+                 loadImages(_projectData->getImageData()->getVolumeData(), connector->GetOutput());
+             }
+    }
+
+
+
+}
+
+
+void FEniCS_Blood_Sim::loadImages(vtkVolume * _volume, vtkImageData * _imageData)
+{
+    clearImageTab();
+    LoadMainImageTab(_volume);
+    LoadAxialImage(_imageData);
+    LoadSaggitalImage(_imageData);
+    LoadCoronalImage(_imageData);
+}
 
 void FEniCS_Blood_Sim::on_workflowConfigButton_clicked()
 {
@@ -868,3 +945,14 @@ void FEniCS_Blood_Sim::addPipelineItems()
         _workflowTableHelper.addElementToTable(_item.getDescription(),EYE_CLOSED);
     }
 }
+
+
+/*
+void FEniCS_Blood_Sim::on_axialSlider_valueChanged(int value)
+{
+    // Saving the data for the session
+    saveImageSessionData(AXIAL_TAB,axialImViewer->GetSlice(),axialImViewer->GetSliceMax(),axialImViewer->GetSliceMin());
+}
+
+*/
+

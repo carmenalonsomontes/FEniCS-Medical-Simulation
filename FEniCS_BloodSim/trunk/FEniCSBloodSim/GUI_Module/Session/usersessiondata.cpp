@@ -90,4 +90,72 @@ void UserSessionData::setFenicsToolPath(QString toolpath)
     _fenicsToolPath = toolpath;
 }
 
+// IMAGE TABS
 
+void UserSessionData::setImageTabsInfo(int noImageRow, ImageTabs sliceType, int noSlice, int maxSlice, int minSlice)
+{
+    bool _found = false;
+    for (int i=0; (i< _imagesTabInfo.size()) && (!_found) ; i++)
+    {
+        UserImageInfoSession _tmpVal = _imagesTabInfo.at(i);
+        if( (_tmpVal.getNoImageRow() == noImageRow) && (_tmpVal.getSliceType() == sliceType))
+        {
+            _tmpVal.setMaxSlice(maxSlice);
+            _tmpVal.setMinSlice(minSlice);
+            _tmpVal.setNoSlice(noSlice);
+            _imagesTabInfo.replace(i,_tmpVal);
+            _found = true;
+        }
+
+    }
+
+    if (!_found)
+    {
+        UserImageInfoSession _newVal;
+        _newVal.setNoImageRow(noImageRow);
+        _newVal.setSliceType(sliceType);
+        _newVal.setNoSlice(noSlice);
+        _newVal.setMaxSlice(maxSlice);
+        _newVal.setMinSlice(minSlice);
+        _imagesTabInfo.append(_newVal);
+
+    }
+
+
+}
+
+UserImageInfoSession UserSessionData::getImageTabsInfo(int noImageRow, ImageTabs sliceType )
+{
+
+    UserImageInfoSession _result;
+    for (int i=0; i< _imagesTabInfo.size() ; i++)
+    {
+        UserImageInfoSession _tmpVal = _imagesTabInfo.at(i);
+        if( (_tmpVal.getNoImageRow() == noImageRow) && (_tmpVal.getSliceType() == sliceType))
+            return _tmpVal;
+    }
+
+    return _result;
+}
+
+bool UserSessionData::existImageInfo(int noImageRow, ImageTabs sliceType )
+{
+    bool _found = false;
+
+    for (int i=0; ( i< _imagesTabInfo.size()) && (!_found) ; i++)
+    {
+        UserImageInfoSession _tmpVal = _imagesTabInfo.at(i);
+        if( (_tmpVal.getNoImageRow() == noImageRow) && (_tmpVal.getSliceType() == sliceType))
+            _found = true;
+    }
+    return _found;
+}
+
+void UserSessionData::clearImageTabsInfo()
+{
+    _imagesTabInfo.clear();
+}
+bool UserSessionData::isEmptyImageTabInfo()
+{
+    return _imagesTabInfo.isEmpty();
+}

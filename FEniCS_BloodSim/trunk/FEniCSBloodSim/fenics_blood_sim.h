@@ -126,6 +126,16 @@ private slots:
 
     void on_workflowConfigButton_clicked();
 
+
+
+   // void on_axialSlider_valueChanged(int value);
+
+    void on_axialSlider_sliderReleased();
+
+    void on_coronalSlider_sliderReleased();
+
+    void on_sagittalSlider_sliderReleased();
+
 private:
     Ui::FEniCS_Blood_Sim *ui;
     FileMenuBuilder *  _fileMenuBuilder;
@@ -138,13 +148,13 @@ private:
 
 
 
+    // Workflow Table
+    //int _currentRowVisibleItem;
     vtkSmartPointer<vtkRenderer> mainImRendererTab;
 
     vtkSmartPointer<vtkImageViewer2> axialImViewer;
     vtkSmartPointer<vtkImageViewer2> coronalImViewer;
     vtkSmartPointer<vtkImageViewer2> sagittalImViewer;
-
-
 
     vtkSmartPointer<vtkRenderer> cloudImRenderer;
     vtkSmartPointer<vtkRenderer> meshImRenderer;
@@ -171,13 +181,13 @@ private:
 
 
     // Image Tab - Load
-    void LoadAxialImage();
-    void LoadSaggitalImage();
-    void LoadCoronalImage();
-    void LoadMainImageTab();
+    void LoadAxialImage(vtkImageData * _imageData);
+    void LoadSaggitalImage(vtkImageData *_imageData);
+    void LoadCoronalImage(vtkImageData * _imageData);
+    void LoadMainImageTab(vtkVolume * _volume);
 
     // Image Tab - Viewer
-    void loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer);
+    void loadViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer,vtkImageData * _volume);
     void clearViewer(QVTKWidget * widget, vtkSmartPointer<vtkImageViewer2> imageViewer);
     void setOrientation(vtkSmartPointer<vtkImageViewer2> imageViewer,int orientation);
 
@@ -201,8 +211,12 @@ private:
     void initializeVisualizationTab();
 
     void addPipelineItems();
+    void showImage(int row);
+    void loadImages(vtkVolume * _volume, vtkImageData * _imageData);
+    void saveImageSessionData(ImageTabs typeView, int noSlice,int maxSlice, int minSlice);
+    void updateSlicerSesionInfo(vtkSmartPointer<vtkImageViewer2> imageViewer,ImageTabs typeSlice);
 
-
+    void setSliceNumber(vtkSmartPointer<vtkImageViewer2> imageViewer,int sliceNo);
 
 
 };

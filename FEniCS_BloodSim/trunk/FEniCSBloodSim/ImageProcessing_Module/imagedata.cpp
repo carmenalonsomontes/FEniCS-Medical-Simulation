@@ -3,32 +3,35 @@
 #include "ImageProcessing_Module/imagereader.h"
 ImageData::ImageData()
 {
-      _imVolumeData = vtkVolume::New();
-      _imageData = vtkImageData::New();
+      _imVolumeData = vtkSmartPointer<vtkVolume>::New();
+      _imageData = vtkSmartPointer<vtkImageData>::New();
       _isEmpty = true;
       _is3D = true; // By default this is considered for 3D volumes
 
 }
+ImageData::~ImageData()
+{
+    clear();
+}
 
-
-vtkVolume * ImageData::getVolumeData()
+vtkSmartPointer<vtkVolume> ImageData::getVolumeData()
 {
     return _imVolumeData;
 }
 
-void ImageData::setVolumeData(vtkVolume * volPointer)
+void ImageData::setVolumeData(vtkSmartPointer<vtkVolume> volPointer)
 {
     _imVolumeData = volPointer;
     _isEmpty = false;
 }
 
 
-vtkImageData * ImageData::getImageData()
+vtkSmartPointer<vtkImageData>  ImageData::getImageData()
 {
     return _imageData;
 }
 
-void ImageData::setImageData(vtkImageData * imData)
+void ImageData::setImageData(vtkSmartPointer<vtkImageData> imData)
 {
     _imageData = imData;
     _isEmpty = false;
@@ -51,7 +54,6 @@ bool ImageData::setIsVolume3D(bool _val)
 {
  _is3D = _val;
 }
-
 
 
 

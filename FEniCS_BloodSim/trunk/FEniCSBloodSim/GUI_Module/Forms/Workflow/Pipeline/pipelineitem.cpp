@@ -1,4 +1,5 @@
 #include "pipelineitem.h"
+#include "ImageProcessing_Module/imagereader.h"
 
 PipelineItem::PipelineItem()
 {
@@ -12,10 +13,20 @@ PipelineItem::PipelineItem()
     _functionClassName = "";
     _functionDescription = "";
 
+    _image3DPath = "";
+
     _image3D = ImageType3D::New();
-    _image2D = ImageType2D::New();
+   // _image2D = ImageType2D::New();
+
+
+    _imageData = new ImageData();
+    _isImageDataLoaded = false;
 }
 
+PipelineItem::~PipelineItem()
+{
+    clear();
+}
 
 
 QString PipelineItem::getIconPath()
@@ -112,11 +123,29 @@ ImageType3D::Pointer PipelineItem::getImage3D()
     return _image3D;
 }
 
+QString PipelineItem::getImage3DPath()
+{
+    return _image3DPath;
+}
+
+void PipelineItem::setImage3DPath(QString path)
+{
+    _image3DPath = path;
+}
+/*
+void PipelineItem::setImage3D( ImageType3D::Pointer _image, QString path)
+{
+    _image3D = _image;
+    _image3DPath = path;
+}
+
+*/
 void PipelineItem::setImage3D( ImageType3D::Pointer _image)
 {
     _image3D = _image;
 }
 
+/*
 ImageType2D::Pointer PipelineItem::getImage2D()
 {
     return _image2D;
@@ -127,7 +156,7 @@ void PipelineItem::setImage2D( ImageType2D::Pointer _image)
     _image2D = _image;
 }
 
-
+*/
 
 
 bool PipelineItem::isEmpty()
@@ -140,6 +169,23 @@ bool PipelineItem::isEmpty()
    return _isEmpty;
 }
 
+/*
+bool PipelineItem::isImage3DEmpty()
+{
+    if (_image3D.IsNull())
+        return true;
+    else
+        return false;
+}
+
+bool PipelineItem::isImage2DEmpty()
+{
+    if (_image2D.IsNull())
+        return true;
+    else
+        return false;
+}
+*/
 void PipelineItem::clear()
 {
     _iconPath.clear();
@@ -153,6 +199,30 @@ void PipelineItem::clear()
     _functionClassName.clear();
     _functionDescription.clear();
 
-    _image2D = NULL;
+    _image3DPath.clear();
+
+  //  _image2D = NULL;
     _image3D = NULL;
+
+    //_imageData->clear();
+    _isImageDataLoaded = false;
+}
+
+
+ImageData  * PipelineItem::getImageData()
+{
+    return _imageData;
+}
+
+
+void PipelineItem::loadImage()
+{
+    ImageReader _imReader;
+    _imReader.readImage(_imageData,_image3DPath);
+    _isImageDataLoaded = true;
+}
+
+bool PipelineItem::isImageLoaded()
+{
+    return _isImageDataLoaded;
 }

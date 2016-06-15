@@ -55,7 +55,7 @@ GenericWorkflowDialog::~GenericWorkflowDialog()
     delete _configurationHelper;
     delete _summaryHelper;
     delete _wkfData;
-    _userImage->clear();
+    //_userImage->clear();
 
 }
 
@@ -540,8 +540,9 @@ void GenericWorkflowDialog::on_runPipelineButton_clicked()
             PipelineItem _previousItem = _pipelineItemList.at(i-1);
             if (_is3D)
                 _operation->SetInPut(_previousItem.getImage3D());
-            else
+           /* else
                 _operation->SetInPut(_previousItem.getImage2D());
+                */
         }
 
         _operation->SetParameters(_parameterList);
@@ -549,8 +550,9 @@ void GenericWorkflowDialog::on_runPipelineButton_clicked()
         QString _imgFileName = TEMP_WKF_PIPELINE_IMAGE_PREFIX + QString::number(i) +"."+ _imageSuffix;
         QString _imgTmpFile = QDir(_imgProjectPath).filePath(_imgFileName);
         _operation->save(_imgTmpFile);
+        _item.setImage3DPath(_imgTmpFile);
 
-        _item.setImage3D(_operation->GetOutput3D());
+       // _item.setImage3D(_operation->GetOutput3D(),_imgTmpFile);
 
        _pipelineItemList.replace(i, _item);
     }

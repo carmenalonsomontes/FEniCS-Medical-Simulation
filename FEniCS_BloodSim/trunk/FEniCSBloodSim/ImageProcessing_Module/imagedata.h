@@ -4,19 +4,21 @@
 #include <QString>
 #include <vtkVolume.h>
 #include <vtkImageData.h>
+#include <vtkSmartPointer.h>
 
 class ImageData
 {
 public:
     ImageData();
+    ~ImageData();
 
     void loadImageData(QString imPath);
 
-    vtkVolume * getVolumeData();
-    void setVolumeData(vtkVolume * volPointer);
+    vtkSmartPointer<vtkVolume> getVolumeData();
+    void setVolumeData(vtkSmartPointer<vtkVolume> volPointer);
 
-    vtkImageData * getImageData();
-    void setImageData(vtkImageData * imData);
+    vtkSmartPointer<vtkImageData> getImageData();
+    void setImageData(vtkSmartPointer<vtkImageData> imData);
 
     bool isEmptyData();
 
@@ -28,8 +30,8 @@ public:
 
 private:
 
-    vtkImageData * _imageData;
-    vtkVolume * _imVolumeData;
+    vtkSmartPointer<vtkImageData> _imageData;
+    vtkSmartPointer<vtkVolume> _imVolumeData;
     bool _isEmpty;
     bool _is3D;
 

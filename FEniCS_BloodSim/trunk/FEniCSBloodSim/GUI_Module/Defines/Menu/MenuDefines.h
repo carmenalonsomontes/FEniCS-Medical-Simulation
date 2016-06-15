@@ -120,6 +120,7 @@ const QString FBS_IMAGE_PIPELINE_FUNCTION_NAME_ATT = "name";
 const QString FBS_IMAGE_PIPELINE_FUNCTION_CLASSNAME_ATT = "classname";
 const QString FBS_IMAGE_PIPELINE_FUNCTION_DESCRIPTION_ATT = "description";
 const QString FBS_IMAGE_PIPELINE_FUNCTION_POSITION_PIPELINE_ATT = "position_pipeline";
+const QString FBS_IMAGE_PIPELINE_FUNCTION_3D_IMAGE_FILENAME_NAME_ATT = "image-filename-three-dim";
 
 const QString FBS_IMAGE_PIPELINE_PARAMETER_LIST_TAG = "fbs_image_parameter_list";
 const QString FBS_IMAGE_PIPELINE_PARAMETER_TAG = "fbs_image_parameter";

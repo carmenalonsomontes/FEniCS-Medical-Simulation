@@ -8,6 +8,7 @@
 #include <vtkImageReader2Factory.h>
 #include <vtkImageReader2.h>
 #include <vtkNIFTIImageReader.h>
+#include <vtkSmartPointer.h>
 
 // To read  & Write images in 2D and 3D
 
@@ -27,16 +28,16 @@ void ImageReader::readImage(ImageData * imageData,QString imPath)
         _isNIIFile = true;
 
     // Create our volume and mapper
-    vtkVolume *volume = vtkVolume::New();
-    vtkSmartVolumeMapper *mapper = vtkSmartVolumeMapper::New();
+    vtkSmartPointer<vtkVolume>volume = vtkSmartPointer<vtkVolume>::New();
+    vtkSmartPointer<vtkSmartVolumeMapper> mapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
     // Create the property and attach the transfer functions
-    vtkVolumeProperty *property = vtkVolumeProperty::New();
+    vtkSmartPointer<vtkVolumeProperty> property = vtkSmartPointer<vtkVolumeProperty>::New();
 
     // Read file
     if (!_isNIIFile)
     {
         vtkSmartPointer<vtkImageReader2Factory> readerFactory = vtkSmartPointer<vtkImageReader2Factory>::New();
-        vtkImageReader2 * reader = readerFactory->CreateImageReader2(imPath.toStdString().c_str());
+        vtkSmartPointer<vtkImageReader2> reader = readerFactory->CreateImageReader2(imPath.toStdString().c_str());
         reader->SetFileName(imPath.toStdString().c_str());
         reader->Update();
         imageData->setImageData(reader->GetOutput());
@@ -56,7 +57,6 @@ void ImageReader::readImage(ImageData * imageData,QString imPath)
     mapper->SetBlendModeToMaximumIntensity();
     imageData->setVolumeData(volume);
     imageData->setIsVolume3D(true);
-    // No Slices
 
 
 }

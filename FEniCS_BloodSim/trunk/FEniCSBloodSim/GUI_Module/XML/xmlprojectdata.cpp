@@ -102,6 +102,10 @@ void  XMLProjectData::readPipelineFunctions(QXmlStreamReader * xmlReader, FBS_Pr
              if (_elementAtt.hasAttribute(FBS_IMAGE_PIPELINE_FUNCTION_POSITION_PIPELINE_ATT))
                   _item.setPositionPipeline(_elementAtt.value(FBS_IMAGE_PIPELINE_FUNCTION_POSITION_PIPELINE_ATT).toString().toInt());
 
+             if (_elementAtt.hasAttribute(FBS_IMAGE_PIPELINE_FUNCTION_3D_IMAGE_FILENAME_NAME_ATT))
+                  _item.setImage3DPath(_elementAtt.value(FBS_IMAGE_PIPELINE_FUNCTION_3D_IMAGE_FILENAME_NAME_ATT).toString());
+
+
              // Add Category
              readPipelineCategory(xmlReader, & _item);
 
@@ -242,6 +246,7 @@ void XMLProjectData::writePipelineFunction(QXmlStreamWriter * xmlWriter, Pipelin
     xmlWriter->writeAttribute(FBS_IMAGE_PIPELINE_FUNCTION_CLASSNAME_ATT,_pipeline.getFunctionClassName());
     xmlWriter->writeAttribute(FBS_IMAGE_PIPELINE_FUNCTION_DESCRIPTION_ATT,_pipeline.getFunctionDescription());
     xmlWriter->writeAttribute(FBS_IMAGE_PIPELINE_FUNCTION_POSITION_PIPELINE_ATT,QString::number(_pipeline.getPositionPipeline()));
+    xmlWriter->writeAttribute(FBS_IMAGE_PIPELINE_FUNCTION_3D_IMAGE_FILENAME_NAME_ATT,_pipeline.getImage3DPath());
 
     writeCategory(xmlWriter,_pipeline);
     writeParametersList(xmlWriter,_pipeline);

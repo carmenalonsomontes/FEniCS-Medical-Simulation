@@ -553,7 +553,7 @@ void FEniCS_Blood_Sim::ClearConsoles()
          mainImRendererTab->RemoveAllViewProps();
          mainImRendererTab->ResetCamera();
      }
-   // ui->mainImageWidget->setEnabled(false);
+    ui->mainImageWidget->setEnabled(false);
 
     clearViewer(ui->axialViewWidget,axialImViewer);
     clearViewer(ui->sagittalViewWidget,sagittalImViewer);
@@ -870,44 +870,33 @@ void FEniCS_Blood_Sim::showImage(int row)
 
     if (row != _currentRowVisibleItem)
     {
-        clearImageTab();
+         //clearImageTab();
          _workflowTableHelper.modifyEyeInRow(row);
          _workflowTableHelper.modifyEyeInRow(_currentRowVisibleItem);
-
+         clearImageTab();
          if (row == 0) // Volume Data
             loadImages(_projectData->getImageData()->getVolumeData(), _projectData->getImageData()->getImageData());
-         else
+          else
              if( (!_projectData->getListPipelineItems().isEmpty()) && ((row -1) <= _projectData->getListPipelineItems().size()))
              {
                  QList<PipelineItem> _imagingPipelineItems = _projectData->getListPipelineItems();
 
                  PipelineItem _item = _imagingPipelineItems.at(row-1);
-                // TODO - Convert ITK - VTK
-                 // Mirar estos dos ejemplos: https://itk.org/Wiki/ITK/Examples/IO/ImageToVTKImageFilter
-                 //https://itk.org/Wiki/ITK/Examples/Visualization/QuickView
 
-                 // Solucion - Vistas Axial, Coaxial y Saggital
-                 typedef itk::ImageToVTKImageFilter<ImageType3D>       ConnectorType3D;
-                 typedef itk::ImageToVTKImageFilter<ImageType2D>       ConnectorType2D;
-                 ConnectorType3D::Pointer connector = ConnectorType3D::New();
-                 connector->SetInput(_item.getImage3D());
-                 connector->Update();
+                 if (!_item.isImageLoaded())
+                    _item.loadImage();
+                 ImageData * _itemImData = _item.getImageData();
 
-                 // Volumen
-                 // Pos. Solucion:  http://www.vtk.org/Wiki/ITK/Examples/WishList/IO/itkVtkImageConvertDICOM
-                 //http://www.vtk.org/pipermail/vtkusers/2011-July/068611.html
-                 loadImages(_projectData->getImageData()->getVolumeData(), connector->GetOutput());
+                 // Show the images
+                 loadImages(_itemImData->getVolumeData(), _itemImData->getImageData());
              }
     }
-
-
-
 }
 
 
 void FEniCS_Blood_Sim::loadImages(vtkVolume * _volume, vtkImageData * _imageData)
 {
-    clearImageTab();
+   // clearImageTab();
     LoadMainImageTab(_volume);
     LoadAxialImage(_imageData);
     LoadSaggitalImage(_imageData);

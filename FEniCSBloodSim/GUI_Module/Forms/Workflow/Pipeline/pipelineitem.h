@@ -6,10 +6,14 @@
 
 #include "configurationpipelineitem.h"
 #include "GUI_Module/Pipeline/ItkPipeline/defines/OperationDefines.h"
+
+#include "ImageProcessing_Module/imagedata.h"
+
 class PipelineItem
 {
 public:
     PipelineItem();
+    ~PipelineItem();
 
     QString getIconPath();
     QString getDescription();
@@ -41,15 +45,27 @@ public:
     void updateConfiguredItemValue(QString _itemValue, int pos);
 
     bool isEmpty();
+    bool isImage3DEmpty();
+   // bool isImage2DEmpty();
     void clear();
 
-
-
     ImageType3D::Pointer getImage3D();
-    void setImage3D( ImageType3D::Pointer _image);
+    QString getImage3DPath();
+    void setImage3DPath(QString path);
 
-    ImageType2D::Pointer getImage2D();
-    void setImage2D( ImageType2D::Pointer _image);
+    void setImage3D( ImageType3D::Pointer _image);
+   // void setImage3D( ImageType3D::Pointer _image, QString path);
+
+
+   // ImageType2D::Pointer getImage2D();
+   // void setImage2D( ImageType2D::Pointer _image);
+
+    // VTK
+    ImageData  * getImageData();
+    bool isImageLoaded();
+
+    void loadImage();
+
 
 private:
     QString _categoryName;
@@ -67,7 +83,16 @@ private:
 
     // Results of the Pipeline execution
     ImageType3D::Pointer _image3D;
-    ImageType2D::Pointer _image2D;
+    QString _image3DPath;
+   // ImageType2D::Pointer _image2D;
+
+    // VTK Images
+    ImageData  * _imageData;
+    bool _isImageDataLoaded;
+    //vtkImageData * _imageData;
+
+
+
 
 };
 

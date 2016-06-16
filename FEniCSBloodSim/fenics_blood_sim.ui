@@ -155,7 +155,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="fenics_blood_sim.qrc">
+                  <iconset>
                    <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
@@ -201,7 +201,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="fenics_blood_sim.qrc">
+                  <iconset>
                    <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
@@ -230,7 +230,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="fenics_blood_sim.qrc">
+                  <iconset>
                    <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
@@ -528,7 +528,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="fenics_blood_sim.qrc">
+                  <iconset>
                    <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
@@ -665,7 +665,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="fenics_blood_sim.qrc">
+                  <iconset>
                    <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
@@ -802,7 +802,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="fenics_blood_sim.qrc">
+                  <iconset>
                    <normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</normaloff>:/menu/GUI_Module/images/menu/setting_tools.png</iconset>
                  </property>
                 </widget>
@@ -827,7 +827,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="imageTab">
         <attribute name="title">
@@ -1607,6 +1607,19 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
+              <widget class="QPushButton" name="fenicsConfigureButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Configure</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QPushButton" name="fenicsTestButton">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -1930,7 +1943,7 @@
   </widget>
   <action name="actionNew_Project">
    <property name="icon">
-    <iconset resource="fenics_blood_sim.qrc">
+    <iconset>
      <normaloff>:/menu/GUI_Module/images/menu/page_white.png</normaloff>:/menu/GUI_Module/images/menu/page_white.png</iconset>
    </property>
    <property name="text">
@@ -1945,7 +1958,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="fenics_blood_sim.qrc">
+    <iconset>
      <normaloff>:/menu/GUI_Module/images/menu/folder.png</normaloff>:/menu/GUI_Module/images/menu/folder.png</iconset>
    </property>
    <property name="text">
@@ -1960,7 +1973,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="fenics_blood_sim.qrc">
+    <iconset>
      <normaloff>:/menu/GUI_Module/images/menu/disk.png</normaloff>:/menu/GUI_Module/images/menu/disk.png</iconset>
    </property>
    <property name="text">
@@ -1975,7 +1988,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="fenics_blood_sim.qrc">
+    <iconset>
      <normaloff>:/menu/GUI_Module/images/menu/save_as.png</normaloff>:/menu/GUI_Module/images/menu/save_as.png</iconset>
    </property>
    <property name="text">
@@ -1990,7 +2003,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="fenics_blood_sim.qrc">
+    <iconset>
      <normaloff>:/menu/GUI_Module/images/menu/cross.png</normaloff>:/menu/GUI_Module/images/menu/cross.png</iconset>
    </property>
    <property name="text">
@@ -2007,7 +2020,7 @@
   </action>
   <action name="actionExit_MainWindow">
    <property name="icon">
-    <iconset resource="fenics_blood_sim.qrc">
+    <iconset>
      <normaloff>:/menu/GUI_Module/images/menu/door_out.png</normaloff>:/menu/GUI_Module/images/menu/door_out.png</iconset>
    </property>
    <property name="text">
@@ -2019,7 +2032,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="fenics_blood_sim.qrc">
+    <iconset>
      <normaloff>:/menu/GUI_Module/images/menu/interface_preferences2.png</normaloff>:/menu/GUI_Module/images/menu/interface_preferences2.png</iconset>
    </property>
    <property name="text">
@@ -2071,7 +2084,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="fenics_blood_sim.qrc">
+    <iconset>
      <normaloff>:/menu/GUI_Module/images/menu/help.png</normaloff>:/menu/GUI_Module/images/menu/help.png</iconset>
    </property>
    <property name="text">
@@ -2099,8 +2112,6 @@
    <header location="global">QVTKWidget.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="fenics_blood_sim.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

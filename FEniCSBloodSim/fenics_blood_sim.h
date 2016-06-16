@@ -136,6 +136,8 @@ private slots:
 
     void on_sagittalSlider_sliderReleased();
 
+    void on_fenicsConfigureButton_clicked();
+
 private:
     Ui::FEniCS_Blood_Sim *ui;
     FileMenuBuilder *  _fileMenuBuilder;

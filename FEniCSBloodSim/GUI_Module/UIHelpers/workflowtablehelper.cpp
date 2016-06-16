@@ -18,8 +18,7 @@ void WorkflowTableHelper::registerTableUI(QTableWidget * _table)
 
 void WorkflowTableHelper::registerTableListUI(QTableWidget * _table)
 {
-        registeredTableList.append(_table);
-
+    registeredTableList.append(_table);
 }
 
 QTableWidget * WorkflowTableHelper::getRegisteredTable()

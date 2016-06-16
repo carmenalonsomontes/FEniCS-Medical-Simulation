@@ -945,3 +945,14 @@ void FEniCS_Blood_Sim::on_axialSlider_valueChanged(int value)
 
 */
 
+
+// ------------------------------------------------------------------------------------------
+// FENICS
+#include "GUI_Module/Forms/FEniCS/fenicsconfigurationdialog.h"
+
+void FEniCS_Blood_Sim::on_fenicsConfigureButton_clicked()
+{
+    FEniCSConfigurationDialog _fenicsConfiguration;
+    _fenicsConfiguration.exec();
+
+}

@@ -60,6 +60,7 @@
     </qresource>
     <qresource prefix="/files">
         <file>GUI_Module/Forms/Workflow/XML/ImageXmlMethods.xml</file>
+        <file>GUI_Module/Forms/FEniCS/XML/FEniCSXmlCodeSnippsets.xml</file>
     </qresource>
     <qresource prefix="/wkf/images">
         <file>GUI_Module/images/images/color_adjustment.png</file>

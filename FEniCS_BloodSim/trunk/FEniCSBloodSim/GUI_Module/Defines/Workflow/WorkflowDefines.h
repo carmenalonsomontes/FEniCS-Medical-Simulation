@@ -53,6 +53,8 @@ enum ParamConfigurationTableCols{
     PARAM_METHOD_NAME_COLUMN = 3
 };
 
+
+
 enum genericWkfDialog{
     CHECKABLE_COLUMN = 0,
     ONLY_DESC_COLUMN = 1,

@@ -8,6 +8,7 @@
 #include <QList>
 
 #include "GUI_Module/Defines/Workflow/WorkflowDefines.h"
+#include "GUI_Module/Defines/FEniCS/FEniCSDefines.h"
 
 #include "GUI_Module/Defines/Menu/MenuDefines.h"
 
@@ -32,8 +33,10 @@ public:
     int addHiddenEmptyRow();
 
     void addParameterRow (QString paramName, QString paramType, QString paramClassName, QString _value);
+    void addParameterRow (QString paramName, QString _value);
 
     void updateRow(QString _iconPath, QString _value, int row);
+    void updateRowWithCategoryName(QString _catName,QString _operation, int row);
 
     EyeTableValue modifyEyeInRow(int row);
     EyeTableValue getEyeStatus(int row);

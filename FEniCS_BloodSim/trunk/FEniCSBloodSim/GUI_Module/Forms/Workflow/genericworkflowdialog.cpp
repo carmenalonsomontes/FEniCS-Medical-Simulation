@@ -490,24 +490,6 @@ void GenericWorkflowDialog::on_stepDoneButton_clicked()
 // =========================================================================
 // RUN PIPELINE
 // =========================================================================
-/*#include <QDir>
-#include <QuickView.h>
-
-#include "itkSimpleFilterWatcher.h"
-
-#include "itkMedianImageFilter.h"
-
-#include "itkSliceBySliceImageFilter.h"
-
-#include "itkBinaryThresholdImageFilter.h"
-
-#include "itkImage.h"
-
-#include "itkBinaryThresholdImageFilter.h"
-
-#include <itkImageFileReader.h>
-
-#include "QuickView.h"*/
 
 void GenericWorkflowDialog::on_runPipelineButton_clicked()
 {
@@ -515,9 +497,6 @@ void GenericWorkflowDialog::on_runPipelineButton_clicked()
 
     if (_pipelineItemList.isEmpty())
         return;
-
-
-
 
     QStringList _parameterList;
 
@@ -540,9 +519,6 @@ void GenericWorkflowDialog::on_runPipelineButton_clicked()
             PipelineItem _previousItem = _pipelineItemList.at(i-1);
             if (_is3D)
                 _operation->SetInPut(_previousItem.getImage3D());
-           /* else
-                _operation->SetInPut(_previousItem.getImage2D());
-                */
         }
 
         _operation->SetParameters(_parameterList);
@@ -552,23 +528,11 @@ void GenericWorkflowDialog::on_runPipelineButton_clicked()
         _operation->save(_imgTmpFile);
         _item.setImage3DPath(_imgTmpFile);
 
-       // _item.setImage3D(_operation->GetOutput3D(),_imgTmpFile);
-
        _pipelineItemList.replace(i, _item);
     }
 }
 
 
-
-
-
-/*
-       // Visualize -- Only for checking purposes
-       //QuickView viewer;
-       //viewer.AddImage<ImageType2D>(_operation->GetOutput(),true,"");
-
-
-*/
 QStringList GenericWorkflowDialog::buildParameterList(PipelineItem  _item)
 {
     QStringList _parameterList;

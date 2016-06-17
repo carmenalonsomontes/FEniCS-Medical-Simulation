@@ -949,10 +949,16 @@ void FEniCS_Blood_Sim::on_axialSlider_valueChanged(int value)
 // ------------------------------------------------------------------------------------------
 // FENICS
 #include "GUI_Module/Forms/FEniCS/fenicsconfigurationdialog.h"
-
+//#include "GUI_Module/Pipeline/FEniCSPipeline/fenicspipelinedata.h"
 void FEniCS_Blood_Sim::on_fenicsConfigureButton_clicked()
 {
     FEniCSConfigurationDialog _fenicsConfiguration;
     _fenicsConfiguration.exec();
+
+    if (_fenicsConfiguration.userAcceptChanges())
+    {
+      QString _fenicsSourceCode =  _fenicsConfiguration.generateSourceCode();
+      ui->fenicsEditorTextEdit->setText(_fenicsSourceCode);
+    }
 
 }

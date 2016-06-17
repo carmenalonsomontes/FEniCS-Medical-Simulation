@@ -7,6 +7,8 @@
 
 #include "GUI_Module/XML/xmlfenicsinformationdata.h"
 #include "GUI_Module/Defines/FEniCS/FEniCSDefines.h"
+#include "GUI_Module/Pipeline/FEniCSPipeline/sourcecodegenerator.h"
+
 
 FEniCSConfigurationDialog::FEniCSConfigurationDialog(QWidget *parent) :
     QDialog(parent),
@@ -36,6 +38,20 @@ bool FEniCSConfigurationDialog::userAcceptChanges()
 {
     return _userAcceptChanges;
 }
+
+QString FEniCSConfigurationDialog::generateSourceCode()
+{
+    SourceCodeGenerator _srcCodeGenerator;
+
+    _srcCodeGenerator.setPipelineData(_pipelineData);
+    _srcCodeGenerator.setFilePath("/home/calonso/prueba.py");
+    _srcCodeGenerator.generateSourceCode();
+    QString _srcCode = _srcCodeGenerator.getSourceCode();
+
+    return _srcCode;
+}
+
+
 
 
 

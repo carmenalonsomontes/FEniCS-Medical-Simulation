@@ -23,6 +23,9 @@ public:
 
 
     bool userAcceptChanges();
+
+   // QList<FEniCSPipelineData> getPipelineData();
+    QString generateSourceCode();
 private slots:
     void on_dialogButtonBox_accepted();
 

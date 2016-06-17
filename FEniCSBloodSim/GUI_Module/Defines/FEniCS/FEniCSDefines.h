@@ -53,4 +53,8 @@ const QString FENICS_FUNCTION_COMBO_VALUE_TAG = "value";
 const QString FENICS_FUNCTION_COMBO_VALUE_NAME_ATT = "name";
 const QString FENICS_FUNCTION_COMBO_VALUE_FENICS_VALUE_ATT = "fenics_value";
 
+
+// BUILD SOURCE
+const QString FENICS_LIBRARY_NAME = "Library";
+
 #endif // FENICSDEFINES_H

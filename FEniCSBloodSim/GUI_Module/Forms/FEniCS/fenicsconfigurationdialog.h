@@ -2,9 +2,12 @@
 #define FENICSCONFIGURATIONDIALOG_H
 
 #include <QDialog>
+#include <QList>
 
 #include "GUI_Module/Data/FEniCSData/fenicsxmldata.h"
 #include "GUI_Module/UIHelpers/workflowtablehelper.h"
+#include "GUI_Module/Pipeline/FEniCSPipeline/fenicspipelinedata.h"
+#include "GUI_Module/Pipeline/FEniCSPipeline/fenicsparameterpipelinedata.h"
 
 namespace Ui {
 class FEniCSConfigurationDialog;
@@ -31,6 +34,10 @@ private slots:
 
     void on_firstTabTable_cellClicked(int row, int column);
 
+    void on_fenicsPipelineTable_cellClicked(int row, int column);
+
+    void on_fenicsPipelineOptionsTable_cellChanged(int row, int column);
+
 private:
     Ui::FEniCSConfigurationDialog *ui;
 
@@ -39,6 +46,11 @@ private:
     WorkflowTableHelper * _fenicsOptionsTableHelper;
     WorkflowTableHelper * _fenicsPipelineTableHelper;
     WorkflowTableHelper * _fenicsPipelineOptionsTableHelper;
+    int _cPipelineRow;
+    int _selectedRow;
+
+    QList<FEniCSPipelineData> _pipelineData;
+
 
     bool _userAcceptChanges;
 
@@ -52,6 +64,17 @@ private:
     void fillMenuTable(CategoryFEniCSData _catObj);
     void insertConfigurationOptions(int row,int column);
     void addParametersToConfigurationTable(int row,CategoryFEniCSData cat);
+
+
+    void insertRow();
+    QString buildDescription(CategoryFEniCSData _cCategory, int _row);
+    void enableNextStep(bool _val);
+    void restoreUI();
+
+    void showParameterInformation(int row);
+    void moveDown(int row);
+    void moveUp(int row);
+    void updatePipelineElement(QString _description, CategoryFEniCSData _category,int noFunction);
 };
 
 #endif // FENICSCONFIGURATIONDIALOG_H

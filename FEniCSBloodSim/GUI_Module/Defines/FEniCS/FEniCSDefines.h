@@ -9,7 +9,18 @@ enum FENICSDialog{
     FENICS_ACTION_COLUMN = 1
 };
 
+enum FEnicsConfigurationTableCols{
+    FENICS_PARAM_NAME = 0,
+    FENICS_PARAM_VALUE = 1
+};
 
+enum FEniCSPipelineDialog{
+    CATEGORY_COLUMN = 0,
+    OPERATION_COLUMN = 1,
+    FENICS_UP_ICON_COLUMN = 2,
+    FENICS_DOWN_ICON_COLUMN = 3,
+    FENICS_DELETE_ICON_COLUMN = 4// In the case we only want a column
+};
 
 const QString FENICS_FILE_PATH=":/files/GUI_Module/Forms/FEniCS/XML/FEniCSXmlCodeSnippsets.xml";
 

@@ -7,6 +7,7 @@
 
 
 
+
 WorkflowTableHelper::WorkflowTableHelper()
 {
 }
@@ -112,16 +113,45 @@ int  WorkflowTableHelper::addHiddenEmptyRow()
      registeredTable->resizeColumnsToContents();
  }
 
+ void WorkflowTableHelper::addParameterRow (QString paramName, QString _value)
+ {
+     int _lastRow = registeredTable->rowCount();
+     registeredTable->insertRow(_lastRow);
+     registeredTable->blockSignals(true);
+
+     // Add Action
+     registeredTable->setItem(_lastRow,FENICS_PARAM_NAME,addNonEditableText(paramName));
+     registeredTable->setItem(_lastRow,FENICS_PARAM_VALUE,addEditText(_value));
+
+     registeredTable->resizeColumnsToContents();
+     registeredTable->blockSignals(false);
+ }
+
 
 void WorkflowTableHelper::updateRow(QString _iconPath,QString _value, int row)
 {
     if (row > registeredTable->rowCount())
         return;
-    registeredTable->setItem(row,CHECKABLE_COLUMN,addIcon(_iconPath));
+    if (!_iconPath.isEmpty())
+        registeredTable->setItem(row,CHECKABLE_COLUMN,addIcon(_iconPath));
+
+
     registeredTable->setItem(row,ONLY_DESC_COLUMN,addNonEditableText(_value));
     registeredTable->setItem(row,UP_ICON_COLUMN,addIcon(UP_ICON));
     registeredTable->setItem(row,DOWN_ICON_COLUMN,addIcon(DOWN_ICON));
     registeredTable->setItem(row,DELETE_ICON_COLUMN,addIcon(DELETE_ICON));
+    registeredTable->resizeColumnsToContents();
+}
+
+void WorkflowTableHelper::updateRowWithCategoryName(QString _catName,QString _operation, int row)
+{
+    if (row > registeredTable->rowCount())
+        return;
+    registeredTable->setItem(row,CATEGORY_COLUMN,addNonEditableText(_catName));
+    registeredTable->setItem(row,OPERATION_COLUMN,addNonEditableText(_operation));
+    registeredTable->setItem(row,FENICS_UP_ICON_COLUMN,addIcon(UP_ICON));
+    registeredTable->setItem(row,FENICS_DOWN_ICON_COLUMN,addIcon(DOWN_ICON));
+    registeredTable->setItem(row,FENICS_DELETE_ICON_COLUMN,addIcon(DELETE_ICON));
     registeredTable->resizeColumnsToContents();
 }
 
@@ -174,9 +204,7 @@ QTableWidgetItem * WorkflowTableHelper::addIcon(IconType _iconType)
 
 void WorkflowTableHelper::clearTable()
 {
-    int _lastRow = registeredTable->rowCount();
-    registeredTable->clear();
-
+   int _lastRow = registeredTable->rowCount();
    for (int i= _lastRow-1; i>=0; i--)
         registeredTable->removeRow(i);
 }

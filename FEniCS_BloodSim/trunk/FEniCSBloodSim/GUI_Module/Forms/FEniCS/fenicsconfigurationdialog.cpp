@@ -39,12 +39,24 @@ bool FEniCSConfigurationDialog::userAcceptChanges()
     return _userAcceptChanges;
 }
 
+QString FEniCSConfigurationDialog::getSimulationFileName()
+{
+    return _simulationFileName;
+}
+
+void FEniCSConfigurationDialog::setSimulationFileName(QString name)
+{
+    _simulationFileName = name;
+}
+
+
+
 QString FEniCSConfigurationDialog::generateSourceCode()
 {
     SourceCodeGenerator _srcCodeGenerator;
 
     _srcCodeGenerator.setPipelineData(_pipelineData);
-    _srcCodeGenerator.setFilePath("/home/calonso/prueba.py");
+    _srcCodeGenerator.setFilePath(_simulationFileName);
     _srcCodeGenerator.generateSourceCode();
     QString _srcCode = _srcCodeGenerator.getSourceCode();
 

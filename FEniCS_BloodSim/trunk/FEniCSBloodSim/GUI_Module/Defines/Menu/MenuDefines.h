@@ -130,6 +130,10 @@ const QString FBS_IMAGE_PIPELINE_PARAMETER_DEFAULT_VALUE_ATT = "default_value";
 const QString FBS_IMAGE_PIPELINE_PARAMETER_METHOD_NAME_ATT = "method_name";
 const QString FBS_IMAGE_PIPELINE_PARAMETER_CURRENT_VALUE_ATT = "current_value";
 
+const QString FBS_FENICS_SIM_TAG = "fbs_fenics_info";
+const QString FBS_FENICS_SIM_FILENAME_ATT = "filename";
+const QString FBS_FENICS_SIM_FILEPATH_ATT = "filepath";
+
 // PReferences XML Tags
 const QString FBS_PREFERENCES_TAG = "fbs_preferences";
 const QString FBS_RECENT_PROJECT_LIST_TAG = "fbs_recent_project_list";

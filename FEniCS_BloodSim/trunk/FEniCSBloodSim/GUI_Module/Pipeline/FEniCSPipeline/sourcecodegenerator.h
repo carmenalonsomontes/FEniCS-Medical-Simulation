@@ -25,11 +25,11 @@ private:
 
 
    void buildImports(QTextStream * stream);
-   QString buildMesh();
-   QString buildBoundaries();
-   QString buildSolutionComputation();
-   QString buildSaveSolution();
-   QString buildPlot();
+   void buildMesh(QTextStream * stream);
+   void buildBoundaries(QTextStream * stream);
+   void buildSolutionComputation(QTextStream * stream);
+   void buildSaveSolution(QTextStream * stream);
+   void buildPlot(QTextStream * stream);
 
    QString _filePath;
 

@@ -21,19 +21,23 @@ void SourceCodeGenerator::generateSourceCode()
     if (_pipelineData.isEmpty())
         return;
     QFile _file(_filePath);
+
+    // If file exists we remoe it
+    if (_file.exists())
+        _file.remove();
+
     if ( _file.open(QIODevice::ReadWrite) )
     {
         QTextStream stream( &_file );
 
         buildImports(&stream);
-    /*_text = _text + buildMesh();
-    _text = _text + buildBoundaries();
-    _text = _text + buildSolutionComputation();
-    _text = _text +  buildSaveSolution();
-    _text = _text + buildPlot();
-*/
+        buildMesh(&stream);
+        buildBoundaries(&stream);
+        buildSolutionComputation(&stream);
+        buildSaveSolution(&stream);
+        buildPlot(&stream);
 
-      _file.close();
+        _file.close();
     }
 
 
@@ -44,6 +48,7 @@ QString SourceCodeGenerator::getSourceCode()
 {
     QString _text;
     QFile _file(_filePath);
+
     if ( _file.open(QIODevice::ReadWrite) )
     {
         QTextStream stream( &_file );
@@ -55,6 +60,7 @@ QString SourceCodeGenerator::getSourceCode()
 
 void SourceCodeGenerator::buildImports(QTextStream * stream)
 {
+
     for (int i = 0; i < _pipelineData.size();i++)
     {
         FEniCSPipelineData _item = _pipelineData.at(i);
@@ -66,30 +72,64 @@ void SourceCodeGenerator::buildImports(QTextStream * stream)
             else
                 for (int i = 0; i< _list.size();i++)
                 {
-                    FEniCSParameterPipelineData _paramter = _list.at(i);
-                    (* stream) <<"from "+_item.getFunctionFenicsName()+ " import "+ _paramter.getMethodName() << endl;
+                    FEniCSParameterPipelineData _parameter = _list.at(i);
+                    (* stream) <<"from "+_item.getFunctionFenicsName()+ " import "+ _parameter.getMethodName() << endl;
                 }
         }
     }
 }
 
-QString SourceCodeGenerator::buildMesh()
+void SourceCodeGenerator::buildMesh(QTextStream * stream)
+{
+
+
+    for (int i = 0; i < _pipelineData.size();i++)
+    {
+        FEniCSPipelineData _item = _pipelineData.at(i);
+        if (QString::compare(_item.getCategoryName(),FENICS_MESH_NAME) == 0)
+        {
+            QList<FEniCSParameterPipelineData> _list = _item.getParameterPipelineItems();
+
+            if ( (QString::compare(_item.getFunctionName(),FENICS_USER_MESH_NAME) == 0) &&
+                 (!_list.isEmpty()))
+            {
+                FEniCSParameterPipelineData _parameter = _list.at(0);
+                (* stream) << FENICS_FILE_MESH_VAR_NAME << "="+_item.getFunctionFenicsName()+ "(\" "+
+                             _parameter.getSelectedValue()<< "\")" << endl;
+
+            }
+            else
+            {
+                // For each function I obtain the parameters
+                (* stream) << FENICS_FILE_MESH_VAR_NAME << " = "+
+                              _item.getFunctionFenicsName()+"(";
+                for (int i = 0; i< _list.size();i++)
+                {
+                    FEniCSParameterPipelineData _parameter = _list.at(i);
+                    (* stream) <<  _parameter.getSelectedValue();
+
+                    if (i != _list.size()-1)
+                        (* stream) << ",";
+                }
+                (* stream) << ")" << endl;
+            }
+        }
+    }
+}
+
+void SourceCodeGenerator::buildBoundaries(QTextStream * stream)
 {
 }
 
-QString SourceCodeGenerator::buildBoundaries()
+void SourceCodeGenerator::buildSolutionComputation(QTextStream * stream)
 {
 }
 
-QString SourceCodeGenerator::buildSolutionComputation()
+void SourceCodeGenerator::buildSaveSolution(QTextStream * stream)
 {
 }
 
-QString SourceCodeGenerator::buildSaveSolution()
-{
-}
-
-QString SourceCodeGenerator::buildPlot()
+void SourceCodeGenerator::buildPlot(QTextStream * stream)
 {
 }
 

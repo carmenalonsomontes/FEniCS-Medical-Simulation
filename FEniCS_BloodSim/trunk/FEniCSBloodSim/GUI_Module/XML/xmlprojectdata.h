@@ -28,11 +28,13 @@ private:
     void readPipelineFunctions(QXmlStreamReader * xmlReader, FBS_ProjectData * _projectData );
     void readPipelineCategory(QXmlStreamReader * xmlReader, PipelineItem * _item );
     void readParameters(QXmlStreamReader * xmlReader, PipelineItem * _item );
+    void readFenicsInfo(QXmlStreamReader * xmlReader, FBS_ProjectData * _projectData);
 
     void writePipeline(QXmlStreamWriter * xmlWriter, QList<PipelineItem> _pipeline);
     void writePipelineFunction(QXmlStreamWriter * xmlWriter, PipelineItem _pipeline);
     void writeCategory(QXmlStreamWriter * xmlWriter, PipelineItem _pipeline);
     void writeParametersList(QXmlStreamWriter * xmlWriter, PipelineItem _pipeline);
+    void writeFenicsData(QXmlStreamWriter * xmlWriter, QString _fenicsSimFileName, QString _fenicsSimPath);
 
 
 };

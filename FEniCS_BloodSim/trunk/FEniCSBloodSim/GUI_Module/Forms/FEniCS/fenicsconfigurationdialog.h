@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QList>
+#include <QString>
 
 #include "GUI_Module/Data/FEniCSData/fenicsxmldata.h"
 #include "GUI_Module/UIHelpers/workflowtablehelper.h"
@@ -24,6 +25,8 @@ public:
 
     bool userAcceptChanges();
 
+    QString getSimulationFileName();
+    void setSimulationFileName(QString name);
    // QList<FEniCSPipelineData> getPipelineData();
     QString generateSourceCode();
 private slots:
@@ -45,6 +48,9 @@ private:
     Ui::FEniCSConfigurationDialog *ui;
 
     FEniCSXMLData * _fenicsData;
+
+    QString _simulationFileName;
+
     WorkflowTableHelper * _fenicsTableTabeHelper;
     WorkflowTableHelper * _fenicsOptionsTableHelper;
     WorkflowTableHelper * _fenicsPipelineTableHelper;

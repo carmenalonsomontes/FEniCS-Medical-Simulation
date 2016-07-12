@@ -69,10 +69,37 @@ void XMLProjectData::readProjectData( QXmlStreamReader * xmlReader, FBS_ProjectD
             (QString::compare(xmlReader->name().toString(), FBS_IMAGE_PIPELINE_TAG) == StrEqual) )
             readPipelineFunctions(xmlReader,_projectData );
 
+        if ((token == QXmlStreamReader::StartElement) &&
+            (QString::compare(xmlReader->name().toString(), FBS_FENICS_SIM_TAG) == StrEqual) )
+            readFenicsInfo(xmlReader,_projectData );
     }
 
 }
+void  XMLProjectData::readFenicsInfo(QXmlStreamReader * xmlReader, FBS_ProjectData * _projectData)
+{
+    bool _endFenicsInfo = false;
+     while ( (!xmlReader->atEnd()) && (!xmlReader->hasError()) && (!_endFenicsInfo))
+     {
+         QXmlStreamReader::TokenType token = xmlReader->readNext();
 
+
+         if ((token == QXmlStreamReader::StartElement) &&
+                 (QString::compare(xmlReader->name().toString(), FBS_FENICS_SIM_TAG) == StrEqual) )
+         {
+             QXmlStreamAttributes _elementAtt = xmlReader->attributes();
+
+             if (_elementAtt.hasAttribute(FBS_FENICS_SIM_FILENAME_ATT))
+                 _projectData->setFenicsSimFileName(_elementAtt.value(FBS_FENICS_SIM_FILENAME_ATT).toString());
+
+             if (_elementAtt.hasAttribute(FBS_FENICS_SIM_FILEPATH_ATT))
+                 _projectData->setFenicsSimPath(_elementAtt.value(FBS_FENICS_SIM_FILEPATH_ATT).toString());
+         }
+         if ((token == QXmlStreamReader::EndElement) &&
+                 (QString::compare(xmlReader->name().toString(), FBS_FENICS_SIM_TAG) == StrEqual) )
+             _endFenicsInfo = true;
+     }
+
+}
 
 void  XMLProjectData::readPipelineFunctions(QXmlStreamReader * xmlReader, FBS_ProjectData * _projectData )
 {
@@ -219,6 +246,7 @@ bool XMLProjectData::createNewFile(QFile * _file, FBS_ProjectData * _projectData
        writeProjectData(&xmlWriter,_projectData->getProjectPath(),_projectData->getProjectName());
        writeImageData(&xmlWriter,_projectData->getImPath(),_projectData->getImName(),_projectData->getImPrefixSeries());
        writePipeline(&xmlWriter,_projectData->getListPipelineItems());
+       writeFenicsData(&xmlWriter,_projectData->getFenicsSimFileName(), _projectData->getFenicsSimPath());
 
        // Closing the root and the document
        xmlWriter.writeEndElement();
@@ -227,6 +255,15 @@ bool XMLProjectData::createNewFile(QFile * _file, FBS_ProjectData * _projectData
    }
 
    return _success;
+}
+
+void XMLProjectData::writeFenicsData(QXmlStreamWriter * xmlWriter, QString _fenicsSimFileName, QString _fenicsSimPath)
+{
+     xmlWriter->writeStartElement(FBS_FENICS_SIM_TAG);
+     xmlWriter->writeAttribute(FBS_FENICS_SIM_FILENAME_ATT,_fenicsSimFileName);
+     xmlWriter->writeAttribute(FBS_FENICS_SIM_FILEPATH_ATT,_fenicsSimPath);
+     xmlWriter->writeEndElement();
+
 }
 
 void XMLProjectData::writePipeline(QXmlStreamWriter * xmlWriter, QList<PipelineItem> _pipeline)

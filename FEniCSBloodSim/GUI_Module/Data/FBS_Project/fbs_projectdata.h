@@ -39,6 +39,13 @@ public:
     QList<PipelineItem> getListPipelineItems();
     void setListPipelineItems( QList<PipelineItem> _list);
 
+
+    QString getFenicsSimFileName();
+    QString getFenicsSimPath();
+
+    void setFenicsSimFileName(QString name);
+    void setFenicsSimPath(QString path);
+
     void clearData();
 
     bool isEmpty();
@@ -52,6 +59,9 @@ private:
     QString _imPath;
     QString _imPrefixSeries;
     QString _imName;
+
+    QString _fenicsSimFileName;
+    QString _fenicsSimPath;
 
     ImageData * _imageData;
 

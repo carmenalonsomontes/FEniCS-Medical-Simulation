@@ -23,6 +23,7 @@ enum FEniCSPipelineDialog{
 };
 
 const QString FENICS_FILE_PATH=":/files/GUI_Module/Forms/FEniCS/XML/FEniCSXmlCodeSnippsets.xml";
+const QString FENICS_SIMULATION_FILE_NAME_DEFAULT="fenics_simulation.py";
 
 
 // XML DEFINEs
@@ -56,5 +57,12 @@ const QString FENICS_FUNCTION_COMBO_VALUE_FENICS_VALUE_ATT = "fenics_value";
 
 // BUILD SOURCE
 const QString FENICS_LIBRARY_NAME = "Library";
+const QString FENICS_MESH_NAME = "Mesh";
+const QString FENICS_FUNCTION_SPACE_NAME = "Function Spaces";
+const QString FENICS_USER_MESH_NAME= "Select your mesh file";
+
+
+
+const QString FENICS_FILE_MESH_VAR_NAME = "mesh";
 
 #endif // FENICSDEFINES_H

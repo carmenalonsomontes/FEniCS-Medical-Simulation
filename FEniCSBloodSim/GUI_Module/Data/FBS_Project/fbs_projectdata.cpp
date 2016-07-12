@@ -21,6 +21,9 @@ void FBS_ProjectData::initializeVariables()
     _imName = "";
     _imPrefixSeries = "";
 
+    _fenicsSimPath = "";
+    _fenicsSimFileName = "";
+
     _imageData = new ImageData();
 
     _listPipelineItems.clear();
@@ -116,6 +119,25 @@ void FBS_ProjectData::setListPipelineItems( QList<PipelineItem> _list)
     _listPipelineItems = _list;
 }
 
+QString FBS_ProjectData::getFenicsSimFileName()
+{
+    return _fenicsSimFileName;
+}
+
+QString FBS_ProjectData::getFenicsSimPath()
+{
+    return _fenicsSimPath;
+}
+
+void FBS_ProjectData::setFenicsSimFileName(QString name)
+{
+    _fenicsSimFileName = name;
+}
+
+void FBS_ProjectData::setFenicsSimPath(QString path)
+{
+    _fenicsSimPath = path;
+}
 
 
 

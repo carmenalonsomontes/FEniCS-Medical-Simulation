@@ -138,6 +138,8 @@ private slots:
 
     void on_fenicsConfigureButton_clicked();
 
+    void on_fenicsSaveButton_clicked();
+
 private:
     Ui::FEniCS_Blood_Sim *ui;
     FileMenuBuilder *  _fileMenuBuilder;
@@ -220,6 +222,7 @@ private:
 
     void setSliceNumber(vtkSmartPointer<vtkImageViewer2> imageViewer,int sliceNo);
 
+    void enableFenicsButtons();
 
 };
 

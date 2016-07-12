@@ -2,7 +2,8 @@
 #include "ui_fenics_blood_sim.h"
 
 #include <QDir>
-
+#include <QTextStream>
+#include <QMessageBox>
 #include <QAction>
 #include <vtkPolyDataMapper.h>
 
@@ -42,6 +43,7 @@
 // My libraries
 #include "GUI_Module/UIHelpers/workflowtablehelper.h"
 #include "GUI_Module/Forms/Workflow/imageworkflow.h"
+#include "GUI_Module/Forms/FEniCS/fenicsconfigurationdialog.h"
 
 
 using namespace std;
@@ -948,11 +950,19 @@ void FEniCS_Blood_Sim::on_axialSlider_valueChanged(int value)
 
 // ------------------------------------------------------------------------------------------
 // FENICS
-#include "GUI_Module/Forms/FEniCS/fenicsconfigurationdialog.h"
-//#include "GUI_Module/Pipeline/FEniCSPipeline/fenicspipelinedata.h"
+
 void FEniCS_Blood_Sim::on_fenicsConfigureButton_clicked()
 {
     FEniCSConfigurationDialog _fenicsConfiguration;
+    if (_projectData->getFenicsSimFileName().isEmpty())
+    {
+          QString _filename = _projectData->getProjectName() + "_" + FENICS_SIMULATION_FILE_NAME_DEFAULT;
+          _projectData->setFenicsSimPath(_projectData->getProjectPath());
+          _projectData->setFenicsSimFileName(_filename);
+    }
+     QString _simulationFileName = QDir(_projectData->getFenicsSimPath()).filePath(_projectData->getFenicsSimFileName());
+
+    _fenicsConfiguration.setSimulationFileName(_simulationFileName);
     _fenicsConfiguration.exec();
 
     if (_fenicsConfiguration.userAcceptChanges())
@@ -960,5 +970,47 @@ void FEniCS_Blood_Sim::on_fenicsConfigureButton_clicked()
       QString _fenicsSourceCode =  _fenicsConfiguration.generateSourceCode();
       ui->fenicsEditorTextEdit->setText(_fenicsSourceCode);
     }
+
+    enableFenicsButtons();
+}
+
+
+
+void FEniCS_Blood_Sim::on_fenicsSaveButton_clicked()
+{
+    if (_projectData->getFenicsSimFileName().isEmpty())
+    {
+          QString _filename = _projectData->getProjectName() + "_" + FENICS_SIMULATION_FILE_NAME_DEFAULT;
+          _projectData->setFenicsSimPath(_projectData->getProjectPath());
+          _projectData->setFenicsSimFileName(_filename);
+    }
+
+   QString _simulationFileName = QDir(_projectData->getFenicsSimPath()).filePath(_projectData->getFenicsSimFileName());
+
+   QFile file(_simulationFileName);
+
+   if ( (file.open(QIODevice::ReadWrite)) || (_simulationFileName.isEmpty()) )
+   {
+       QTextStream stream(&file);
+       stream << ui->fenicsEditorTextEdit->toPlainText();
+       file.flush();
+       file.close();
+   }
+   else {
+       QMessageBox::critical(this, tr("Error"), tr("The file cannot be saved"));
+       return;
+   }
+
+   enableFenicsButtons();
+
+}
+
+
+void FEniCS_Blood_Sim::enableFenicsButtons()
+{
+    bool _currentStatus = ui->fenicsConfigureButton->isEnabled();
+
+    ui->fenicsConfigureButton->setEnabled(!_currentStatus);
+    ui->fenicsSaveButton->setEnabled(_currentStatus);
 
 }

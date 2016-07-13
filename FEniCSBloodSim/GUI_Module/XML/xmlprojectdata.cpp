@@ -71,33 +71,19 @@ void XMLProjectData::readProjectData( QXmlStreamReader * xmlReader, FBS_ProjectD
 
         if ((token == QXmlStreamReader::StartElement) &&
             (QString::compare(xmlReader->name().toString(), FBS_FENICS_SIM_TAG) == StrEqual) )
-            readFenicsInfo(xmlReader,_projectData );
+            readFenicsInfo(xmlReader,_projectData);
     }
 
 }
 void  XMLProjectData::readFenicsInfo(QXmlStreamReader * xmlReader, FBS_ProjectData * _projectData)
 {
-    bool _endFenicsInfo = false;
-     while ( (!xmlReader->atEnd()) && (!xmlReader->hasError()) && (!_endFenicsInfo))
-     {
-         QXmlStreamReader::TokenType token = xmlReader->readNext();
+     QXmlStreamAttributes _elementAtt = xmlReader->attributes();
 
+     if (_elementAtt.hasAttribute(FBS_FENICS_SIM_FILENAME_ATT))
+         _projectData->setFenicsSimFileName(_elementAtt.value(FBS_FENICS_SIM_FILENAME_ATT).toString());
 
-         if ((token == QXmlStreamReader::StartElement) &&
-                 (QString::compare(xmlReader->name().toString(), FBS_FENICS_SIM_TAG) == StrEqual) )
-         {
-             QXmlStreamAttributes _elementAtt = xmlReader->attributes();
-
-             if (_elementAtt.hasAttribute(FBS_FENICS_SIM_FILENAME_ATT))
-                 _projectData->setFenicsSimFileName(_elementAtt.value(FBS_FENICS_SIM_FILENAME_ATT).toString());
-
-             if (_elementAtt.hasAttribute(FBS_FENICS_SIM_FILEPATH_ATT))
-                 _projectData->setFenicsSimPath(_elementAtt.value(FBS_FENICS_SIM_FILEPATH_ATT).toString());
-         }
-         if ((token == QXmlStreamReader::EndElement) &&
-                 (QString::compare(xmlReader->name().toString(), FBS_FENICS_SIM_TAG) == StrEqual) )
-             _endFenicsInfo = true;
-     }
+     if (_elementAtt.hasAttribute(FBS_FENICS_SIM_FILEPATH_ATT))
+         _projectData->setFenicsSimPath(_elementAtt.value(FBS_FENICS_SIM_FILEPATH_ATT).toString());
 
 }
 

@@ -140,6 +140,9 @@ private slots:
 
     void on_fenicsSaveButton_clicked();
 
+    // FENICS
+    void initializeFenicsTab();
+
 private:
     Ui::FEniCS_Blood_Sim *ui;
     FileMenuBuilder *  _fileMenuBuilder;
@@ -210,7 +213,7 @@ private:
     // Initialize functions-  Tab
     void initializeImageTab();
     void initializeMeshTab();
-    void initializeFenicsTab();
+
     void initializeSimulationTab();
     void initializeVisualizationTab();
 

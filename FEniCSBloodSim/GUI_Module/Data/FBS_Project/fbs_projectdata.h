@@ -51,6 +51,7 @@ public:
     bool isEmpty();
     bool isEmptyImagingData();
     bool isEmptyPipelineData();
+    bool isEmptyFenicsSimData();
 
 private:
     QString _projectPath;

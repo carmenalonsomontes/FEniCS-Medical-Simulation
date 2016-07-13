@@ -42,6 +42,9 @@ signals:
      void loadImageInterface(const QString text);
      void updateImagingConsole(const QString text);
 
+     // FEniCS simulation
+     void loadFenicsFileTab();
+
 
 protected:
     QMainWindow * _registered_window_parent;

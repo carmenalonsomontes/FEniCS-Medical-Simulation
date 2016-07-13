@@ -167,11 +167,17 @@ void FileMenuBuilder::updateUI(int _menu)
     if (_menu == CLOSE_PROJECT)
         emit restoreUI();
 
-    if ((_menu == OPEN_PROJECT) && (!_registered_project_data->isEmptyImagingData()))
+    if (_menu == OPEN_PROJECT)
     {
-        emit updateImagingDialogUI(_registered_project_data->getImPath());
-        emit loadImageInterface(_registered_project_data->getImPath());
+        if (!_registered_project_data->isEmptyImagingData())
+        {
+            emit updateImagingDialogUI(_registered_project_data->getImPath());
+            emit loadImageInterface(_registered_project_data->getImPath());
+        }
+        if (!_registered_project_data->isEmptyFenicsSimData())
+            emit loadFenicsFileTab();
     }
+
 
 }
 

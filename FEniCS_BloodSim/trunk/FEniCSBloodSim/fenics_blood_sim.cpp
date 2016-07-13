@@ -80,7 +80,7 @@ FEniCS_Blood_Sim::FEniCS_Blood_Sim(QWidget *parent) :
 
     initializeImageTab();
     initializeMeshTab();
-    initializeFenicsTab();
+    //initializeFenicsTab();
     initializeSimulationTab();
     initializeVisualizationTab();
     connectSignalsMenuBuilder();
@@ -122,6 +122,7 @@ void FEniCS_Blood_Sim::connectSignalsMenuBuilder()
      connect(_fileMenuBuilder, SIGNAL(loadImageInterface(const QString)), this, SLOT(LoadImageInterfaceUI(const QString)));
      connect(_fileMenuBuilder, SIGNAL(enableTabUI(bool)), this, SLOT(EnableTab(bool)));
      connect(_fileMenuBuilder, SIGNAL(updateConsoleUI(const QString)), this, SLOT(UpdateConsole(const QString)));
+     connect(_fileMenuBuilder, SIGNAL(loadFenicsFileTab()), this, SLOT(initializeFenicsTab()));
 
 
      // Medical Imaging Signals
@@ -162,7 +163,19 @@ void FEniCS_Blood_Sim::initializeMeshTab()
 
 void FEniCS_Blood_Sim::initializeFenicsTab()
 {
-    // TODO
+
+    if (_projectData->isEmptyFenicsSimData())
+        return;
+
+    QString _fileName = QDir(_projectData->getFenicsSimPath()).filePath(_projectData->getFenicsSimFileName());
+
+    QFile _file(_fileName);
+    _file.open(QFile::ReadOnly | QFile::Text);
+
+    QTextStream _readFile(&_file);
+    ui->fenicsEditorTextEdit->setText(_readFile.readAll());
+    _file.close();
+
 }
 
 void FEniCS_Blood_Sim::initializeSimulationTab()

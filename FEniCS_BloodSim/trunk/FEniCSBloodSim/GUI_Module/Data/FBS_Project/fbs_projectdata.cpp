@@ -165,6 +165,14 @@ bool FBS_ProjectData::isEmptyPipelineData()
 
 }
 
+bool FBS_ProjectData::isEmptyFenicsSimData()
+{
+    if((_fenicsSimFileName.isEmpty()) && (_fenicsSimPath.isEmpty()))
+        return true;
+    return false;
+}
+
+
 void FBS_ProjectData::loadImData()
 {
     if (_imPath.isEmpty())

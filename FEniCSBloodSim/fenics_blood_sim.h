@@ -143,6 +143,10 @@ private slots:
     // FENICS
     void initializeFenicsTab();
 
+    void on_fenicsEditorTextEdit_textChanged();
+
+    void on_imageSegmentButton_clicked();
+
 private:
     Ui::FEniCS_Blood_Sim *ui;
     FileMenuBuilder *  _fileMenuBuilder;
@@ -226,6 +230,7 @@ private:
     void setSliceNumber(vtkSmartPointer<vtkImageViewer2> imageViewer,int sliceNo);
 
     void enableFenicsButtons();
+    void EnableMeshFrame(bool val);
 
 };
 

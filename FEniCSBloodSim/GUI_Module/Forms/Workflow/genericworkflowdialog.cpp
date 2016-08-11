@@ -42,6 +42,7 @@ GenericWorkflowDialog::GenericWorkflowDialog(QWidget *parent) :
 
     _userAcceptChanges = false;
     _selectedRow = -1;
+    _wkfExecuted = false;
 
 
 
@@ -530,6 +531,7 @@ void GenericWorkflowDialog::on_runPipelineButton_clicked()
 
        _pipelineItemList.replace(i, _item);
     }
+    _wkfExecuted = true;
 }
 
 
@@ -555,15 +557,26 @@ QStringList GenericWorkflowDialog::buildParameterList(PipelineItem  _item)
 // =========================================================================
 // Accepted BUTTONBOX
 // =========================================================================
-void GenericWorkflowDialog::on_wkfButtonBox_accepted()
-{
-    _userAcceptChanges = true;
-    close();
-}
+#include <QMessageBox>
 
-void GenericWorkflowDialog::on_wkfButtonBox_rejected()
+
+
+void GenericWorkflowDialog::on_cancelButton_clicked()
 {
     _userAcceptChanges = false;
     close();
+
 }
 
+void GenericWorkflowDialog::on_okButton_clicked()
+{
+    _userAcceptChanges = true;
+  if (!_wkfExecuted)
+    {
+        // TODO launch Message
+        QMessageBox::warning(this,QString("Please, run the pipeline!"),QString("Otherwise, your pipeline will be not saved."));
+    }
+    else
+        close();
+
+}

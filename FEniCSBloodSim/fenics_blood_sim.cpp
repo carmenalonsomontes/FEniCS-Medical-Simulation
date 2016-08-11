@@ -173,7 +173,9 @@ void FEniCS_Blood_Sim::initializeFenicsTab()
     _file.open(QFile::ReadOnly | QFile::Text);
 
     QTextStream _readFile(&_file);
+    ui->fenicsEditorTextEdit->blockSignals(true);
     ui->fenicsEditorTextEdit->setText(_readFile.readAll());
+    ui->fenicsEditorTextEdit->blockSignals(false);
     _file.close();
 
 }
@@ -477,6 +479,13 @@ void FEniCS_Blood_Sim::EnableMedicalImagingFrame(bool val)
     ui->datasetPathlineEdit->setEnabled(val);
 
 }
+
+void FEniCS_Blood_Sim::EnableMeshFrame(bool val)
+{
+    ui->meshFrame->setEnabled(val);
+}
+
+
 void FEniCS_Blood_Sim::EnableImageProcessingDialog(bool val)
 {
     ui->imageProcessingFrame->setEnabled(val);
@@ -519,9 +528,13 @@ void FEniCS_Blood_Sim::RestoreUI()
     // Set active tab in imaging
     ui->mainTabWidget->setCurrentIndex(IMAGE_TAB_INDEX);
 
+    // Frames
     EnableMedicalImagingFrame(false);
+    EnableMeshFrame(false);
+
     EnableImageProcessingDialog(false);
     EnableTab(false);
+
 
     ClearImageInterfaceUI();
     ClearConsoles();
@@ -1026,4 +1039,16 @@ void FEniCS_Blood_Sim::enableFenicsButtons()
     ui->fenicsConfigureButton->setEnabled(!_currentStatus);
     ui->fenicsSaveButton->setEnabled(_currentStatus);
 
+}
+
+void FEniCS_Blood_Sim::on_fenicsEditorTextEdit_textChanged()
+{
+    if (!ui->fenicsSaveButton->isEnabled())
+        ui->fenicsSaveButton->setEnabled(true);
+
+}
+
+void FEniCS_Blood_Sim::on_imageSegmentButton_clicked()
+{
+    EnableMeshFrame(true);
 }

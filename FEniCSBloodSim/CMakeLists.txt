@@ -1,6 +1,3 @@
-#aux_source_directory(. SRC_LIST)
-#add_executable(${PROJECT_NAME} ${SRC_LIST})
-
 #-----------------------------------------------------------------------------------
 # CMAKE CONFIGURATION
 cmake_minimum_required(VERSION 2.8)
@@ -23,20 +20,20 @@ endif(ITK_FOUND)
 
 #-----------------------------------------------------------------------------------
 # ITKVTKGLUE CONFIGURATION
-if(ITKVtkGlue_LOADED)
+#if(ITKVtkGlue_LOADED)
   find_package(VTK REQUIRED)
  include(${VTK_USE_FILE})
-else()
-find_package(ItkVtkGlue REQUIRED)
-include(${ItkVtkGlue_USE_FILE})
-set(Glue ItkVtkGlue)
-endif()
+#else()
+#find_package(ItkVtkGlue REQUIRED)
+#include(${ItkVtkGlue_USE_FILE})
+#set(Glue ItkVtkGlue)
+#endif()
 
 
 #-----------------------------------------------------------------------------------
 # VTK CONFIGURATION
-find_package(VTK REQUIRED)
-include(${VTK_USE_FILE})
+#find_package(VTK REQUIRED)
+#include(${VTK_USE_FILE})
 
 if(${VTK_VERSION} VERSION_GREATER "6" AND VTK_QT_VERSION VERSION_GREATER "4")
   # Instruct CMake to run moc automatically when needed.
@@ -90,6 +87,7 @@ else()
   endif()
 endif()
 
+#-----------------------------------------------------------------------------------
 # ITK + ITKVTKGLUE
-target_link_libraries(${PROJECT_NAME} ${Glue} ${ITK_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${ItkVtkGlue} ${ITK_LIBRARIES})
 

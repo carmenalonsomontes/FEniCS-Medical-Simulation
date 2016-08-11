@@ -47,7 +47,7 @@ protected:
 
 private slots:
 
-    void on_wkfButtonBox_accepted();
+
     void on_tableMethods1_cellClicked(int row, int column);
     void on_stepDoneButton_clicked();
     void on_pipelineTable_cellClicked(int row, int column);
@@ -55,9 +55,12 @@ private slots:
 
     void on_cancelSelection_clicked();
 
-    void on_wkfButtonBox_rejected();
 
     void on_pipelineItemSummaryTable_cellChanged(int row, int column);
+
+    void on_cancelButton_clicked();
+
+    void on_okButton_clicked();
 
 private:
     Ui::GenericWorkflowDialog *ui;
@@ -67,6 +70,7 @@ private:
     int _selectedRow;
     QString _projectPath;
     QString _imgProjectPath;
+    bool _wkfExecuted;
 
 
     void insertRow();

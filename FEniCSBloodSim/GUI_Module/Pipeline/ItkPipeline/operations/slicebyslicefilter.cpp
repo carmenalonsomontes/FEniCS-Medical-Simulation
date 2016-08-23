@@ -73,15 +73,43 @@ TypeFilters SliceBySliceFilter::getFilterNumber(QString _filterName)
 }
 
 
-ImageType2D::Pointer SliceBySliceFilter::GetOutput()
+ImageType2D::Pointer SliceBySliceFilter::GetOutput2D()
 {
     return filter->GetOutput();
 }
 
-/*
+
 IOperation * SliceBySliceFilter::Create() {
     return new SliceBySliceFilter();
 }
-*/
 
+// --------------------------------------------------------
+// TODO
+void SliceBySliceFilter::set3D(bool _val)
+{
+// TODO
+}
 
+bool SliceBySliceFilter::is3D()
+{
+// TODO
+}
+
+void SliceBySliceFilter::exec()
+{
+// TODO
+}
+
+void SliceBySliceFilter::save(QString _path)
+{
+// TODO
+}
+ImageType3D::Pointer SliceBySliceFilter::GetOutput3D()
+{
+// TODO
+}
+
+void SliceBySliceFilter::SetInPut(ImageType3D::Pointer _input)
+{
+  // TODO
+}

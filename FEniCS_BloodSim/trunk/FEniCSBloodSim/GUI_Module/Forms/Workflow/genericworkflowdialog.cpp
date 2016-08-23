@@ -513,23 +513,26 @@ void GenericWorkflowDialog::on_runPipelineButton_clicked()
         // Creating the pipeline Element
         IOperation * _operation =  OperationFactory::Get()->CreateOperation(_item.getFunctionClassName().toStdString());
 
-        if (i == 0)
-            _operation->SetInPut(reader->GetOutput()); // Nota, por algun motivo si meto el reader aqui dentro, pierde la referencia al puntero ¿Smart pointers vida util?? --> Checkear en la conexion del pipeline
-        else
-        {
-            PipelineItem _previousItem = _pipelineItemList.at(i-1);
-            if (_is3D)
-                _operation->SetInPut(_previousItem.getImage3D());
+        if (_operation){ // If the operation is valid
+
+            if (i == 0)
+                _operation->SetInPut(reader->GetOutput()); // Nota, por algun motivo si meto el reader aqui dentro, pierde la referencia al puntero ¿Smart pointers vida util?? --> Checkear en la conexion del pipeline
+            else
+            {
+                PipelineItem _previousItem = _pipelineItemList.at(i-1);
+                if (_is3D)
+                    _operation->SetInPut(_previousItem.getImage3D());
+            }
+
+            _operation->SetParameters(_parameterList);
+            _operation->exec();
+            QString _imgFileName = TEMP_WKF_PIPELINE_IMAGE_PREFIX + QString::number(i) +"."+ _imageSuffix;
+            QString _imgTmpFile = QDir(_imgProjectPath).filePath(_imgFileName);
+            _operation->save(_imgTmpFile);
+            _item.setImage3DPath(_imgTmpFile);
+
+           _pipelineItemList.replace(i, _item);
         }
-
-        _operation->SetParameters(_parameterList);
-        _operation->exec();
-        QString _imgFileName = TEMP_WKF_PIPELINE_IMAGE_PREFIX + QString::number(i) +"."+ _imageSuffix;
-        QString _imgTmpFile = QDir(_imgProjectPath).filePath(_imgFileName);
-        _operation->save(_imgTmpFile);
-        _item.setImage3DPath(_imgTmpFile);
-
-       _pipelineItemList.replace(i, _item);
     }
     _wkfExecuted = true;
 }

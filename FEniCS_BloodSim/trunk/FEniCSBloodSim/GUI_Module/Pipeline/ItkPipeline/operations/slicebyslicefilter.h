@@ -14,15 +14,24 @@ typedef SliceBySliceImageFilter<ImageType2D,ImageType2D> FilterType;
 typedef MedianImageFilter<FilterType::InternalInputImageType,FilterType::InternalOutputImageType> MedianType;
 
 
-class SliceBySliceFilter //: public IOperation
+class SliceBySliceFilter : public IOperation
 {
 public:
     SliceBySliceFilter();
     void SetInPut(ImageType2D::Pointer _input);
+    void SetInPut(ImageType3D::Pointer _input);
+
     void SetParameters(QStringList _parameterList);
 
     static IOperation * Create();
-    ImageType2D::Pointer GetOutput();
+    ImageType2D::Pointer GetOutput2D();
+    ImageType3D::Pointer GetOutput3D();
+
+    void set3D(bool _val);
+    bool is3D();
+
+    void exec();
+    void save(QString _path);
 
 private:
     FilterType::Pointer filter;

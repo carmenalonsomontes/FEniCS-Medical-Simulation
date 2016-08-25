@@ -29,6 +29,13 @@ enum ImageDimension{
 typedef Image<unsigned char, Two_Dimensions>  ImageType2D;
 typedef Image<unsigned char, Three_Dimensions>  ImageType3D;
 
+typedef Image<double, Two_Dimensions>  ImageType2DDouble;
+typedef Image<double, Three_Dimensions>  ImageType3DDouble;
+
+typedef Image<float, Two_Dimensions>  ImageType2DFloat;
+typedef Image<float, Three_Dimensions>  ImageType3DFloat;
+
+
 typedef ImageFileReader<ImageType2D> ReaderType2D;
 typedef ImageFileWriter<ImageType2D> WriterType2D;
 

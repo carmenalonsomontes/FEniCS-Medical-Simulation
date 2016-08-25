@@ -135,6 +135,7 @@ int skullStrip(ReaderType3D::Pointer reader, string _outputFileName,string _outp
 
 //EROSION
 #include "itkBinaryErodeImageFilter.h"
+#include "itkBinaryDilateImageFilter.h"
 #include "itkBinaryBallStructuringElement.h"
 
 
@@ -184,14 +185,14 @@ double startTime = time(0);
      EnhancementFilterType::Pointer enhancementFilter = EnhancementFilterType::New();
      //filter->SetInput( reader->GetOutput() );
      enhancementFilter->SetNumberOfIterations(5);
-     enhancementFilter->SetTimeStep( 0.25 );
+     enhancementFilter->SetTimeStep( 0.05 );
      enhancementFilter->SetConductanceParameter( 1.0 );
      //filter->Update();
 
      // EROSION
      typedef itk::BinaryBallStructuringElement<ImageType2D::PixelType, 2>                  StructuringElementType;
      StructuringElementType structuringElement;
-     structuringElement.SetRadius(5);
+     structuringElement.SetRadius(1);
      structuringElement.CreateStructuringElement();
 
      typedef itk::BinaryErodeImageFilter <ImageType2D, ImageType2D, StructuringElementType>
@@ -201,6 +202,15 @@ double startTime = time(0);
      //erodeFilter->SetInput(reader->GetOutput());
      erodeFilter->SetKernel(structuringElement);
      erodeFilter->SetErodeValue(255);
+
+     typedef itk::BinaryDilateImageFilter <ImageType2D, ImageType2D, StructuringElementType>
+       BinaryDilateImageFilterType;
+
+     BinaryDilateImageFilterType::Pointer dilateFilter= BinaryDilateImageFilterType::New();
+     //erodeFilter->SetInput(reader->GetOutput());
+     dilateFilter->SetKernel(structuringElement);
+     dilateFilter->SetDilateValue(255);
+
 
 
 /* ESTE FUNCIONA*/
@@ -221,28 +231,17 @@ double startTime = time(0);
 
                 // Linking the filters
                 thresholdFilter->SetInput(enhancementFilter->GetOutput());
-                erodeFilter->SetInput(thresholdFilter->GetOutput());
+                dilateFilter->SetInput(thresholdFilter->GetOutput());
 
                 filter->SetFilter(enhancementFilter);
                // filter->SetFilter(thresholdFilter);
                // filter->SetInputFilter(enhancementFilter);
                 //filter->SetOutputFilter(thresholdFilter);
                // filter->SetInputFilter(thresholdFilter);
-                filter->SetOutputFilter(erodeFilter);
+                filter->SetOutputFilter(dilateFilter);
 
 
 
-   /* No funciona
-    *   typedef itk::BinaryBallStructuringElement<unsigned char, 2> KernelType;
-    typedef itk::WhiteTopHatImageFilter<ImageType2D, ImageType2D, KernelType> FilterType2;
-
-        KernelType kernel;
-        kernel.SetRadius(20);
-        FilterType2::Pointer tophat = FilterType2::New();
-        tophat->SetKernel(kernel);
-
-    filter->SetFilter(tophat);
-*/
 
     typedef  itk::ImageFileWriter< ImageType3D  > WriterType;
     WriterType::Pointer writer = WriterType::New();
@@ -252,84 +251,6 @@ double startTime = time(0);
 
     return EXIT_SUCCESS;
 
-
-    /*************************************************/
-    /* Filtering */
-    /*************************************************/
-  /*  typedef itk::BinaryThresholdImageFilter <ImageType2D,ImageType2D> BinaryThresholdImageFilterType;
-    BinaryThresholdImageFilterType::Pointer thresholdFilter = BinaryThresholdImageFilterType::New();
-
-        thresholdFilter->SetInput(reader ->GetOutput());
-        thresholdFilter->SetLowerThreshold(125);
-        thresholdFilter->SetUpperThreshold(200);
-        thresholdFilter->SetInsideValue(255);
-        thresholdFilter->SetOutsideValue(0);
-
-        thresholdFilter->Update();
-
-
-*/
-
- /*   typedef itk::SliceBySliceImageFilter< ImageType3D, ImageType3D > FilterType;
-    FilterType::Pointer filter = FilterType::New();
-    filter->SetInput( reader->GetOutput() );
-
-
-    typedef itk::MedianImageFilter< FilterType::InternalInputImageType,FilterType::InternalOutputImageType > MedianType;
-    MedianType::Pointer median = MedianType::New();
-    MedianType::InputSizeType rad;
-    rad.Fill( 5 );
-    median->SetRadius( rad );
-
-    filter->SetFilter( median );
-
-
-    itk::SimpleFilterWatcher watcher(filter, "filter");
-    typedef itk::ImageFileWriter< ImageType3D > WriterType;
-    WriterType::Pointer writer = WriterType::New();
-    writer->SetInput( filter->GetOutput() );
-    writer->SetFileName( _outputFileName );
-    writer->Update();
-
-    */
-  //  maskFilter2D->SetInput2( maskImg2d );
-  //  sliceBySliceFilter->SetFilter( maskFilter2D );
-  //      sliceBySliceFilter->SetInput( img3D );
-
-
-
-    /*************************************************/
-    /* Setting the ouput to write  the images */
-    /*************************************************/
-    // writes the new binary image to a file.
-    /*WriterType3D::Pointer writer= WriterType3D::New();
-    writer->SetFileName(_outputFileName);
-    writer->SetInput(reader->GetOutput());
-
-    // TRY-CATCH Exception Handling
-      try
-      {
-          writer ->Update();                      // updates writer
-      }
-      catch(itk::ExceptionObject &err)                // checks if there are any exceptions
-      {
-          std::cerr << "ExceptionObject caught!" <<std::endl;
-          std::cerr << err <<std::endl;
-          return EXIT_FAILURE;
-      }
-*/
-
-    // -------------
-    // Image Preprocessing per each slice
-
-    // Starting for slice 1
-
-    //typedef ImageFileWriter<ImageType> WriterType;
-   /*    WriterType2D::Pointer writer =WriterType2D::New();
-       writer->SetInput(filter->GetOutput());
-       writer->SetFileName("/home/calonso/output.mha");
-       writer->Update();
-*/
 
 
 
@@ -357,5 +278,94 @@ filter->SetFilter(adaptiveHistogramEqualizationImageFilter);
 
     filter->SetFilter( median );
 
+*/
+
+/*************************************************/
+/* Filtering */
+/*************************************************/
+/*  typedef itk::BinaryThresholdImageFilter <ImageType2D,ImageType2D> BinaryThresholdImageFilterType;
+BinaryThresholdImageFilterType::Pointer thresholdFilter = BinaryThresholdImageFilterType::New();
+
+    thresholdFilter->SetInput(reader ->GetOutput());
+    thresholdFilter->SetLowerThreshold(125);
+    thresholdFilter->SetUpperThreshold(200);
+    thresholdFilter->SetInsideValue(255);
+    thresholdFilter->SetOutsideValue(0);
+
+    thresholdFilter->Update();
+
+
+*/
+
+/*   typedef itk::SliceBySliceImageFilter< ImageType3D, ImageType3D > FilterType;
+FilterType::Pointer filter = FilterType::New();
+filter->SetInput( reader->GetOutput() );
+
+
+typedef itk::MedianImageFilter< FilterType::InternalInputImageType,FilterType::InternalOutputImageType > MedianType;
+MedianType::Pointer median = MedianType::New();
+MedianType::InputSizeType rad;
+rad.Fill( 5 );
+median->SetRadius( rad );
+
+filter->SetFilter( median );
+
+
+itk::SimpleFilterWatcher watcher(filter, "filter");
+typedef itk::ImageFileWriter< ImageType3D > WriterType;
+WriterType::Pointer writer = WriterType::New();
+writer->SetInput( filter->GetOutput() );
+writer->SetFileName( _outputFileName );
+writer->Update();
+
+*/
+//  maskFilter2D->SetInput2( maskImg2d );
+//  sliceBySliceFilter->SetFilter( maskFilter2D );
+//      sliceBySliceFilter->SetInput( img3D );
+
+
+
+/*************************************************/
+/* Setting the ouput to write  the images */
+/*************************************************/
+// writes the new binary image to a file.
+/*WriterType3D::Pointer writer= WriterType3D::New();
+writer->SetFileName(_outputFileName);
+writer->SetInput(reader->GetOutput());
+
+// TRY-CATCH Exception Handling
+  try
+  {
+      writer ->Update();                      // updates writer
+  }
+  catch(itk::ExceptionObject &err)                // checks if there are any exceptions
+  {
+      std::cerr << "ExceptionObject caught!" <<std::endl;
+      std::cerr << err <<std::endl;
+      return EXIT_FAILURE;
+  }
+*/
+
+// -------------
+// Image Preprocessing per each slice
+
+// Starting for slice 1
+
+//typedef ImageFileWriter<ImageType> WriterType;
+/*    WriterType2D::Pointer writer =WriterType2D::New();
+   writer->SetInput(filter->GetOutput());
+   writer->SetFileName("/home/calonso/output.mha");
+   writer->Update();
+*/
+/* No funciona
+ *   typedef itk::BinaryBallStructuringElement<unsigned char, 2> KernelType;
+ typedef itk::WhiteTopHatImageFilter<ImageType2D, ImageType2D, KernelType> FilterType2;
+
+     KernelType kernel;
+     kernel.SetRadius(20);
+     FilterType2::Pointer tophat = FilterType2::New();
+     tophat->SetKernel(kernel);
+
+ filter->SetFilter(tophat);
 */
 

@@ -1,0 +1,91 @@
+<xml>
+    <fenics-functions>
+        <category name="Library" keyInput="None">
+            <function name="Dolfin" fenicsName="dolfin" description="Select Dolfin FEniCS libraries" >
+                <parameters>
+                </parameters>
+            </function>
+            <function name="Future Library" fenicsName="__future__" description="NONE">
+            <parameters>
+                <parameter name="Print" methodname="print_function" description="Print function" default_value="None" ></parameter>
+            </parameters>
+            </function>            
+        </category>
+        <category name="Mesh" keyInput="MESH_KEY_SEL">
+            <function name="Select your mesh file" fenicsName="Mesh" description="Select your mesh file" >
+                <parameters>
+                    <parameter name="Select your file location" methodname="LOCATE_FILE_BUTTON" description="Select your mesh file" default_value="None"></parameter>
+                </parameters>
+            </function>
+            <function name="Unit Cube Mesh" fenicsName="UnitCubeMesh" description="Create a uniform finite element Mesh over the unit cube [0,1] x [0,1] x [0,1].">
+            <parameters>
+                <parameter name="nx"  methodname="USER_INPUT_ARGS" description="Number of cells in x direction." default_value="None"></parameter>
+                <parameter name="ny"  methodname="USER_INPUT_ARGS" description="Number of cells in y direction." default_value="None"></parameter>
+                <parameter name="nz"  methodname="USER_INPUT_ARGS" description="Number of cells in z direction." default_value="None"></parameter>
+            </parameters>
+            </function>
+            <function name="Unit Square Mesh" fenicsName="UnitSquareMesh" description="TODO.">
+            <parameters>
+                <parameter name="nx"  methodname="USER_INPUT_ARGS" description="Number of cells in x direction." default_value="None"></parameter>
+                <parameter name="ny"  methodname="USER_INPUT_ARGS" description="Number of cells in y direction." default_value="None"></parameter>
+            </parameters>
+            </function>
+            <function name="Unit Inteval Mesh" fenicsName="UnitIntervalMesh" description="TODO.">
+            <parameters>
+                <parameter name="nx"  methodname="USER_INPUT_ARGS" description="Number of cells in x direction." default_value="None"></parameter>
+            </parameters>
+            </function>
+            <function name="Rectangle Mesh" fenicsName="RectangleMesh" description="TODO">
+            <parameters>
+                <parameter name="nx"  methodname="USER_INPUT_ARGS" description="Number of cells in x direction." default_value="None"></parameter>
+                <parameter name="ny"  methodname="USER_INPUT_ARGS" description="Number of cells in y direction." default_value="None"></parameter>
+                <parameter name="nz"  methodname="USER_INPUT_ARGS" description="Number of cells in z direction." default_value="None"></parameter>
+                <parameter name="nw"  methodname="USER_INPUT_ARGS" description="Number of cells in z direction." default_value="None"></parameter>
+            </parameters>
+            </function>
+            <function name="Box Mesh" fenicsName="BoxMesh" description="TODO">
+            <parameters>
+                <parameter name="nx"  methodname="USER_INPUT_ARGS" description="Number of cells in x direction." default_value="None"></parameter>
+                <parameter name="ny"  methodname="USER_INPUT_ARGS" description="Number of cells in y direction." default_value="None"></parameter>
+                <parameter name="nz"  methodname="USER_INPUT_ARGS" description="Number of cells in z direction." default_value="None"></parameter>
+                <parameter name="nw"  methodname="USER_INPUT_ARGS" description="Number of cells in z direction." default_value="None"></parameter>
+                <parameter name="na"  methodname="USER_INPUT_ARGS" description="Number of cells in z direction." default_value="None"></parameter>
+            </parameters>
+            </function>
+        </category>
+        <category name="Function Spaces" keyInput="None">
+            <function name="Function Space" fenicsName="FunctionSpace" description="Create finite element function space.">
+            <parameters>
+                <parameter name="mesh"  methodname="USER_INPUT_ARGS" description="The mesh" input="MESH_KEY_SEL" default_value="None"></parameter>
+                <parameter name="family"  methodname="USER_INPUT_ARGS" description="specification of the element family, see below for alternatives." default_value="CG">
+                <combo-values>
+                    <value name="Lagrange" fenics_value="CG"></value>
+                    <value name="Argyris" fenics_value="ARG"></value>
+                    <value name="Discontinuous Lagrange" fenics_value="DG"></value>
+                </combo-values>
+                </parameter>
+                <parameter name="degree"  methodname="USER_INPUT_ARGS" description="the degree of the element." default_value="0"></parameter>
+                <parameter name="form_degree"  methodname="USER_INPUT_ARGS" description="the form degree (FEEC notation, used when field is viewed as k-form)" default_value="0" is_optional="YES"></parameter>
+                <parameter name="constrained_domain"  methodname="USER_INPUT_ARGS" description="constrained subdomain with map function." default_value="None" is_optional="YES"></parameter>
+                <parameter name="restriction"  methodname="USER_INPUT_ARGS" description="restriction of the element (e.g. to cell facets)." default_value="None" is_optional="YES"></parameter>
+            </parameters>
+            </function>
+            <function name="Function Vector Space" fenicsName="VectorFunctionSpace" description="Create vector-valued finite element function space.">
+            <parameters>
+                <parameter name="mesh"  methodname="USER_INPUT_ARGS" description="The mesh" input="MESH_KEY_SEL" default_value="None"></parameter>
+                <parameter name="family"  methodname="USER_INPUT_ARGS" description="specification of the element family, see below for alternatives." default_value="CG">
+                <combo-values>
+                    <value name="Lagrange" fenics_value="CG"></value>
+                    <value name="Argyris" fenics_value="ARG"></value>
+                    <value name="Discontinuous Lagrange" fenics_value="DG"></value>
+                </combo-values>
+                </parameter>
+                <parameter name="degree"  methodname="USER_INPUT_ARGS" description="the degree of the element." default_value="0"></parameter>
+                <parameter name="dim"  methodname="USER_INPUT_ARGS" description="an optional argument specifying the number of components." default_value="0" is_optional="YES"></parameter>
+                <parameter name="form_degree"  methodname="USER_INPUT_ARGS" description="an optional argument specifying the degree of the k-form (used for FEEC notation)" default_value="None" is_optional="YES"></parameter>
+            </parameters>
+            </function>
+
+        </category>
+    </fenics-functions>
+</xml>

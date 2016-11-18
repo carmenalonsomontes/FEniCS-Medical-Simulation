@@ -1,26 +1,14 @@
 <xml>
     <imaging-functions>    
         <category name="noise removal" icon=":/wkf/images/GUI_Module/images/images/color_adjustment.png">
-            <function name="Adaptive Histogram Equalization" classname="itkAdaptiveEqualizationHistogram.h" description="Adaptive Histogram Equalization ImageFilter">
+            <function name="Adaptive Histogram Equalization" classname="AdaptiveHistogramEqualization" description="Adaptive Histogram Equalization ImageFilter">
                 <parameters>
                     <parameter name="Radius" methodname="SetRadius" type="int" default_value="1" ></parameter>
                 </parameters>
             </function>
-            <function name="canny detector" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection" >
-            <parameters>
-            </parameters>
-            </function>
-            <function name="canny detector2" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection">
-            <parameters>
-            </parameters>
-            </function>
         </category>
         <category name="segmentation" icon=":/wkf/images/GUI_Module/images/images/designmoo.png">
             <function name="PLS" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection">
-            <parameters>
-            </parameters>
-            </function>
-            <function name="Level Set" classname="itkCannyEdgeDetectionImageFilter.h" description="ITK Canny Edge detection">
             <parameters>
             </parameters>
             </function>

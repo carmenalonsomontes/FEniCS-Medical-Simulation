@@ -4,6 +4,7 @@
 SliceBySliceFilter::SliceBySliceFilter()
 {
     filter = FilterType::New();
+    _is3D = false;
 }
 void SliceBySliceFilter::SetInPut(ImageType2D::Pointer _input)
 {
@@ -87,12 +88,12 @@ IOperation * SliceBySliceFilter::Create() {
 // TODO
 void SliceBySliceFilter::set3D(bool _val)
 {
-// TODO
+    _is3D = false; // It is not permitted for 3D
 }
 
 bool SliceBySliceFilter::is3D()
 {
-// TODO
+    return _is3D;
 }
 
 void SliceBySliceFilter::exec()

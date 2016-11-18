@@ -1,11 +1,13 @@
 #include "operationfactory.h"
 #include "operations/binarization.h"
 #include "operations/slicebyslicefilter.h"
+#include "operations/adaptivehistogramequalization.h"
 
 OperationFactory::OperationFactory()
 {
     Register("BinaryThreshold2D",&Binarization::Create);
-    //Register("SliceBySliceFilter",&SliceBySliceFilter::Create);
+    Register("SliceBySliceFilter",&SliceBySliceFilter::Create);
+    Register("AdaptiveHistogramEqualization",&AdaptiveHistogramEqualization::Create);
 }
 OperationFactory::OperationFactory(const OperationFactory &)
 {

@@ -37,7 +37,7 @@ private:
     FilterType::Pointer filter;
     MedianType::Pointer median;
     MedianType::InputSizeType rad;
-
+    bool _is3D;
 
     void buildFilter(int radius, TypeFilters filterType);
     TypeFilters getFilterNumber(QString _filterName);
